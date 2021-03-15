@@ -66,8 +66,7 @@ public class PointsOfVisibility : SearchSpace
 	public override void Create()
     {
         Graph = new SparseGraph(false);
-
-        for (int i = 0; i < World.Instance.Waypoints.Count; i++)
+        for (int i = 0; i < World.Instance.Waypoints != null && World.Instance.Waypoints.Count; i++)
         {
             var node = new Node(i) { Position = new Vector2(World.Instance.Waypoints[i].x, World.Instance.Waypoints[i].z) };
             Graph.AddNode(node);
