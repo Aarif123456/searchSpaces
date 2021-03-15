@@ -80,7 +80,7 @@ public class DynamicArrive : Arrive
 	        Vector3 desiredDirection = targetPosition.Value - transform.position;
 			desiredDirection.y = 0;
 	
-	        // Get the length of the directon vector which is the distance to the target.
+	        // Get the length of the direction vector which is the distance to the target.
 	        distanceToTarget = desiredDirection.magnitude;
 	
 	        // if not there yet ...
