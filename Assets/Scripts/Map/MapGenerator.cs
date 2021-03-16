@@ -64,7 +64,8 @@ public sealed class MapGenerator : MonoBehaviour
 	private string connectedRoomFile = "ConnectedRooms.txt";
     [SerializeField] 
     private string mazeFile = "Maze.txt";
-
+    [SerializeField]
+    private string cornerConnectedRoomFile = "CornerConnectedRooms.txt";
 	private const float WALL_HEIGHT = 1f;
 	private const float WALL_THICKNESS = 0.1f;
 	private int columns;
@@ -73,7 +74,8 @@ public sealed class MapGenerator : MonoBehaviour
 	public enum MapTypes
 	{
 		Maze,
-		ConnectedRooms
+		ConnectedRooms,
+        CornerConnectedRooms,
 	}
 	
 	private static MapGenerator _instance;
@@ -116,6 +118,9 @@ public sealed class MapGenerator : MonoBehaviour
             case MapTypes.Maze:
                 LoadMazeMap(mazeFile);
                 break;
+            case MapTypes.CornerConnectedRooms:
+                LoadConnectedRoomsMap(cornerConnectedRoomFile);
+                break;
         }
     }
 
@@ -129,6 +134,9 @@ public sealed class MapGenerator : MonoBehaviour
             case MapTypes.Maze:
                 GenerateMazeMap();
                 break;
+            case MapTypes.CornerConnectedRooms:
+                GenerateConnectedCornerRoomsMap();
+                break;
         }
     }
 	
@@ -136,8 +144,6 @@ public sealed class MapGenerator : MonoBehaviour
     private void CreateConnectedRoomMap(ConnectedRooms connectedRooms){
         GameObject wallsObject = GameObject.Find("Environment/Walls");
         //GameObject waypointsObject = GameObject.Find("Game/Waypoints");
-        connectedRooms.AddPointsOfVisibilityWaypoints();
-        
 
         var wallScale = new Vector3(cellWidth, WALL_HEIGHT, cellHeight);
 
@@ -356,7 +362,6 @@ public sealed class MapGenerator : MonoBehaviour
 
     private void LoadConnectedRoomsMap(string filename)
     {
-
         var connectedRooms = new ConnectedRooms(columns, rows);
         connectedRooms.LoadMap(filename);
         CreateConnectedRoomMap(connectedRooms);
@@ -364,7 +369,6 @@ public sealed class MapGenerator : MonoBehaviour
 
     private void LoadMazeMap(string filename)
     {
-        //// TODO
         var maze = new Maze(rows, columns);
         maze.LoadMap(filename);
         CreateMazeMap(maze);
@@ -374,11 +378,20 @@ public sealed class MapGenerator : MonoBehaviour
     {	
         var connectedRooms = new ConnectedRooms(columns, rows);
         connectedRooms.BuildMap();
+        connectedRooms.AddPointsOfVisibilityWaypoints();
         CreateConnectedRoomMap(connectedRooms);
         connectedRooms.OutputMap(connectedRoomFile);
-        ////ConnectedRooms.SaveMap("ConnectedRooms.xml");
     }
 
+    private void GenerateConnectedCornerRoomsMap()
+    {   
+        var connectedRooms = new ConnectedRooms(columns, rows);
+        connectedRooms.BuildMap();
+        connectedRooms.AddCornerWayPoints();
+        CreateConnectedRoomMap(connectedRooms);
+        connectedRooms.OutputMap(cornerConnectedRoomFile);
+    }
+    
     private void GenerateMazeMap()
     {	
 		

@@ -348,6 +348,32 @@ namespace Thot.GameAI
             }
         }
 
+        public void AddCornerWayPoints()
+        {
+            for (int row = 1; row < Rows-1; row++)
+            {
+                for (int column = 1; column < Columns-1; column++)
+                {
+                    if(Map[column, row] == (int)MapElements.Wall){
+                        if( (Map[column+1, row] == (int)MapElements.Space || Map[column+1, row] == (int)MapElements.Door) 
+                            && (Map[column+1, row+1] == (int)MapElements.Space || Map[column+1, row+1] == (int)MapElements.Door)
+                            && (Map[column, row+1] == (int)MapElements.Space || Map[column, row+1] == (int)MapElements.Door) 
+                          )
+                        {
+                             Map[column+1, row +1] = (int)MapElements.Waypoint;
+                        }
+                        else if( (Map[column-1, row] == (int)MapElements.Space  || Map[column-1, row] == (int)MapElements.Door)
+                            && (Map[column-1, row-1] == (int)MapElements.Space  || Map[column-1, row-1] == (int)MapElements.Door)
+                            && (Map[column, row-1] == (int)MapElements.Space  || Map[column, row-1] == (int)MapElements.Door)
+                          )
+                        {
+                            Map[column-1, row -1] = (int)MapElements.Waypoint;
+                        }
+                    }
+                }
+            }
+        }
+        
         /// <summary>
         /// Output a character-based representation of the map.
         /// </summary>
