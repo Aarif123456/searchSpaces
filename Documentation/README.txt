@@ -33,8 +33,7 @@ TODO
         What: Path sometimes goes through a wall :( 
     c) 
         When: To be determined.
-        What: Deal with situations where the Weebles get stuck or take too long to
-        complete an edge or the path.
+        What: Deal with situations where the Weebles get stuck or take too long to complete an edge or the path.
 
 3. [Implementation ideas]
     a) Implement and test the Corner Graph search space representations on the Connected Rooms search space.
@@ -49,7 +48,9 @@ TODO
 4. Find ways to make it awesome!
 
 In progress:
-3a) required
+3c ii)
 
 Completed: 
+3a) Completed Corner graph 
+3c) i)new path manager 
 

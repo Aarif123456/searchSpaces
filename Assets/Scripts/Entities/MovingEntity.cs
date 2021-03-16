@@ -64,7 +64,7 @@ public class MovingEntity : Entity
 	
 	private Steering[] steerings;
 	
-	// The entity's center in the transform
+	// The entity's centre in the transform
 	[SerializeField]
 	private Vector3 center;
 	public Vector3 Center
@@ -123,7 +123,7 @@ public class MovingEntity : Entity
 	}
 	
 	// Entity's position. The entity's position is the transform's position displaced 
-	// by the entity center.
+	// by the entity centre.
 	public Vector3 Position 
 	{
 		get 
@@ -241,7 +241,7 @@ public class MovingEntity : Entity
 		}
 	}
 	
-	// Array of steering behaviors
+	// Array of steering behaviours
 	public Steering[] Steerings 
 	{
 		get 
@@ -249,8 +249,6 @@ public class MovingEntity : Entity
 			return steerings;
 		}
 	}
-	
-	public PathManager PathManager { get; set; }
 	
 	public override void Awake()
     {
@@ -265,8 +263,6 @@ public class MovingEntity : Entity
 			center = characterController.center;
 		}
 		steerings = GetComponents<Steering>().OrderByDescending(s => s.Priority).ToArray();
-		
-		PathManager = GetComponent<PathManager>();
     }
 	
 	public Vector3 PositionAt(Vector2 point)

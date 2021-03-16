@@ -65,19 +65,18 @@ public class GoalGenerator : MonoBehaviour
 	
 	private readonly Queue<Vector2> destinationQueue = new Queue<Vector2>();
 	
-	private PathManager pathManager;
+	private SearchSpace searchSpace;
 	private Vector2? currentDestination;
 	
 	public void Awake()
 	{
-		pathManager = GetComponent<PathManager>();
+		searchSpace = GetComponent<SearchSpace>();
 	}
 	
 	public IEnumerator Start()
 	{
-		while (pathManager == null || 
-		    pathManager.searchSpace == null ||
-		    pathManager.searchSpace.Graph == null)
+		while ( searchSpace == null ||
+		        searchSpace.Graph == null)
 		{
 			yield return 0;
 		}
@@ -115,16 +114,15 @@ public class GoalGenerator : MonoBehaviour
     {
 		currentDestination = null;
 		
-		if (pathManager == null || 
-		    pathManager.searchSpace == null ||
-		    pathManager.searchSpace.Graph == null)
+		if ( searchSpace == null ||
+		     searchSpace.Graph == null)
 		{
 			return;
 		}
 		
         if (chooseRandomly)
         {
-			currentDestination = pathManager.searchSpace.GetRandomEntityPosition();
+			currentDestination = searchSpace.GetRandomEntityPosition();
 		}
 		else if (destinationQueue.Count > 0)
         {
@@ -135,7 +133,7 @@ public class GoalGenerator : MonoBehaviour
 		{
 			EventManager.Instance.Enqueue<PathRequestEventPayload>(
 				Events.PathRequest,
-			    new PathRequestEventPayload(pathManager.searchSpace.gameObject, currentDestination.Value));
+			    new PathRequestEventPayload(searchSpace.gameObject, currentDestination.Value));
 		}
 	}
 	

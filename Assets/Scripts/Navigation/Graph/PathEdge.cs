@@ -14,7 +14,6 @@ namespace Thot.GameAI
 	{	
 		private GameObject waypointBeacon;
 		private GameObject edgeBeacon;
-//		private GameObject edgeMarker;
 		private GameObject waypointMarker;
 		
 		public PathEdge(
@@ -23,7 +22,6 @@ namespace Thot.GameAI
 		    Node fromNode, 
 		    Node toNode,
 		    Edge edge,
-		    PathManager pathManager,
 		    GameObject movingObject)
 		{
 			Source = source;
@@ -31,7 +29,6 @@ namespace Thot.GameAI
 			FromNode = fromNode;
 			ToNode = toNode;
 			Edge = edge;
-			PathManager = pathManager;
 			MovingObject = movingObject;
 			MovingEntity = movingObject.GetComponent<MovingEntity>();
 		}
@@ -49,7 +46,6 @@ namespace Thot.GameAI
 		public Node FromNode { get; set; }
 		public Node ToNode { get; set; }
 		public Edge Edge { get; set; }
-		public PathManager PathManager { get; set; }
 		public GameObject MovingObject { get; set; }
 		public MovingEntity MovingEntity { get; set; }
 		public float Radius
@@ -74,23 +70,12 @@ namespace Thot.GameAI
 		
 		public void ShowEdge(bool show)
 		{
-//			if (FromNode != null)
-//			{
-//				if (show)
-//				{
-//
-//				}
-//				else
-//				{
-//					
-//				}
-//			}
 			
 			if (ToNode != null)
 			{		
 				if (show)
 				{
-					if (PathManager.showPath)
+					if (UniversalPathManager.Instance.showPath)
 					{
 						waypointBeacon = CreatePointBeacon(ToNode.Position);
 						waypointMarker = CreatePointMarker(ToNode.Position);
@@ -109,7 +94,7 @@ namespace Thot.GameAI
 			{
 				if (show)
 				{
-					if (PathManager.showPath)
+					if (UniversalPathManager.Instance.showPath)
 					{
 //						edgeMarker = CreateEdgeMarker(FromNode.Position, ToNode.Position);
 						edgeBeacon = CreateEdgeBeacon(FromNode.Position, ToNode.Position);
@@ -117,8 +102,6 @@ namespace Thot.GameAI
 				}
 				else
 				{
-//					Object.Destroy(edgeMarker);
-//					edgeMarker = null;
 					Object.Destroy(edgeBeacon);
 					edgeBeacon = null;
 				}
@@ -130,7 +113,7 @@ namespace Thot.GameAI
 				{
 					if (show)
 					{
-						if (PathManager.showPath)
+						if (UniversalPathManager.Instance.showPath)
 						{
 //							edgeMarker = CreateEdgeMarker(Source, ToNode.Position);
 							edgeBeacon = CreateEdgeBeacon(Source, ToNode.Position);
@@ -149,7 +132,7 @@ namespace Thot.GameAI
 				{
 					if (show)
 					{
-						if (PathManager.showPath)
+						if (UniversalPathManager.Instance.showPath)
 						{
 //							edgeMarker = CreateEdgeMarker(FromNode.Position, Destination);
 							edgeBeacon = CreateEdgeBeacon(FromNode.Position, Destination);

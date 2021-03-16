@@ -63,7 +63,7 @@ public class GoalSelector : WindowManager
 	public int targetRowsPerColumn = 3;
 	
 	private Motor motor;
-	private PathManager pathManager;
+	private SearchSpace searchSpace;
 	private Vector2? currentDestination;
 
     private int width;
@@ -85,7 +85,7 @@ public class GoalSelector : WindowManager
 			Debug.Log("No Motor");
 		}
 		
-		pathManager = GetComponent<PathManager>();
+		searchSpace = GetComponent<SearchSpace>();
 		
 		GameObject mainCamera = GameObject.Find("Main Camera");
 		if (mainCamera != null)
@@ -193,15 +193,15 @@ public class GoalSelector : WindowManager
 			return;
         }
 		
-		if (pathManager == null)
+		if (searchSpace == null)
         {
-            Debug.Log("Getting Path Manager");
-            pathManager = GetComponent<PathManager>();
+            Debug.Log("Getting Search Space");
+            searchSpace = GetComponent<SearchSpace>();
         }
 
-        if (pathManager == null)
+        if (searchSpace == null)
         {
-            Debug.Log("No Path Manager");
+            Debug.Log("No Search Space");
 			return;
         }
 
@@ -250,19 +250,19 @@ public class GoalSelector : WindowManager
 			{
 				EventManager.Instance.Enqueue<PathRequestEventPayload>(
 					Events.PathRequest,
-				    new PathRequestEventPayload(pathManager.searchSpace.gameObject, currentDestination.Value));
+				    new PathRequestEventPayload(searchSpace.gameObject, currentDestination.Value));
 			}
         }
 
         if (GUILayout.Button("Random"))
         {
-			currentDestination = pathManager.searchSpace.GetRandomEntityPosition();
+			currentDestination = searchSpace.GetRandomEntityPosition();
 			
 			if (currentDestination.HasValue)
 			{
 				EventManager.Instance.Enqueue<PathRequestEventPayload>(
 					Events.PathRequest,
-				    new PathRequestEventPayload(pathManager.searchSpace.gameObject, currentDestination.Value));
+				    new PathRequestEventPayload(searchSpace.gameObject, currentDestination.Value));
 			}
         }
 		
@@ -278,7 +278,7 @@ public class GoalSelector : WindowManager
 				{
 					EventManager.Instance.Enqueue<PathRequestEventPayload>(
 						Events.PathRequest,
-					    new PathRequestEventPayload(pathManager.searchSpace.gameObject, currentDestination.Value));
+					    new PathRequestEventPayload(searchSpace.gameObject, currentDestination.Value));
 				}
 	        }
 			
@@ -304,7 +304,7 @@ public class GoalSelector : WindowManager
 					{
 						EventManager.Instance.Enqueue<PathRequestEventPayload>(
 							Events.PathRequest,
-						    new PathRequestEventPayload(pathManager.searchSpace.gameObject, currentDestination.Value));
+						    new PathRequestEventPayload(searchSpace.gameObject, currentDestination.Value));
 					}
 		        }
 				

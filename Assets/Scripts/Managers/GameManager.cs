@@ -91,18 +91,10 @@ public sealed class GameManager : MonoBehaviour
 				
 				if (movingEntity != null)
 				{
-					PathManager pathManager = weebleTransform.GetComponent<PathManager>();
-					if (pathManager != null)
+					SearchSpace searchSpace = weebleTransform.GetComponent<SearchSpace>();
+					if (searchSpace != null)
 					{
-						SearchSpace searchSpace = pathManager.searchSpace;
-						if (searchSpace != null)
-						{
-							weebleTransform.position = movingEntity.PositionAt(searchSpace.GetRandomEntityPosition());
-						}
-						else
-						{
-							weebleTransform.position = movingEntity.PositionAt(World.Instance.GetRandomEntityPosition(movingEntity));
-						}
+						weebleTransform.position = movingEntity.PositionAt(searchSpace.GetRandomEntityPosition());
 					}
 					else
 					{

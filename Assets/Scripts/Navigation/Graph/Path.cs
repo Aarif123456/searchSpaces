@@ -12,7 +12,6 @@ namespace Thot.GameAI
 	public sealed class Path 
 	{
 		public Path(
-		    PathManager pathManager,
 		    GameObject movingObject,
             Vector2 source,
             Vector2 destination,
@@ -22,7 +21,6 @@ namespace Thot.GameAI
             PathEdgeList = new List<PathEdge>();
             Source = source;
             Destination = destination;
-			PathManager = pathManager;
 			MovingObject = movingObject;
 			
 			int fromNodeIndex = -1;
@@ -53,13 +51,13 @@ namespace Thot.GameAI
 					currentEdge = graph.GetEdge(fromNodeIndex, toNodeIndex);
 				}
 
-                PathEdgeList.Add(new PathEdge(from, to, fromNode, toNode, currentEdge, PathManager, MovingObject));
+                PathEdgeList.Add(new PathEdge(from, to, fromNode, toNode, currentEdge, MovingObject));
                 from = to; // copy
             }
 
             if (from != destination)
             {
-                PathEdgeList.Add(new PathEdge(from, destination, toNode, null, null, PathManager, MovingObject));
+                PathEdgeList.Add(new PathEdge(from, destination, toNode, null, null, MovingObject));
             }
         }
 
@@ -78,7 +76,6 @@ namespace Thot.GameAI
         /// </summary>
         public List<PathEdge> PathEdgeList { get; private set; }
 		
-		public PathManager PathManager { get; private set; }
 		public GameObject MovingObject { get; private set; }
 		
 		public bool IsEmpty

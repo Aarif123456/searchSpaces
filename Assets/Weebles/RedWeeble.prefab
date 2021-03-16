@@ -23,12 +23,11 @@ GameObject:
   - component: {fileID: 3987631955137037455}
   - component: {fileID: 3987631955137037453}
   - component: {fileID: 3987631955137037452}
-  - component: {fileID: 3987631955137037450}
   - component: {fileID: 3987631955137037448}
   - component: {fileID: 3987631955137037451}
   m_Layer: 0
   m_Name: RedWeeble
-  m_TagString: Untagged
+  m_TagString: Weeble
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -149,9 +148,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ec24180699331e4790f421a72a097be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LongitudinalMoveAxis: Left Stick Y
-  LateralMoveAxis: Left Stick X
-  JumpButton: Button A
 --- !u!114 &3987631955137037440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,24 +312,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c2310c36c1280644a56fdad6ee5f28e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3987631955137037450
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3987631955137037469}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2272287af5ffcd4096c0cc0de3488a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  searchSpaceCanChange: 0
-  requestPath: 0
-  searchSpace: {fileID: 0}
-  currentSource: 0
-  ignoreObstructions: 0
-  showPath: 1
 --- !u!114 &3987631955137037448
 MonoBehaviour:
   m_ObjectHideFlags: 0
