@@ -59,7 +59,7 @@ namespace Thot.GameAI
         /// <param name="index">The index to insert.</param>
         public void Insert(int index)
         {
-            if (_size + 1 > _maximumSize)
+            if (_size + 1 >= _maximumSize)
             {
                 Debug.LogError("IndexedPriorityQueue.Insert: overflow.");
                 throw new System.Exception("IndexedPriorityQueue.Insert: overflow.");

@@ -217,7 +217,47 @@ namespace Thot.GameAI
         /// <param name="filename">The filename to load from.</param>
         public void LoadMap(string filename)
         {
-            //// TODO
+            if (string.IsNullOrEmpty(filename))
+            {
+                return;
+            }
+
+            try
+            {
+                for (int i = 0; i < Rows; i++)
+                {
+                    for (int j = 0; j < Columns; j++)
+                    {
+                        Labrynth[i, j] = new MazeCell(i, j, this);
+                    }
+                }
+                // Create an instance of StreamReader to read from a file.
+                // The using statement also closes the StreamReader.
+                using (StreamReader sr = new StreamReader(filename))
+                {
+                    string line;
+                    /* Skip the header*/
+                    for(int i=0; i<3; i++){
+                        sr.ReadLine(); 
+                    }
+                    
+                    for (int row = 0; (line = sr.ReadLine()) != null && row < Rows; row++)
+                    {
+                        line = line.Substring(3);
+                        char[] input = line.ToCharArray();
+                        for (int col = 0; col+1<input.Length; col+=2)
+                        { 
+                            Labrynth[row, col/2].Right = input[col]=='|';
+                            Labrynth[row, col/2].Bottom = input[col+1]=='_';
+                        }
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+               Debug.LogError("Error loading map: " + e.Message);
+               throw;
+            }
         }
 
         /// <summary>

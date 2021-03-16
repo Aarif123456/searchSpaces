@@ -60,7 +60,11 @@ public sealed class MapGenerator : MonoBehaviour
 	public int cellWidth = 1;
 	public int cellHeight = 1;
 	public GameObject wallTemplate;
-	
+    [SerializeField]
+	private string connectedRoomFile = "ConnectedRooms.txt";
+    [SerializeField] 
+    private string mazeFile = "Maze.txt";
+
 	private const float WALL_HEIGHT = 1f;
 	private const float WALL_THICKNESS = 0.1f;
 	private int columns;
@@ -97,17 +101,20 @@ public sealed class MapGenerator : MonoBehaviour
 		{
 			GenerateMap();
 		}
+        else{
+            LoadMap();
+        }
 	}
 
-	public void LoadMap(string filename)
+	public void LoadMap()
     {
         switch (World.Instance.mapType)
         {
             case MapTypes.ConnectedRooms:
-                LoadConnectedRoomsMap(filename);
+                LoadConnectedRoomsMap(connectedRoomFile);
                 break;
             case MapTypes.Maze:
-                LoadMazeMap(filename);
+                LoadMazeMap(mazeFile);
                 break;
         }
     }
@@ -125,32 +132,17 @@ public sealed class MapGenerator : MonoBehaviour
         }
     }
 	
-	private void LoadConnectedRoomsMap(string filename)
-    {
-        //// TODO
-    }
 
-    private void LoadMazeMap(string filename)
-    {
-        //// TODO
-    }
-
-    private void GenerateConnectedRoomsMap()
-    {	
-		GameObject wallsObject = GameObject.Find("Environment/Walls");
-		//GameObject waypointsObject = GameObject.Find("Game/Waypoints");
-		
-        var connectedRooms = new ConnectedRooms(columns, rows);
-        connectedRooms.BuildMap();
-
+    private void CreateConnectedRoomMap(ConnectedRooms connectedRooms){
+        GameObject wallsObject = GameObject.Find("Environment/Walls");
+        //GameObject waypointsObject = GameObject.Find("Game/Waypoints");
         connectedRooms.AddPointsOfVisibilityWaypoints();
-        connectedRooms.OutputMap("ConnectedRooms.txt");
-        ////ConnectedRooms.SaveMap("ConnectedRooms.xml");
+        
 
         var wallScale = new Vector3(cellWidth, WALL_HEIGHT, cellHeight);
 
         //const float WAYPOINT_RADIUS = 1.0f; // entity size
-		World.Instance.Waypoints = new List<Vector3>();
+        World.Instance.Waypoints = new List<Vector3>();
 
         for (int column = 0; column < connectedRooms.Columns; column++)
         {
@@ -163,12 +155,12 @@ public sealed class MapGenerator : MonoBehaviour
                             World.Instance.Center.x - World.Instance.Size.x / 2 + column * cellWidth + cellWidth / 2.0f,
                             transform.position.y + transform.localScale.y / 2.0f,
                             World.Instance.Center.y - World.Instance.Size.y / 2 + row * cellHeight + cellHeight / 2.0f);
-					
-					GameObject wall = Instantiate(wallTemplate, wallPosition, Quaternion.identity) as GameObject;
-					wall.transform.localScale = wallScale;
+                    
+                    GameObject wall = Instantiate(wallTemplate, wallPosition, Quaternion.identity) as GameObject;
+                    wall.transform.localScale = wallScale;
                     var objName = "Wall_" + row + "_" + column;
-					wall.name = objName;
-					wall.transform.parent = wallsObject.transform;
+                    wall.name = objName;
+                    wall.transform.parent = wallsObject.transform;
                 }
                 else if (connectedRooms.Map[column, row] == (int)ConnectedRooms.MapElements.Waypoint)
                 {
@@ -177,65 +169,59 @@ public sealed class MapGenerator : MonoBehaviour
                             World.Instance.Center.x - World.Instance.Size.x / 2 + column * cellWidth + cellWidth / 2.0f,
                             transform.position.y, // + transform.localScale.y / 2.0f,
                             World.Instance.Center.y - World.Instance.Size.y / 2 + row * cellHeight + cellHeight / 2.0f);
-					
-					World.Instance.Waypoints.Add(waypointPosition);
-					
-//					var waypoint =  GameObject.CreatePrimitive(PrimitiveType.Sphere);
-//					Destroy(waypoint.collider);
-//					waypoint.transform.position = waypointPosition;
-//					waypoint.transform.localScale = new Vector3(WAYPOINT_RADIUS, WAYPOINT_RADIUS, WAYPOINT_RADIUS);
-//					waypoint.name = "povWaypoint_" + row + "_" + column;
-//					waypoint.collider.enabled = false;
-//					waypoint.renderer.enabled = true;
-//					waypoint.transform.parent = waypointsObject.transform;
+                    
+                    World.Instance.Waypoints.Add(waypointPosition);
+                    
+//                  var waypoint =  GameObject.CreatePrimitive(PrimitiveType.Sphere);
+//                  Destroy(waypoint.collider);
+//                  waypoint.transform.position = waypointPosition;
+//                  waypoint.transform.localScale = new Vector3(WAYPOINT_RADIUS, WAYPOINT_RADIUS, WAYPOINT_RADIUS);
+//                  waypoint.name = "povWaypoint_" + row + "_" + column;
+//                  waypoint.collider.enabled = false;
+//                  waypoint.renderer.enabled = true;
+//                  waypoint.transform.parent = waypointsObject.transform;
                 }
             }
         }
-		
-		wallScale.y *= 3;
-		
-		for (int column = -1; column < connectedRooms.Columns + 1; column++)
+        
+        wallScale.y *= 3;
+        
+        for (int column = -1; column < connectedRooms.Columns + 1; column++)
         {
             for (int row = -1; row < connectedRooms.Rows + 1; row++)
             {
-				if (column != -1 && column != connectedRooms.Columns &&
-				    row != -1 && row != connectedRooms.Rows)
-				{
-					continue;
-				}
-				
-				var wallPosition =
+                if (column != -1 && column != connectedRooms.Columns &&
+                    row != -1 && row != connectedRooms.Rows)
+                {
+                    continue;
+                }
+                
+                var wallPosition =
                         new Vector3(
                             World.Instance.Center.x - World.Instance.Size.x / 2 + column * cellWidth + cellWidth / 2.0f,
                             transform.position.y + transform.localScale.y / 2.0f,
                             World.Instance.Center.y - World.Instance.Size.y / 2 + row * cellHeight + cellHeight / 2.0f);
-				
-				GameObject wall = Instantiate(wallTemplate, wallPosition, Quaternion.identity) as GameObject;	
-				wall.transform.localScale = wallScale;
-				wall.name = "Wall_" + row + "_" + column;
-				wall.transform.parent = wallsObject.transform;
-			}
-		}
+                
+                GameObject wall = Instantiate(wallTemplate, wallPosition, Quaternion.identity) as GameObject;   
+                wall.transform.localScale = wallScale;
+                wall.name = "Wall_" + row + "_" + column;
+                wall.transform.parent = wallsObject.transform;
+            }
+        }
     }
 
-    private void GenerateMazeMap()
-    {	
-		GameObject wallsObject = GameObject.Find("Environment/Walls");
-		var maze = new Maze(rows, columns);
-		maze.CreateMaze();
-        maze.OutputMap("Maze.txt");
-        ////Maze.SaveMap("Maze.xml");
-		
-		var horizontalWallScale = new Vector3(cellWidth, WALL_HEIGHT, WALL_THICKNESS);
+    private void CreateMazeMap(Maze maze){
+        GameObject wallsObject = GameObject.Find("Environment/Walls");
+        var horizontalWallScale = new Vector3(cellWidth, WALL_HEIGHT, WALL_THICKNESS);
         var verticalWallScale = new Vector3(WALL_THICKNESS, WALL_HEIGHT, cellHeight);
-		
-		GameObject horizontalWall;
-		GameObject verticalWall;
-		
-		Vector3 thicknessAdjustment;
-		Vector3 lengthAdjustment;
-		
-		for (int j = 0; j < columns; j++)
+        
+        GameObject horizontalWall;
+        GameObject verticalWall;
+        
+        Vector3 thicknessAdjustment;
+        Vector3 lengthAdjustment;
+        
+        for (int j = 0; j < columns; j++)
         {
             var horizontalWallPosition =
                 new Vector3(
@@ -243,18 +229,18 @@ public sealed class MapGenerator : MonoBehaviour
                     transform.position.y + transform.localScale.y / 2.0f,
                     World.Instance.Center.y - World.Instance.Size.y / 2);
 
-            horizontalWall = Instantiate(wallTemplate, horizontalWallPosition, Quaternion.identity) as GameObject;	
-			horizontalWall.transform.localScale = horizontalWallScale;
-			horizontalWall.name = "Horizontal_Wall_-1_" + j;
-			
-			thicknessAdjustment = new Vector3(0, 0, -WALL_THICKNESS / 2);
-			horizontalWall.transform.localScale += thicknessAdjustment;
-			horizontalWall.transform.Translate(-thicknessAdjustment / 2);	
-			
-			horizontalWall.transform.parent = wallsObject.transform;
+            horizontalWall = Instantiate(wallTemplate, horizontalWallPosition, Quaternion.identity) as GameObject;  
+            horizontalWall.transform.localScale = horizontalWallScale;
+            horizontalWall.name = "Horizontal_Wall_-1_" + j;
+            
+            thicknessAdjustment = new Vector3(0, 0, -WALL_THICKNESS / 2);
+            horizontalWall.transform.localScale += thicknessAdjustment;
+            horizontalWall.transform.Translate(-thicknessAdjustment / 2);   
+            
+            horizontalWall.transform.parent = wallsObject.transform;
         }
-		
-		for (int i = 0; i < rows; i++)
+        
+        for (int i = 0; i < rows; i++)
         {
             var verticalWallPosition =
                 new Vector3(
@@ -263,108 +249,143 @@ public sealed class MapGenerator : MonoBehaviour
                     World.Instance.Center.y - World.Instance.Size.y / 2 + i * cellHeight + cellHeight / 2.0f);
 
             verticalWall = Instantiate(wallTemplate, verticalWallPosition, Quaternion.identity) as GameObject;
-			verticalWall.transform.localScale = verticalWallScale;
-			verticalWall.name = "Vertical_Wall_" + i + "_-1";
-			
-			thicknessAdjustment = new Vector3(-WALL_THICKNESS / 2, 0, 0);
-			verticalWall.transform.localScale += thicknessAdjustment;
-			verticalWall.transform.Translate(-thicknessAdjustment / 2);
-			
-			if (i == 0 || maze.Labrynth[i - 1, 0].Bottom)
-			{
-				lengthAdjustment = new Vector3(0, 0, -WALL_THICKNESS / 2);
-				verticalWall.transform.localScale += lengthAdjustment;
-				verticalWall.transform.Translate(-lengthAdjustment / 2);
-			}
-	
-			if (maze.Labrynth[i, 0].Bottom)
-			{
-				lengthAdjustment = new Vector3(0, 0, -WALL_THICKNESS / 2);
-				verticalWall.transform.localScale += lengthAdjustment;
-				verticalWall.transform.Translate(lengthAdjustment / 2);
-			}
-			
-			verticalWall.transform.parent = wallsObject.transform;
-			
+            verticalWall.transform.localScale = verticalWallScale;
+            verticalWall.name = "Vertical_Wall_" + i + "_-1";
+            
+            thicknessAdjustment = new Vector3(-WALL_THICKNESS / 2, 0, 0);
+            verticalWall.transform.localScale += thicknessAdjustment;
+            verticalWall.transform.Translate(-thicknessAdjustment / 2);
+            
+            if (i == 0 || maze.Labrynth[i - 1, 0].Bottom)
+            {
+                lengthAdjustment = new Vector3(0, 0, -WALL_THICKNESS / 2);
+                verticalWall.transform.localScale += lengthAdjustment;
+                verticalWall.transform.Translate(-lengthAdjustment / 2);
+            }
+    
+            if (maze.Labrynth[i, 0].Bottom)
+            {
+                lengthAdjustment = new Vector3(0, 0, -WALL_THICKNESS / 2);
+                verticalWall.transform.localScale += lengthAdjustment;
+                verticalWall.transform.Translate(lengthAdjustment / 2);
+            }
+            
+            verticalWall.transform.parent = wallsObject.transform;
+            
             for (int j = 0; j < columns; j++)
             {
                 if (maze.Labrynth[i, j].Bottom)
                 {
                     var horizontalWallPosition =
-						new Vector3(
-							World.Instance.Center.x - World.Instance.Size.x / 2 + j * cellWidth + cellWidth / 2.0f,
+                        new Vector3(
+                            World.Instance.Center.x - World.Instance.Size.x / 2 + j * cellWidth + cellWidth / 2.0f,
                             transform.position.y + transform.localScale.y / 2.0f,
                             World.Instance.Center.y - World.Instance.Size.y / 2 + i * cellHeight + cellHeight);
 
-					horizontalWall = Instantiate(wallTemplate, horizontalWallPosition, Quaternion.identity) as GameObject;
-					horizontalWall.transform.localScale = horizontalWallScale;
-					horizontalWall.name = "Horizontal_Wall_" + i + "_" + j;
-					
-					if (j != 0 && !maze.Labrynth[i, j - 1].Bottom)
-					{
-						lengthAdjustment = new Vector3(WALL_THICKNESS / 2, 0, 0);
-						horizontalWall.transform.localScale += lengthAdjustment;
-						horizontalWall.transform.Translate(-lengthAdjustment / 2);
-					}
-					
-					if (j != columns - 1 && !maze.Labrynth[i, j + 1].Bottom)
-					{
-						lengthAdjustment = new Vector3(WALL_THICKNESS / 2, 0, 0);
-						horizontalWall.transform.localScale += lengthAdjustment;
-						horizontalWall.transform.Translate(lengthAdjustment / 2);
-					}
-					
-					horizontalWall.transform.parent = wallsObject.transform;
+                    horizontalWall = Instantiate(wallTemplate, horizontalWallPosition, Quaternion.identity) as GameObject;
+                    horizontalWall.transform.localScale = horizontalWallScale;
+                    horizontalWall.name = "Horizontal_Wall_" + i + "_" + j;
+                    
+                    if (j != 0 && !maze.Labrynth[i, j - 1].Bottom)
+                    {
+                        lengthAdjustment = new Vector3(WALL_THICKNESS / 2, 0, 0);
+                        horizontalWall.transform.localScale += lengthAdjustment;
+                        horizontalWall.transform.Translate(-lengthAdjustment / 2);
+                    }
+                    
+                    if (j != columns - 1 && !maze.Labrynth[i, j + 1].Bottom)
+                    {
+                        lengthAdjustment = new Vector3(WALL_THICKNESS / 2, 0, 0);
+                        horizontalWall.transform.localScale += lengthAdjustment;
+                        horizontalWall.transform.Translate(lengthAdjustment / 2);
+                    }
+                    
+                    horizontalWall.transform.parent = wallsObject.transform;
                 }
 
                 if (maze.Labrynth[i, j].Right)
                 {
-					var verticalWallPosition2 =
-						new Vector3(
-							World.Instance.Center.x - World.Instance.Size.x / 2 + j * cellWidth + cellWidth,
-							transform.position.y + transform.localScale.y / 2.0f,
-							World.Instance.Center.y - World.Instance.Size.y / 2 + i * cellHeight + cellHeight / 2.0f);
+                    var verticalWallPosition2 =
+                        new Vector3(
+                            World.Instance.Center.x - World.Instance.Size.x / 2 + j * cellWidth + cellWidth,
+                            transform.position.y + transform.localScale.y / 2.0f,
+                            World.Instance.Center.y - World.Instance.Size.y / 2 + i * cellHeight + cellHeight / 2.0f);
 
-					verticalWall = Instantiate(wallTemplate, verticalWallPosition2, Quaternion.identity) as GameObject;
-					verticalWall.transform.localScale = verticalWallScale;
-					verticalWall.name = "Vertical_Wall_" + i + "_" + j;
-					
-					if (j == columns - 1)
-					{
-						thicknessAdjustment = new Vector3(-WALL_THICKNESS / 2, 0, 0);
-						verticalWall.transform.localScale += thicknessAdjustment;
-						verticalWall.transform.Translate(thicknessAdjustment / 2);
-					}
-					
-					if (i == 0)
-					{
-						lengthAdjustment = new Vector3(0, 0, -WALL_THICKNESS / 2);
-						verticalWall.transform.localScale += lengthAdjustment;
-						verticalWall.transform.Translate(-lengthAdjustment / 2);
-					}
-					else if (maze.Labrynth[i - 1, j].Bottom || (j != columns - 1 && maze.Labrynth[i - 1, j + 1].Bottom))
-					{
-						lengthAdjustment = new Vector3(0, 0, -WALL_THICKNESS / 2);
-						verticalWall.transform.localScale += lengthAdjustment;
-						verticalWall.transform.Translate(-lengthAdjustment / 2);
-					}
-			
-					if (i == rows - 1)
-					{
-						lengthAdjustment = new Vector3(0, 0, -WALL_THICKNESS / 2);
-						verticalWall.transform.localScale += lengthAdjustment;
-						verticalWall.transform.Translate(lengthAdjustment / 2);
-					}
-					else if (maze.Labrynth[i, j].Bottom|| (j != columns - 1 && maze.Labrynth[i, j + 1].Bottom))
-					{
-						lengthAdjustment = new Vector3(0, 0, -WALL_THICKNESS / 2);
-						verticalWall.transform.localScale += lengthAdjustment;
-						verticalWall.transform.Translate(lengthAdjustment / 2);
-					}
-					
-					verticalWall.transform.parent = wallsObject.transform;
-				}
-			}
-		}	
+                    verticalWall = Instantiate(wallTemplate, verticalWallPosition2, Quaternion.identity) as GameObject;
+                    verticalWall.transform.localScale = verticalWallScale;
+                    verticalWall.name = "Vertical_Wall_" + i + "_" + j;
+                    
+                    if (j == columns - 1)
+                    {
+                        thicknessAdjustment = new Vector3(-WALL_THICKNESS / 2, 0, 0);
+                        verticalWall.transform.localScale += thicknessAdjustment;
+                        verticalWall.transform.Translate(thicknessAdjustment / 2);
+                    }
+                    
+                    if (i == 0)
+                    {
+                        lengthAdjustment = new Vector3(0, 0, -WALL_THICKNESS / 2);
+                        verticalWall.transform.localScale += lengthAdjustment;
+                        verticalWall.transform.Translate(-lengthAdjustment / 2);
+                    }
+                    else if (maze.Labrynth[i - 1, j].Bottom || (j != columns - 1 && maze.Labrynth[i - 1, j + 1].Bottom))
+                    {
+                        lengthAdjustment = new Vector3(0, 0, -WALL_THICKNESS / 2);
+                        verticalWall.transform.localScale += lengthAdjustment;
+                        verticalWall.transform.Translate(-lengthAdjustment / 2);
+                    }
+            
+                    if (i == rows - 1)
+                    {
+                        lengthAdjustment = new Vector3(0, 0, -WALL_THICKNESS / 2);
+                        verticalWall.transform.localScale += lengthAdjustment;
+                        verticalWall.transform.Translate(lengthAdjustment / 2);
+                    }
+                    else if (maze.Labrynth[i, j].Bottom|| (j != columns - 1 && maze.Labrynth[i, j + 1].Bottom))
+                    {
+                        lengthAdjustment = new Vector3(0, 0, -WALL_THICKNESS / 2);
+                        verticalWall.transform.localScale += lengthAdjustment;
+                        verticalWall.transform.Translate(lengthAdjustment / 2);
+                    }
+                    
+                    verticalWall.transform.parent = wallsObject.transform;
+                }
+            }
+        }   
+    }
+
+    private void LoadConnectedRoomsMap(string filename)
+    {
+
+        var connectedRooms = new ConnectedRooms(columns, rows);
+        connectedRooms.LoadMap(filename);
+        CreateConnectedRoomMap(connectedRooms);
+    }
+
+    private void LoadMazeMap(string filename)
+    {
+        //// TODO
+        var maze = new Maze(rows, columns);
+        maze.LoadMap(filename);
+        CreateMazeMap(maze);
+    }
+
+    private void GenerateConnectedRoomsMap()
+    {	
+        var connectedRooms = new ConnectedRooms(columns, rows);
+        connectedRooms.BuildMap();
+        CreateConnectedRoomMap(connectedRooms);
+        connectedRooms.OutputMap(connectedRoomFile);
+        ////ConnectedRooms.SaveMap("ConnectedRooms.xml");
+    }
+
+    private void GenerateMazeMap()
+    {	
+		
+		var maze = new Maze(rows, columns);
+		maze.CreateMaze();
+        CreateMazeMap(maze);
+        maze.OutputMap(mazeFile);
+        ////Maze.SaveMap("Maze.xml");
 	}
 }

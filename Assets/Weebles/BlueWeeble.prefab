@@ -11,24 +11,23 @@ GameObject:
   - component: {fileID: 132644554376838077}
   - component: {fileID: 132644554376838070}
   - component: {fileID: 132644554376838073}
-  - component: {fileID: 132644554376838072}
   - component: {fileID: 132644554376838075}
   - component: {fileID: 132644554376838074}
-  - component: {fileID: 132644554376838068}
-  - component: {fileID: 132644554376838071}
-  - component: {fileID: 132644554376838066}
   - component: {fileID: 132644554376838069}
   - component: {fileID: 132644554376838067}
+  - component: {fileID: 132644554376838071}
+  - component: {fileID: 132644554376838068}
   - component: {fileID: 132644554376838064}
-  - component: {fileID: 132644554376838030}
+  - component: {fileID: 132644554376838066}
   - component: {fileID: 132644554376838065}
-  - component: {fileID: 132644554376838029}
+  - component: {fileID: 132644554376838030}
   - component: {fileID: 132644554376838028}
   - component: {fileID: 132644554376838031}
+  - component: {fileID: 132644554376838029}
   - component: {fileID: 132644554376838027}
   - component: {fileID: 132644554376838026}
   m_Layer: 0
-  m_Name: Weeble Blue
+  m_Name: BlueWeeble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42,7 +41,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 132644554376838076}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: -2.5, y: 1.05, z: -2.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -68,14 +67,14 @@ MeshRenderer:
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
+  m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0b23dcb1fb566744386835c52a466abe, type: 2}
+  - {fileID: 2100000, guid: 0bd035a12d846b2468c29fb897c899db, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -87,7 +86,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -97,20 +96,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &132644554376838072
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 132644554376838076}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!143 &132644554376838075
 CharacterController:
   m_ObjectHideFlags: 0
@@ -124,10 +109,10 @@ CharacterController:
   serializedVersion: 2
   m_Height: 2
   m_Radius: 0.5
-  m_SlopeLimit: 60
-  m_StepOffset: 0.6
+  m_SlopeLimit: 50
+  m_StepOffset: 0.3
   m_SkinWidth: 0.05
-  m_MinMoveDistance: 0.001
+  m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &132644554376838074
 MonoBehaviour:
@@ -141,68 +126,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 994156a7dd6dda74997975c56da04303, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAiControlled: 0
-  maximumSpeed: 10
-  maximumAngularSpeed: 10
-  maximumAcceleration: 20
-  maximumAngularAcceleration: 20
+  isAiControlled: 1
+  maximumSpeed: 5
+  maximumAngularSpeed: 25
+  maximumAcceleration: 10
+  maximumAngularAcceleration: 10
   gravity: 21
   terminalVelocity: 20
-  linearGroundDamping: 0.02
-  linearAirDamping: 0.005
-  angularDamping: 0.02
+  linearGroundDamping: 0.01
+  linearAirDamping: 0.001
+  angularDamping: 0.01
   pushPower: 2
---- !u!114 &132644554376838068
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 132644554376838076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7df09e57f6fcd054993ea32de89ffd71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isOn: 1
-  tickLapse: 0
-  targetObject: {fileID: 0}
-  satisfactionRadius: 1
-  weight: 1
-  priority: 1
-  brakingDistance: 10
-  brakingTime: 0.25
---- !u!114 &132644554376838071
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 132644554376838076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70f51f9a2f0d76c43a022e41ec575b10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isOn: 1
-  tickLapse: 0
-  targetObject: {fileID: 0}
-  satisfactionRadius: 1
-  weight: 1
-  priority: 1
---- !u!114 &132644554376838066
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 132644554376838076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: efe9702697096454991451053b2cfe01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  steering: {fileID: 0}
 --- !u!114 &132644554376838069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,9 +149,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ec24180699331e4790f421a72a097be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LongitudinalMoveAxis: Vertical
-  LateralMoveAxis: Horizontal
-  JumpButton: Jump
+  LongitudinalMoveAxis: Left Stick Y
+  LateralMoveAxis: Left Stick X
+  JumpButton: Button A
 --- !u!114 &132644554376838067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,10 +170,48 @@ MonoBehaviour:
   characterController: {fileID: 0}
   center: {x: 0, y: 0, z: 0}
   internalMass: 1
-  radius: 0.5
+  radius: 1
   height: 1
   useFixedUpdate: 0
   summingMethod: 0
+--- !u!114 &132644554376838071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132644554376838076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70f51f9a2f0d76c43a022e41ec575b10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOn: 0
+  tickLapse: 0
+  targetObject: {fileID: 0}
+  satisfactionRadius: 1.25
+  weight: 1
+  priority: 1
+--- !u!114 &132644554376838068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132644554376838076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7df09e57f6fcd054993ea32de89ffd71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOn: 0
+  tickLapse: 0
+  targetObject: {fileID: 0}
+  satisfactionRadius: 1.25
+  weight: 1
+  priority: 1
+  brakingDistance: 10
+  brakingTime: 0.25
 --- !u!114 &132644554376838064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,12 +226,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   windowId: 0
   steerings: []
-  targets: []
+  targets:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   targetedCameras: []
-  windowPositionOffset: {x: 0, y: 50}
+  windowPositionOffset: {x: 0, y: 20}
   targetRowsPerColumn: 3
-  behaviourRowsPerColumn: 2
---- !u!114 &132644554376838030
+  behaviourRowsPerColumn: 1
+--- !u!114 &132644554376838066
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -268,15 +245,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 132644554376838076}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 119a9f57b82606144b9b2b12b4a80e3d, type: 3}
+  m_Script: {fileID: 11500000, guid: efe9702697096454991451053b2cfe01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drawNodeGizmos: 0
-  drawEdgeGizmos: 0
-  createNodeMarkers: 0
-  createEdgeMarkers: 0
-  showNodeMarkers: 0
-  showEdgeMarkers: 0
+  steering: {fileID: 0}
 --- !u!114 &132644554376838065
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -291,35 +263,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drawNodeGizmos: 0
   drawEdgeGizmos: 0
-  createNodeMarkers: 0
-  createEdgeMarkers: 0
+  createNodeMarkers: 1
+  createEdgeMarkers: 1
   showNodeMarkers: 0
   showEdgeMarkers: 0
   drawCellGizmos: 0
-  cellWidth: 0
-  cellHeight: 0
+  cellWidth: 5
+  cellHeight: 5
   cellDiagonal: 0
   rows: 0
   columns: 0
   useDiagonals: 1
---- !u!114 &132644554376838029
+--- !u!114 &132644554376838030
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 132644554376838076}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2272287af5ffcd4096c0cc0de3488a0, type: 3}
+  m_Script: {fileID: 11500000, guid: 119a9f57b82606144b9b2b12b4a80e3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  searchSpaceCanChange: 0
-  requestPath: 0
-  searchSpace: {fileID: 0}
-  currentSource: 0
-  ignoreObstructions: 0
-  showPath: 1
+  drawNodeGizmos: 0
+  drawEdgeGizmos: 0
+  createNodeMarkers: 1
+  createEdgeMarkers: 1
+  showNodeMarkers: 0
+  showEdgeMarkers: 0
 --- !u!114 &132644554376838028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -344,6 +316,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c2310c36c1280644a56fdad6ee5f28e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &132644554376838029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132644554376838076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2272287af5ffcd4096c0cc0de3488a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  searchSpaceCanChange: 0
+  requestPath: 0
+  searchSpace: {fileID: 0}
+  currentSource: 0
+  ignoreObstructions: 0
+  showPath: 1
 --- !u!114 &132644554376838027
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -364,13 +354,18 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 132644554376838076}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ea87c9b2361aa2b4ea0ca1b39979decc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   windowId: 0
-  targets: []
+  targets:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   targetedCameras: []
-  windowPositionOffset: {x: 0, y: 50}
+  windowPositionOffset: {x: 0, y: 20}
   targetRowsPerColumn: 3

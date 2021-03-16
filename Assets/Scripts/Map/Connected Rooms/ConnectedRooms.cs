@@ -380,7 +380,53 @@ namespace Thot.GameAI
         /// <param name="filename">The filename to load from.</param>
         public void LoadMap(string filename)
         {
-            //// TODO
+            if (string.IsNullOrEmpty(filename))
+            {
+                return;
+            }
+
+            try
+            {
+                ResetMap();
+                // Create an instance of StreamReader to read from a file.
+                // The using statement also closes the StreamReader.
+                using (StreamReader sr = new StreamReader(filename))
+                {
+                    string line;
+                    // Read and display lines from the file until the end of
+                    // the file is reached.
+                    for (int row = 0; (line = sr.ReadLine()) != null && row < Rows; row++)
+                    {
+                        int column=0;
+                        foreach(char c in line){
+                            switch (c)
+                            {
+                                case 'w': // wall
+                                    Map[column, row] = (int)MapElements.Wall;
+                                    break;
+                                case ' ': // space
+                                    Map[column, row] = (int)MapElements.Space;
+                                    break;
+                                case 'd': //door
+                                    Map[column, row] = (int)MapElements.Door;
+                                    break;
+                                case 'p': // pov waypoint
+                                    Map[column, row] = (int)MapElements.Waypoint;
+                                    break;
+                                default:
+                                    Debug.Log("\"" +c +"\" is not a recognized character");
+                                    break;
+                            }
+                            column++;
+                        }
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+               Debug.LogError("Error loading map: " + e.Message);
+               throw;
+            }
         }
 
         /// <summary>
@@ -406,16 +452,16 @@ namespace Thot.GameAI
                 {
                     switch (Map[column, row])
                     {
-                        case 0: // wall
+                        case (int)MapElements.Wall: // wall
                             stringBuilder.Append("w");
                             break;
-                        case 1: // space
+                        case (int)MapElements.Space: // space
                             stringBuilder.Append(" ");
                             break;
-                        case 2: // door
+                        case (int)MapElements.Door: // door
                             stringBuilder.Append("d");
                             break;
-                        case 3: // pov waypoint
+                        case (int)MapElements.Waypoint: // pov waypoint
                             stringBuilder.Append("p");
                             break;
                     }

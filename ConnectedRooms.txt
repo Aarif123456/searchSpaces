@@ -1,9 +1,9 @@
 wwwwwwwwwwwwwwwwwwww
 wp    pdp pwwwwwwwww
 w      wwwwwp  pdp w
-wp   ppdp wp    pwww
+wp    pdp w      www
 wdwdwdwwdwww   pdpww
-wpwpwpwp   w   pwpww
+wpwpwpwp  pw   pwpww
 w w w w    wwwwwwdww
 wwwwwwwp  pwp    pww
 wwwwwwwdwwdwp     ww
@@ -11,11 +11,10 @@ wwp  pwpwwpdp     ww
 ww   pdpww w      ww
 ww    w wwwwp    pww
 ww    wwwwwwwwdwwwww
-wwp  pwwp   pwpwp pw
+wwp  pwwp   pw wp pw
 wwwdwdww    pdpdp  w
 wwwpwpww     w w   w
 www wpww     wwwp pw
 wwwww wwp   pdppdwdw
 wwwwwwwwwwwwwwwwpwpw
 wwwwwwwwwwwwwwww w w
-
