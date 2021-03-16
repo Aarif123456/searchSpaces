@@ -79,7 +79,7 @@ public sealed class GameManager : MonoBehaviour
 		_instance = this;
 	}
 	
-	public void Start()
+	public async void Start()
 	{
 		const float weebleHeightOffset = 1.1f;
 		
@@ -91,15 +91,9 @@ public sealed class GameManager : MonoBehaviour
 				
 				if (movingEntity != null)
 				{
-					SearchSpace searchSpace = weebleTransform.GetComponent<SearchSpace>();
-					if (searchSpace != null)
-					{
-						weebleTransform.position = movingEntity.PositionAt(searchSpace.GetRandomEntityPosition());
-					}
-					else
-					{
-						weebleTransform.position = movingEntity.PositionAt(World.Instance.GetRandomEntityPosition(movingEntity));
-					}
+                    await new WaitForBackgroundThread();
+                    SetUp(weebleTransform, movingEntity);
+                    await new WaitForSeconds(1.0f);
 				}
 				else
 				{
@@ -113,6 +107,11 @@ public sealed class GameManager : MonoBehaviour
 		}
 	}
 	
+    private async void SetUp(Transform weebleTransform, MovingEntity movingEntity){
+        SearchSpace searchSpace = weebleTransform.GetComponent<SearchSpace>();
+        await new WaitUntil(() => searchSpace != null && searchSpace.Graph != null);
+        weebleTransform.position = movingEntity.PositionAt(searchSpace.GetRandomEntityPosition());
+    }
     public void Update()
     {
         // dispatch any delayed messages

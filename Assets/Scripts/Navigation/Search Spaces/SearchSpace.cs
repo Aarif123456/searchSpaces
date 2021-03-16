@@ -275,7 +275,7 @@ public abstract class SearchSpace : MonoBehaviour
 
             attempts++;
         }
-
+        if(Graph == null) Create();
         // give up. just return a random node position
         return Graph.GetRandomNodePosition();
     }
@@ -302,7 +302,7 @@ public abstract class SearchSpace : MonoBehaviour
 
             attempts++;
         }
-
+        if(Graph == null) Create();
         // give up. just return a random node position
         return Graph.GetRandomNodePosition();
     }

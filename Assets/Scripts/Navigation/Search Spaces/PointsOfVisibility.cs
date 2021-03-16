@@ -59,18 +59,22 @@ public class PointsOfVisibility : SearchSpace
 	public override void Start()
 	{
 		base.Start();
-		
 		Create();		
 	}
 	
 	public override void Create()
     {
         Graph = new SparseGraph(false);
-        for (int i = 0;  World.Instance.Waypoints != null  && i < World.Instance.Waypoints.Count; i++)
+        Make();
+    }
+    private async void Make(){
+        await new WaitUntil(() => World.Instance.Waypoints !=null);
+        Debug.Log("setting graph");
+        for (int i = 0; i < World.Instance.Waypoints.Count; i++)
         {
             var node = new Node(i) { Position = new Vector2(World.Instance.Waypoints[i].x, World.Instance.Waypoints[i].z) };
             Graph.AddNode(node);
-			//AddNodeObject(node, node.Position);
+            //AddNodeObject(node, node.Position);
         }
 
         for (int fromIndex = 0; fromIndex < Graph.NumNodes; fromIndex++)
@@ -91,7 +95,7 @@ public class PointsOfVisibility : SearchSpace
                         toIndex,
                         (fromNode.Position - toNode.Position).magnitude);
                 Graph.AddEdge(edge);
-				//AddEdgeObject(edge, fromNode.Position, toNode.Position);
+                //AddEdgeObject(edge, fromNode.Position, toNode.Position);
             }
         }
     }
