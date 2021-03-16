@@ -2,6 +2,7 @@
 
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 namespace Thot.GameAI{
     public struct PathRequestEventPayload
     {
@@ -28,6 +29,38 @@ namespace Thot.GameAI{
         {
             this.gameObject = gameObject;
             this.path = path;
+        }
+    }
+
+    
+    [Serializable]
+    public class Weeble 
+    {
+        public GameObject weeble  { get; private set; }
+        /* Used for manual debugging */
+        public bool ignoreObstruction { get; set; }
+        /* Used to control path obstruction -unimplemented */
+        public bool requestPath  { get; set; }
+        public SearchSpace searchSpace  { get; private set; }
+
+        public Weeble(GameObject weebleObject){
+            weeble = weebleObject;
+            ignoreObstruction = false;
+            requestPath= false;
+            searchSpace = Weeble.GetSearchSpace(weebleObject);
+        }
+
+        private static SearchSpace GetSearchSpace(GameObject weeble)
+        {
+            foreach (SearchSpace ss in weeble.GetComponents<SearchSpace>())
+            {
+                if (ss.enabled)
+                {
+                    return ss;
+                }
+            }
+            Debug.LogWarning("no search-space found :(");
+            return null;
         }
     }
 
@@ -59,42 +92,33 @@ namespace Thot.GameAI{
             _instance = this;
         }
 
-        GameObject[] weebles;
-        List<SearchSpace> searchSpaces;
-        /* Used to control path obstruction -unimplemented */
-        public bool[] ignoreObstructions;
-        /* Used for manual debugging */
-        public bool[] requestPaths;
+        [SerializeField]
+        public List<Weeble> weebles;
         /* Used to show marker */
         public bool showPath = true;
 
         public void Start()
         {
-            weebles =  GameObject.FindGameObjectsWithTag("Weeble");
-            searchSpaces = new List<SearchSpace>();
-            foreach(var weeble in weebles){
-                SearchSpace searchSpace = GetSearchSpace(weeble);
-                searchSpaces.Add(searchSpace);
+            GameObject[] weeblesGameObjects =  GameObject.FindGameObjectsWithTag("Weeble");
+            weebles = new List<Weeble>();
+            foreach(var weebleObject in weeblesGameObjects){
+                var weeble = new Weeble(weebleObject);
+                weebles.Add(weeble);
             }
-            requestPaths = new bool[weebles.Length];
-            ignoreObstructions = new bool[weebles.Length];
         }
-        
-        
 
         public void Update()
         {
-            for(int i=0; i<weebles.Length; i++){
-                var searchSpace = searchSpaces[i];
+            foreach(var weeble in weebles){
+                var searchSpace = weeble.searchSpace;
                 if (searchSpace == null || !searchSpace.enabled) continue;
-                var requestPath = requestPaths[i];
                 // This is for manual testing via the Inspector
-                if (requestPath)
+                if (weeble.requestPath)
                 {
                     PathRequestEventPayload request = 
                         new PathRequestEventPayload(searchSpace.gameObject, searchSpace.GetRandomEntityPosition());
                     EventManager.Instance.Enqueue<PathRequestEventPayload>(Events.PathRequest, request);
-                    requestPaths[i] = false;
+                    weeble.requestPath = false;
                 }
             }    
         }
@@ -111,8 +135,8 @@ namespace Thot.GameAI{
 
         private void OnPathRequest(Event<PathRequestEventPayload> eventArg)
         {
-            for(int i=0; i<weebles.Length; i++){
-                var searchSpace = searchSpaces[i];
+            foreach(var weeble in weebles){
+                var searchSpace = weeble.searchSpace;
                 if (searchSpace == null ) continue;
                 
                 PathRequestEventPayload request = eventArg.EventData;
@@ -155,18 +179,7 @@ namespace Thot.GameAI{
             }
         }
 
-        private SearchSpace GetSearchSpace(GameObject weeble)
-        {
-            foreach (SearchSpace ss in weeble.GetComponents<SearchSpace>())
-            {
-                if (ss.enabled)
-                {
-                    return ss;
-                }
-            }
-            Debug.LogWarning("no search-space found :(");
-            return null;
-        }
+       
     }
 }
 

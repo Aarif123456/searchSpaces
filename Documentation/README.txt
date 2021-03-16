@@ -36,21 +36,20 @@ TODO
         What: Deal with situations where the Weebles get stuck or take too long to complete an edge or the path.
 
 3. [Implementation ideas]
-    a) Implement and test the Corner Graph search space representations on the Connected Rooms search space.
     b) Over and under:
         There is a half-bridge provided. Modify or create at least one search space representation that allows Weebles to correctly path over and under the bridge. The bridge is deliberately one way! This may require using a directed graph (which is an option in the underlying sparse graph implementation …).
     c) Create new PathManager and replace individual PathManger attached to Weeble:
-        i) Design, implement and test a new path manager (attach it to “Game”). This single path manger should receive path requests from all the Weebles. It should queue the requests and process them. It should then send a path request completed (or failed) event to the requestor.
         ii) Now redesign your PathManager to time-slice processing requests (like an operating system does with jobs). To do this, you will need to replace the A* implementation with a time-sliced version (this is easier than it sounds). Basically, each update, you want to do one cycle of A* for each requestor. One cycle means remove the next node, process it, add its children, and return.
         iii) Implement Quick Path.
     d) Implement path smoothing.
 
 4. Find ways to make it awesome!
-
+    a) Make corner graph work with mazes 
+    b) 
 In progress:
 3c ii)
 
 Completed: 
-3a) Completed Corner graph 
-3c) i)new path manager 
+3a) Implement and test the Corner Graph search space representations on the Connected Rooms search space.
+3c) i) Design, implement and test a new path manager (attach it to “Game”). This single path manger should receive path requests from all the Weebles. It should queue the requests and process them. It should then send a path request completed (or failed) event to the requestor.
 

@@ -1183,7 +1183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02ce823fe7685bc49af7170292597955, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 43}
+  target: {fileID: 54}
   isControllable: 1
   sideLookAxis: Mouse X
   verticalAxis: Mouse Y
@@ -1562,10 +1562,6 @@ PrefabInstance:
       propertyPath: targets.Array.data[4]
       value: 
       objectReference: {fileID: 16}
-    - target: {fileID: 132644554376838029, guid: 56563313a08e95645866b593d8061e4b, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 132644554376838064, guid: 56563313a08e95645866b593d8061e4b, type: 3}
       propertyPath: targets.Array.data[0]
       value: 
@@ -1634,8 +1630,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 132644554376838029, guid: 56563313a08e95645866b593d8061e4b, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56563313a08e95645866b593d8061e4b, type: 3}
 --- !u!1001 &8599856857868062037
 PrefabInstance:
@@ -1644,10 +1639,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 44}
     m_Modifications:
-    - target: {fileID: 3987631955137037441, guid: 8887744c51f8d8b40b28766a0b1d2228, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3987631955137037441, guid: 8887744c51f8d8b40b28766a0b1d2228, type: 3}
       propertyPath: targets.Array.data[0]
       value: 
@@ -1668,14 +1659,6 @@ PrefabInstance:
       propertyPath: targets.Array.data[4]
       value: 
       objectReference: {fileID: 27}
-    - target: {fileID: 3987631955137037450, guid: 8887744c51f8d8b40b28766a0b1d2228, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3987631955137037451, guid: 8887744c51f8d8b40b28766a0b1d2228, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3987631955137037451, guid: 8887744c51f8d8b40b28766a0b1d2228, type: 3}
       propertyPath: targets.Array.data[0]
       value: 
@@ -1740,10 +1723,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3987631955137037467, guid: 8887744c51f8d8b40b28766a0b1d2228, type: 3}
+      propertyPath: pushPower
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3987631955137037467, guid: 8887744c51f8d8b40b28766a0b1d2228, type: 3}
+      propertyPath: maximumSpeed
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3987631955137037467, guid: 8887744c51f8d8b40b28766a0b1d2228, type: 3}
+      propertyPath: maximumAcceleration
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 3987631955137037469, guid: 8887744c51f8d8b40b28766a0b1d2228, type: 3}
       propertyPath: m_Name
       value: Weeble Red
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 3987631955137037450, guid: 8887744c51f8d8b40b28766a0b1d2228, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8887744c51f8d8b40b28766a0b1d2228, type: 3}
