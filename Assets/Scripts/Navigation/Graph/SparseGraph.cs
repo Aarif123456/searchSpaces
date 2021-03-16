@@ -508,8 +508,8 @@ namespace Thot.GameAI
             }
 
             Node node = Nodes[nodeIndex];
-
-            return node.Position;
+            if(node !=null) return node.Position;
+            return new Vector2(0, 0);
         }
 
         /// <summary>

@@ -232,8 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 623198484ab584548bd955ece65e0e08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ignoreObstructions: 
-  requestPaths: 
+  weebles: []
   showPath: 1
 --- !u!1 &13
 GameObject:
@@ -1562,6 +1561,18 @@ PrefabInstance:
       propertyPath: targets.Array.data[4]
       value: 
       objectReference: {fileID: 16}
+    - target: {fileID: 132644554376838030, guid: 56563313a08e95645866b593d8061e4b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 132644554376838030, guid: 56563313a08e95645866b593d8061e4b, type: 3}
+      propertyPath: drawEdgeGizmos
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 132644554376838030, guid: 56563313a08e95645866b593d8061e4b, type: 3}
+      propertyPath: drawNodeGizmos
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 132644554376838064, guid: 56563313a08e95645866b593d8061e4b, type: 3}
       propertyPath: targets.Array.data[0]
       value: 
@@ -1582,6 +1593,18 @@ PrefabInstance:
       propertyPath: targets.Array.data[4]
       value: 
       objectReference: {fileID: 16}
+    - target: {fileID: 132644554376838065, guid: 56563313a08e95645866b593d8061e4b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 132644554376838065, guid: 56563313a08e95645866b593d8061e4b, type: 3}
+      propertyPath: drawEdgeGizmos
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 132644554376838065, guid: 56563313a08e95645866b593d8061e4b, type: 3}
+      propertyPath: drawNodeGizmos
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 132644554376838076, guid: 56563313a08e95645866b593d8061e4b, type: 3}
       propertyPath: m_Name
       value: Weeble Blue
@@ -1679,6 +1702,14 @@ PrefabInstance:
       propertyPath: targets.Array.data[4]
       value: 
       objectReference: {fileID: 27}
+    - target: {fileID: 3987631955137037454, guid: 8887744c51f8d8b40b28766a0b1d2228, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3987631955137037455, guid: 8887744c51f8d8b40b28766a0b1d2228, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3987631955137037466, guid: 8887744c51f8d8b40b28766a0b1d2228, type: 3}
       propertyPath: m_RootOrder
       value: 1

@@ -12,19 +12,19 @@ GameObject:
   - component: {fileID: 132644554376838070}
   - component: {fileID: 132644554376838073}
   - component: {fileID: 132644554376838075}
-  - component: {fileID: 132644554376838074}
   - component: {fileID: 132644554376838069}
   - component: {fileID: 132644554376838067}
-  - component: {fileID: 132644554376838071}
-  - component: {fileID: 132644554376838068}
   - component: {fileID: 132644554376838064}
   - component: {fileID: 132644554376838066}
-  - component: {fileID: 132644554376838065}
   - component: {fileID: 132644554376838030}
+  - component: {fileID: 132644554376838065}
   - component: {fileID: 132644554376838028}
   - component: {fileID: 132644554376838031}
   - component: {fileID: 132644554376838027}
   - component: {fileID: 132644554376838026}
+  - component: {fileID: 132644554376838068}
+  - component: {fileID: 132644554376838071}
+  - component: {fileID: 132644554376838074}
   m_Layer: 0
   m_Name: BlueWeeble
   m_TagString: Weeble
@@ -40,7 +40,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 132644554376838076}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.5, y: 1.05, z: -2.5}
+  m_LocalPosition: {x: -32, y: 1.1, z: 2.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -73,7 +73,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0bd035a12d846b2468c29fb897c899db, type: 2}
+  - {fileID: 2100000, guid: 0b23dcb1fb566744386835c52a466abe, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -108,34 +108,11 @@ CharacterController:
   serializedVersion: 2
   m_Height: 2
   m_Radius: 0.5
-  m_SlopeLimit: 50
-  m_StepOffset: 0.3
+  m_SlopeLimit: 60
+  m_StepOffset: 0.6
   m_SkinWidth: 0.05
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &132644554376838074
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 132644554376838076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 994156a7dd6dda74997975c56da04303, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isAiControlled: 1
-  maximumSpeed: 5
-  maximumAngularSpeed: 25
-  maximumAcceleration: 10
-  maximumAngularAcceleration: 10
-  gravity: 21
-  terminalVelocity: 20
-  linearGroundDamping: 0.01
-  linearAirDamping: 0.001
-  angularDamping: 0.01
-  pushPower: 2
 --- !u!114 &132644554376838069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,44 +147,6 @@ MonoBehaviour:
   height: 1
   useFixedUpdate: 0
   summingMethod: 0
---- !u!114 &132644554376838071
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 132644554376838076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70f51f9a2f0d76c43a022e41ec575b10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isOn: 0
-  tickLapse: 0
-  targetObject: {fileID: 0}
-  satisfactionRadius: 1.25
-  weight: 1
-  priority: 1
---- !u!114 &132644554376838068
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 132644554376838076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7df09e57f6fcd054993ea32de89ffd71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isOn: 0
-  tickLapse: 0
-  targetObject: {fileID: 0}
-  satisfactionRadius: 1.25
-  weight: 1
-  priority: 1
-  brakingDistance: 10
-  brakingTime: 0.25
 --- !u!114 &132644554376838064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,7 +168,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   targetedCameras: []
-  windowPositionOffset: {x: 0, y: 20}
+  windowPositionOffset: {x: 0, y: 200}
   targetRowsPerColumn: 3
   behaviourRowsPerColumn: 1
 --- !u!114 &132644554376838066
@@ -245,7 +184,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   steering: {fileID: 0}
---- !u!114 &132644554376838065
+--- !u!114 &132644554376838030
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -253,6 +192,24 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 132644554376838076}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 119a9f57b82606144b9b2b12b4a80e3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drawNodeGizmos: 1
+  drawEdgeGizmos: 1
+  createNodeMarkers: 1
+  createEdgeMarkers: 1
+  showNodeMarkers: 0
+  showEdgeMarkers: 0
+--- !u!114 &132644554376838065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132644554376838076}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a9c8087a626bd7c4ca9d1b9c9ba935ae, type: 3}
   m_Name: 
@@ -270,24 +227,6 @@ MonoBehaviour:
   rows: 0
   columns: 0
   useDiagonals: 1
---- !u!114 &132644554376838030
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 132644554376838076}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 119a9f57b82606144b9b2b12b4a80e3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  drawNodeGizmos: 0
-  drawEdgeGizmos: 0
-  createNodeMarkers: 1
-  createEdgeMarkers: 1
-  showNodeMarkers: 0
-  showEdgeMarkers: 0
 --- !u!114 &132644554376838028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -345,5 +284,66 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   targetedCameras: []
-  windowPositionOffset: {x: 0, y: 20}
+  windowPositionOffset: {x: 0, y: 200}
   targetRowsPerColumn: 3
+--- !u!114 &132644554376838068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132644554376838076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7df09e57f6fcd054993ea32de89ffd71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOn: 0
+  tickLapse: 0
+  targetObject: {fileID: 0}
+  satisfactionRadius: 1.25
+  weight: 1
+  priority: 1
+  brakingDistance: 10
+  brakingTime: 0.25
+--- !u!114 &132644554376838071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132644554376838076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70f51f9a2f0d76c43a022e41ec575b10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isOn: 0
+  tickLapse: 0
+  targetObject: {fileID: 0}
+  satisfactionRadius: 1.25
+  weight: 1
+  priority: 1
+--- !u!114 &132644554376838074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132644554376838076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 994156a7dd6dda74997975c56da04303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAiControlled: 1
+  maximumSpeed: 5
+  maximumAngularSpeed: 25
+  maximumAcceleration: 10
+  maximumAngularAcceleration: 10
+  gravity: 21
+  terminalVelocity: 20
+  linearGroundDamping: 0.01
+  linearAirDamping: 0.001
+  angularDamping: 0.01
+  pushPower: 2
