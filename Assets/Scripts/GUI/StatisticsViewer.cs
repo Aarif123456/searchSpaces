@@ -81,22 +81,19 @@ public class StatisticsViewer : WindowManager
 
     // If this behaviour is enabled, Start is called once
     // after all Awake calls and before all any Update calls.
-    public new void Start()
-    {
+    public new void Start(){
         base.Start(); // initializes the window id
         timeLeft = updateInterval;
     }
 
     // If this behaviour is enabled, Update is called once per frame.
-    public void Update()
-    {
+    public void Update(){
         timeLeft -= Time.deltaTime;
         accumulatedFps += Time.timeScale / Time.deltaTime;
         ++frames;
 
         // Interval ended - update fps and start new interval
-        if (timeLeft <= 0.0f)
-        {
+        if (timeLeft <= 0.0f){
             fps = accumulatedFps / frames;
             timeLeft = updateInterval;
             accumulatedFps = 0.0f;
@@ -106,10 +103,8 @@ public class StatisticsViewer : WindowManager
 
     // If this behaviour is enabled, OnGUI is called for rendering and handling GUI events.
     // It might be called several times per frame (one call per event).
-    public void OnGUI()
-    {
-        if (width != Screen.width || height != Screen.height)
-        {
+    public void OnGUI(){
+        if (width != Screen.width || height != Screen.height){
             x = Screen.width * 0.02f + positionOffset.x;
             y = Screen.height * 0.02f + positionOffset.y;
             width = Screen.width;
@@ -128,8 +123,7 @@ public class StatisticsViewer : WindowManager
 
     // This creates the GUI inside the window.
     // It requires the id of the window it's currently making GUI for.
-    private void WindowFunction(int windowID)
-    {
+    private void WindowFunction(int windowID){
         // Draw any Controls inside the window here.
 
         int maxRows = 0;
@@ -146,42 +140,25 @@ public class StatisticsViewer : WindowManager
 
         rows = 0;
 
-        if (showFps)
-        {
+        if (showFps){
             GUILayout.Label("FPS: " + fps.ToString("f1"));
             rows++;
         }
 
         maxRows = Mathf.Max(maxRows, rows);
-
         columns += (rows == 0) ? 0 : 1;
-
         GUILayout.EndVertical();
-
         GUILayout.BeginVertical(GUILayout.MinWidth(minimumColumnWidth));
-
         rows = 0;
-
-        //if (showAnotherColumn)
-        //{
-        //    GUILayout.Label("Another Column");
-        //    rows++;
-        //}
-
         maxRows = Mathf.Max(maxRows, rows);
-
         columns += (rows == 0) ? 0 : 1;
-
         GUILayout.EndVertical();
-
         GUILayout.EndHorizontal();
-
         // Make the windows be draggable.
         GUI.DragWindow();
 
-        // if the numer of rows changes we should resize
-        if (previousRows != maxRows || previousColumns != columns)
-        {
+        // if the number of rows changes we should resize
+        if (previousRows != maxRows || previousColumns != columns){
             windowRectangle.height = 0; // GUILayout will determine height
             windowRectangle.width = minimumWindowWidth;
             previousRows = maxRows;

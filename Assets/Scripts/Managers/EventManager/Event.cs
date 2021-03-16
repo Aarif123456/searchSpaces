@@ -91,8 +91,7 @@ namespace Thot.GameAI
             int receiverId,
             System.Delegate eventDelegate,
             System.Type eventDataType,
-            object eventData)
-        {
+            object eventData){
             EventId = eventId;
             EventType = eventType;
             EventLifespan = lifespan;
@@ -104,8 +103,7 @@ namespace Thot.GameAI
             EventData = eventData;
         }
 
-        internal protected Event()
-        {
+        internal protected Event(){
         }
 
         /// <summary>

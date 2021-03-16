@@ -42,8 +42,7 @@ namespace Thot.GameAI
         public CalculationType CalculationType { get; set; }
 
         /* Constructor create graph and initialize search*/
-        public TimeSlicedAStarSearch(SparseGraph graph, int source, int target)
-        {
+        public TimeSlicedAStarSearch(SparseGraph graph, int source, int target){
             Reset(graph, source, target);
         }
         public void Start(){
@@ -67,8 +66,7 @@ namespace Thot.GameAI
             GCosts = new List<float>(Graph.NumNodes);
             FCosts = new List<float>(Graph.NumNodes);
 
-            for (int i = 0; i < graph.NumNodes; i++)
-            {
+            for (int i = 0; i < graph.NumNodes; i++){
                 ShortestPathTree.Add(null);
                 SearchFrontier.Add(null);
                 GCosts.Add(0);
@@ -86,20 +84,15 @@ namespace Thot.GameAI
             pq.Insert(Source);
             /* Used to track our done status as well */
             finalPath = null;
-
-            // CancelInvoke("Search");
-            // Search();
         }
 
         /*Calculate the straight line distance from the first node to the second node */
-        public static float EuclideanDistance(SparseGraph graph, int node1, int node2)
-        {
+        public static float EuclideanDistance(SparseGraph graph, int node1, int node2){
             return (graph.GetNode(node1).Position - graph.GetNode(node2).Position).magnitude;
         }
 
         /* Gets the total cost to the target.*/
-        public float GetCostToTarget()
-        {
+        public float GetCostToTarget(){
             return GCosts[Target];
         }
 
@@ -149,8 +142,7 @@ namespace Thot.GameAI
             Debug.LogWarning("Unexpected fall through when getting calculate method in A* Search - defaulting to EuclideanDistance");
             return EuclideanDistance;
         }
-        public void Update()
-        {
+        public void Update(){
             if(pq.Empty()) Done();
             if(IsDone()) return;
             // get lowest cost node from the queue
@@ -159,13 +151,13 @@ namespace Thot.GameAI
             // move this node from the frontier to the spanning tree
             ShortestPathTree[nextClosestNode] = SearchFrontier[nextClosestNode];
             // if the target has been found exit
-            if (nextClosestNode == Target) {
+            if (nextClosestNode == Target){
                 Done();
                 return;
             }
             HeuristicDelegate calculate = GetCalculateMethod();
             // now to test all the edges attached to this node
-            foreach (Edge curEdge in Graph.Edges[nextClosestNode]) {
+            foreach (Edge curEdge in Graph.Edges[nextClosestNode]){
                 // calculate (H) the heuristic cost from this node to the target                     
                 float hCost = calculate(Graph, Target, curEdge.To);
                 // calculate (G) the 'real' cost to this node from the source 

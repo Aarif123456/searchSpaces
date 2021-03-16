@@ -57,41 +57,35 @@ using UnityEngine;
 
 public class DynamicSeek : Seek
 {
-	protected override void Awake()
-	{
+	protected override void Awake(){
 		base.Awake();
 		
 		IsKinematic = false;
 	}
 	
-	protected override bool CalculateSteering(out Vector3? linear, out Vector3? angular)
-    {
+	protected override bool CalculateSteering(out Vector3? linear, out Vector3? angular){
 		Vector3? desiredAcceleration = null;
 		Vector3? desiredAngularAcceleration = null;
 		
         // If a target object was specified, use its position as the target position.
-        if (targetObject != null)
-        {
+        if (targetObject != null){
             targetPosition = targetObject.transform.position;
         }
 		
-		if (targetPosition.HasValue)
-		{
+		if (targetPosition.HasValue){
 	        Vector3 desiredDirection = targetPosition.Value - transform.position;
 			desiredDirection.y = 0;
 	
-	        // Get the length of the directon vector which is the distance to the target.
+	        // Get the length of the direction vector which is the distance to the target.
 	        distanceToTarget = desiredDirection.magnitude;
 	
 	        // if not there yet ...
-	        if (distanceToTarget > satisfactionRadius)
-			{
+	        if (distanceToTarget > satisfactionRadius){
 				// desiredDirection.normalized equals desiredDirection / distanceToTarget
 				desiredDirection /= distanceToTarget;
 				desiredAcceleration = MaximumAcceleration * desiredDirection;
 			}
-			else
-			{
+			else {
 	            // we're there (close enough). Stop seeking.
 							
 				EventManager.Instance.Enqueue<ArrivalEventPayload>(
@@ -103,21 +97,17 @@ public class DynamicSeek : Seek
 	        }
 		}
 			
-		if (desiredAcceleration.HasValue)
-		{
+		if (desiredAcceleration.HasValue){
 			linear = desiredAcceleration.Value;
 		}
-		else
-		{
+		else {
 			linear = null;
 		}
 		
-		if (desiredAngularAcceleration.HasValue)
-		{
+		if (desiredAngularAcceleration.HasValue){
 			angular = desiredAngularAcceleration.Value;
 		}
-		else
-		{
+		else {
 			angular = null;
 		}
 		

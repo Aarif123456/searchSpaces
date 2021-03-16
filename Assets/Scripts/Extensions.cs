@@ -54,8 +54,7 @@ namespace Thot.GameAI
 	
 	public static class Extensions
 	{
-		public static Vector2 To2D(this Vector3 position)
-		{
+		public static Vector2 To2D(this Vector3 position){
 			return new Vector2(position.x, position.z);
 		}
 	}

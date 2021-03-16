@@ -69,13 +69,11 @@ public class MovingEntity : Entity
 	private Vector3 center;
 	public Vector3 Center
 	{
-		get
-		{
+		get {
 			return center;
 		}
 		
-		set
-		{
+		set {
 			center = value;
 		}
 	}
@@ -88,19 +86,15 @@ public class MovingEntity : Entity
 	// If the entity has a rigidbody, its mass will be updated whenever this property is set.
 	public float Mass 
 	{
-		get
-		{
+		get {
 			return GetComponent<Rigidbody>() != null ? GetComponent<Rigidbody>().mass : internalMass;
 		}
 		
-		set
-		{
-			if (GetComponent<Rigidbody>() != null )
-			{
+		set {
+			if (GetComponent<Rigidbody>() != null ){
 				GetComponent<Rigidbody>().mass = value;
 			}
-			else
-			{
+			else {
 				internalMass = value;
 			}
 		}
@@ -108,15 +102,12 @@ public class MovingEntity : Entity
 	
 	public bool isAiControlled
 	{
-		get
-		{
+		get {
 			return motor != null && motor.isAiControlled;
 		}
 		
-		set
-		{
-			if (motor != null)
-			{
+		set {
+			if (motor != null){
 				motor.isAiControlled = value;
 			}
 		}
@@ -126,16 +117,14 @@ public class MovingEntity : Entity
 	// by the entity centre.
 	public Vector3 Position 
 	{
-		get 
-		{
+		get {
 			return transform.position + center;
 		}
 	}
 	
 	public Vector2 Position2D
 	{
-		get
-		{
+		get {
 			return Position.To2D();
 		}
 	}
@@ -145,13 +134,11 @@ public class MovingEntity : Entity
 	private float radius = 1;
 	public float Radius 
 	{
-		get 
-		{
+		get {
 			return radius;
 		}
 		
-		set 
-		{
+		set {
 			radius = Mathf.Clamp(value, 0.01f, float.MaxValue);		
 		}
 	}
@@ -162,81 +149,69 @@ public class MovingEntity : Entity
 	private float height = 1;
 	public float Height 
 	{
-		get 
-		{
+		get {
 			return height;
 		}
 		
-		set 
-		{
+		set {
 			height = Mathf.Clamp(value, 0.01f, float.MaxValue);		
 		}
 	}
 	
 	public float MaximumSpeed
 	{
-		get
-		{
+		get {
 			return motor.maximumSpeed;
 		}
 		
-		set
-		{
+		set {
 			motor.maximumSpeed = Mathf.Clamp(value, 0, float.MaxValue);
 		}
 	}
 	
 	public float MaximumAngularSpeed
 	{
-		get
-		{
+		get {
 			return motor.maximumAngularSpeed;
 		}
 		
-		set
-		{
+		set {
 			motor.maximumAngularSpeed = Mathf.Clamp(value, 0, float.MaxValue);
 		}
 	}
 	
 	public float MaximumAcceleration
 	{
-		get
-		{
+		get {
 			return motor.maximumAcceleration;
 		}
 		
-		set
-		{
+		set {
 			motor.maximumAcceleration = Mathf.Clamp(value, 0, float.MaxValue);
 		}
 	}
 	
 	public float MaximumAngularAcceleration
 	{
-		get
-		{
+		get {
 			return motor.maximumAngularAcceleration;
 		}
 		
-		set
-		{
+		set {
 			motor.maximumAngularAcceleration = Mathf.Clamp(value, 0, float.MaxValue);
 		}
 	}
 	
 	public Vector3 LinearVelocity
 	{
-		get
-		{
+		get {
 			return motor.LinearVelocity;
 		}
 	}
 	
 	public Vector3 AngularVelocity
 	{
-		get
-		{
+		get {
 			return motor.AngularVelocity;
 		}
 	}
@@ -244,20 +219,17 @@ public class MovingEntity : Entity
 	// Array of steering behaviours
 	public Steering[] Steerings 
 	{
-		get 
-		{
+		get {
 			return steerings;
 		}
 	}
 	
-	public override void Awake()
-    {
+	public override void Awake(){
 		base.Awake();
 		
 		motor = GetComponent<Motor>();
 		characterController = GetComponent<CharacterController>();
-		if (characterController != null)
-		{
+		if (characterController != null){
 			radius = characterController.radius;
 			height = characterController.height;
 			center = characterController.center;
@@ -265,29 +237,23 @@ public class MovingEntity : Entity
 		steerings = GetComponents<Steering>().OrderByDescending(s => s.Priority).ToArray();
     }
 	
-	public Vector3 PositionAt(Vector2 point)
-	{
+	public Vector3 PositionAt(Vector2 point){
 		return PositionAt(point, 0);
 	}
 	
-	public Vector3 PositionAt(Vector2 point, float heightOffset)
-	{
+	public Vector3 PositionAt(Vector2 point, float heightOffset){
 		float entityHeightOffset = Center.y + Height / 2;
 		float groundHeightOffset = World.Instance.GroundHeightAt(point);
 		return new Vector3(point.x, groundHeightOffset + entityHeightOffset + heightOffset, point.y);
 	}
 	
-	public bool IsEntityInObstacle(Vector2 point)
-	{
+	public bool IsEntityInObstacle(Vector2 point){
 		Vector3 groundPosition = World.Instance.GroundPositionAt(point);
 		
-		foreach (Collider collider in Physics.OverlapSphere(groundPosition, Radius))
-		{
-	        if (collider != null)
-			{
+		foreach (Collider collider in Physics.OverlapSphere(groundPosition, Radius)){
+	        if (collider != null){
 				Entity entity = collider.gameObject.GetComponent<Entity>();
-				if (entity != null && entity.isObstacle)
-				{
+				if (entity != null && entity.isObstacle){
 					return true;
 				}
 			}

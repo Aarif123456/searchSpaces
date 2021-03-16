@@ -118,8 +118,7 @@ namespace Thot.GameAI{
         /// Gets the accessor for the <see cref="UniversalPathManager"/> singleton instance.
         public static UniversalPathManager Instance
         {
-            get
-            {
+            get {
                 return _instance;
             }
         }

@@ -86,43 +86,35 @@ public class OrbitCamera : TargetedCamera
     // After all objects are initialized, Awake is called when the script
     // is being loaded. This occurs before any Start calls.
     // Use Awake instead of the constructor for initialization.
-    public void Awake()
-    {
-        if (target == null)
-        {
+    public void Awake(){
+        if (target == null){
             Debug.Log("Provide a target for the camera.");
         }
     }
 
     // If this behaviour is enabled, Start is called once
     // after all Awake calls and before all any Update calls.
-    public void Start()
-    {
+    public void Start(){
         Vector3 angles = transform.eulerAngles;
         x = angles.y;
         y = angles.x;
         currentDistance = distance;
 
         // Make the rigid body not change rotation.
-        if (GetComponent<Rigidbody>())
-        {
+        if (GetComponent<Rigidbody>()){
             GetComponent<Rigidbody>().freezeRotation = true;
         }
     }
 
     // If this behaviour is enabled, LateUpdate is called once per frame
     // after all Update functions have been called.
-    public void LateUpdate()
-    {
-        if (target)
-        {
-            if (isControllable)
-            {
+    public void LateUpdate(){
+        if (target){
+            if (isControllable){
                 x += Input.GetAxis(sideLookAxis) * xSpeed * 0.02f;
                 y -= Input.GetAxis(verticalAxis) * ySpeed * 0.02f;
             }
-            else
-            {
+            else {
                 // TODO: Add ability for AI control?
                 x = 0;
                 y = 0;
@@ -142,28 +134,22 @@ public class OrbitCamera : TargetedCamera
         }
     }
 
-    private float AdjustLineOfSight(Vector3 target, Vector3 direction)
-    {
+    private float AdjustLineOfSight(Vector3 target, Vector3 direction){
         RaycastHit hit;
-        if (Physics.Raycast(target, direction, out hit, distance, lineOfSightMask.value))
-        {
+        if (Physics.Raycast(target, direction, out hit, distance, lineOfSightMask.value)){
             return hit.distance - closerRadius;
         }
-        else
-        {
+        else {
             return distance;
         }
     }
 
-    private static float ClampAngle(float angle, float min, float max)
-    {
-        if (angle < -360)
-        {
+    private static float ClampAngle(float angle, float min, float max){
+        if (angle < -360){
             angle += 360;
         }
 
-        if (angle > 360)
-        {
+        if (angle > 360){
             angle -= 360;
         }
 

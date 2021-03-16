@@ -74,8 +74,7 @@ namespace Thot.GameAI
 		/// Next time the object is expected to be ticked
 		public float NextTick 
 		{
-			get 
-			{
+			get {
 				return nextTick;
 			}
 		}	
@@ -83,13 +82,11 @@ namespace Thot.GameAI
 		// Allows us to set a range in which the next tick's time is randomized
 		public float RandomRangeMax 
 		{
-			get 
-			{
+			get {
 				return randomRangeMax;
 			}
 			
-			set 
-			{
+			set {
 				randomRangeMax = Mathf.Max(value, randomRangeMin);
 			}
 		}
@@ -97,13 +94,11 @@ namespace Thot.GameAI
 		// Allows us to set a range in which the next tick's time is randomized
 		public float RandomRangeMin 
 		{
-			get 
-			{
+			get {
 				return randomRangeMin;
 			}
 			
-			set 
-			{
+			set {
 				randomRangeMin = Mathf.Min(value, randomRangeMax);
 			}
 		}
@@ -111,43 +106,36 @@ namespace Thot.GameAI
 		/// How many seconds should pass before the object is ticked again
 		public float TickLapse 
 		{
-			get 
-			{
+			get {
 				return tickLapse;
 			}
-			set 
-			{
+			set {
 				tickLapse = Mathf.Max(value, 0);
 			}
 		}
 	
 		public TickManager() 
-			: this(0.1f) 
-		{
+			: this(0.1f){
 			
 		}
 		
-		public TickManager(float tickLapse) 
-		{
+		public TickManager(float tickLapse){
 			TickLapse = tickLapse;
 		}
 		
-		/// Will return true if we need to tick the current behavior
-		public bool ShouldTick() 
-		{
+		/// Will return true if we need to tick the current behaviour
+		public bool ShouldTick(){
 			return ShouldTick(TickLapse);
 		}
 		
-		// Will return true if we need to tick the current behavior.
+		// Will return true if we need to tick the current behaviour.
 		// The parameter nextTickLapseOverride is used to override the
 		// object's TickLapse property for the next tick, if the method returns true
-		public bool ShouldTick(float nextTickLapseOverride) 
-		{
+		public bool ShouldTick(float nextTickLapseOverride){
 			var time = Time.time;
 			var result = nextTick < time;
 			
-			if (result)
-			{
+			if (result){
 				nextTick = time + nextTickLapseOverride + Random.Range(randomRangeMin, randomRangeMax);
 			}
 			

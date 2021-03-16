@@ -81,11 +81,9 @@ namespace Thot.GameAI
         /// <summary>
         /// Prevents a default instance of the MessageDispatcher class from being created.
         /// </summary>
-        private MessageDispatcher()
-        {
+        private MessageDispatcher(){
             MessageQueue = new PriorityQueue<Telegram, float>();
-            if (null != _instance)
-            {
+            if (null != _instance){
                 Debug.LogError("Singleton already created.");
                 return;
             }
@@ -98,15 +96,12 @@ namespace Thot.GameAI
         /// </summary>
         public static MessageDispatcher Instance
         {
-            get
-            {
-                if (null == _instance)
-                {
+            get {
+                if (null == _instance){
                     new MessageDispatcher();
                 }
 
-                if (null == _instance)
-                {
+                if (null == _instance){
                     Debug.LogError("Singleton instance not set by constructor.");
                     return default(MessageDispatcher);
                 }
@@ -133,10 +128,8 @@ namespace Thot.GameAI
         /// <param name="telegram">
         /// The telegram.
         /// </param>
-        public void Discharge(Entity receiver, Telegram telegram)
-        {
-            if (!receiver.HandleMessage(telegram))
-            {
+        public void Discharge(Entity receiver, Telegram telegram){
+            if (!receiver.HandleMessage(telegram)){
                 // telegram could not be handled
             }
         }
@@ -145,16 +138,14 @@ namespace Thot.GameAI
         /// This method dispatches any telegrams with a timestamp that has
         /// expired. Any dispatched telegrams are removed from the queue.
         /// </summary>
-        public void DispatchDelayedMessages()
-        {
+        public void DispatchDelayedMessages(){
             // first get current time
             float currentTime = Time.time;
 
             // now peek at the queue to see if any telegrams need dispatching.
             // remove all telegrams from the front of the queue that have gone
             // past their sell by date
-            while (MessageQueue.Count > 0 && (MessageQueue.Peek().Value.DispatchTime < currentTime) && (MessageQueue.Peek().Value.DispatchTime > 0))
-            {
+            while (MessageQueue.Count > 0 && (MessageQueue.Peek().Value.DispatchTime < currentTime) && (MessageQueue.Peek().Value.DispatchTime > 0)){
                 // read the telegram from the front of the queue
                 Telegram telegram = MessageQueue.Peek().Value;
 
@@ -194,14 +185,12 @@ namespace Thot.GameAI
             int senderId,
             int receiverId,
             MessageTypes msg,
-            object extraInfo)
-        {
+            object extraInfo){
             // get a pointer to the receiver
             Entity receiver = EntityManager.Find<Entity>(receiverId);
 
             // make sure the receiver is valid
-            if (receiver == null)
-            {
+            if (receiver == null){
                 return;
             }
 
@@ -209,15 +198,13 @@ namespace Thot.GameAI
             var telegram = new Telegram(SEND_MSG_IMMEDIATELY, senderId, receiverId, msg, extraInfo);
 
             // if there is no delay, route telegram immediately
-            if (delay <= SEND_MSG_IMMEDIATELY)
-            {
+            if (delay <= SEND_MSG_IMMEDIATELY){
                 // send the telegram to the recipient
                 Discharge(receiver, telegram);
             }
 
                 // else calculate the time when the telegram should be dispatched
-            else
-            {
+            else {
                 float currentTime = Time.time;
 
                 telegram.DispatchTime = currentTime + delay;

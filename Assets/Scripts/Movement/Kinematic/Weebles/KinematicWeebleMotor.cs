@@ -78,29 +78,25 @@ public abstract class KinematicWeebleMotor : KinematicMotor
 	
 	public override bool IsGrounded
 	{
-		get
-		{
+		get {
 			return characterController.isGrounded;
 		}
 	}
 
 	public override Vector3 ActualVelocity
 	{
-		get
-		{
+		get {
 			return characterController.velocity;
 		}
 	}
 			
-	protected override void Awake()
-	{
+	protected override void Awake(){
 		base.Awake();
 		
 		characterController = GetComponent<CharacterController>();
 	}
 	
-	protected override void IntegrateVelocity()
-	{
+	protected override void IntegrateVelocity(){
 		groundNormal = Vector3.zero;
 		
 		collisionFlags = characterController.Move(linearVelocity * Time.deltaTime);
@@ -109,34 +105,27 @@ public abstract class KinematicWeebleMotor : KinematicMotor
         lastGroundNormal = groundNormal;
 	}
 	
-	protected override void IntegrateAngularVelocity()
-	{
+	protected override void IntegrateAngularVelocity(){
 		transform.Rotate(angularVelocity * Time.deltaTime);
 	}
 	
-	protected virtual void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        if (hit.normal.y > 0 && hit.normal.y > groundNormal.y && hit.moveDirection.y < 0)
-        {
-            if ((hit.point - lastHitPoint).sqrMagnitude > 0.001f || lastGroundNormal == Vector3.zero)
-            {
+	protected virtual void OnControllerColliderHit(ControllerColliderHit hit){
+        if (hit.normal.y > 0 && hit.normal.y > groundNormal.y && hit.moveDirection.y < 0){
+            if ((hit.point - lastHitPoint).sqrMagnitude > 0.001f || lastGroundNormal == Vector3.zero){
                 groundNormal = hit.normal;
             }
-            else
-            {
+            else {
                 groundNormal = lastGroundNormal;
             }
         }
 
         Rigidbody body = hit.collider.attachedRigidbody;
 
-        if (body == null || body.isKinematic)
-        {
+        if (body == null || body.isKinematic){
             return;
         }
 
-        if (hit.moveDirection.y < -0.3f)
-        {
+        if (hit.moveDirection.y < -0.3f){
             return;
         }
 

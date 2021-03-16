@@ -75,8 +75,7 @@ public class Grid : SearchSpace
 //		base.Awake();	
 //	}
 	
-	public override void Start()
-	{
+	public override void Start(){
 		base.Start();
 		
 		rows = (int)(World.Instance.Size.y / cellHeight);
@@ -87,49 +86,40 @@ public class Grid : SearchSpace
 		Create();		
 	}
 	
-	public override void Create()
-	{
+	public override void Create(){
 		Graph = new SparseGraph(false);
 
-		for (int row = 0; row < rows; row++)
-		{
-			for (int column = 0; column < columns; column++)
-			{
+		for (int row = 0; row < rows; row++){
+			for (int column = 0; column < columns; column++){
 				var nodePosition = 
 					new Vector2(
 						column * cellWidth - cellWidth * (columns - 1) / 2,
 			    		row * cellHeight - cellHeight * (rows - 1) / 2);
 				
-				var node = new Node(row * columns + column) { Position = nodePosition };
+				var node = new Node(row * columns + column){ Position = nodePosition };
                 int nodeIndex = Graph.AddNode(node);
 			
-				if (IsPointInObstacle(nodePosition))
-				{
+				if (IsPointInObstacle(nodePosition)){
 					Graph.GetNode(nodeIndex).Index = Node.INVALID_NODE_INDEX;
 				}
-				else
-				{
+				else {
 					//AddNodeObject(node, nodePosition);
 				}
 			}
 		}
 		
-		for (int nodeIndex = 0; nodeIndex < Graph.NumNodes; nodeIndex++)
-		{
-			if (!Graph.IsNodePresent(nodeIndex))
-			{
+		for (int nodeIndex = 0; nodeIndex < Graph.NumNodes; nodeIndex++){
+			if (!Graph.IsNodePresent(nodeIndex)){
                 continue;
             }
 
             Node node = Graph.GetNode(nodeIndex);
 
             int rightIndex = nodeIndex + 1;
-            if (rightIndex % columns != 0 && Graph.IsNodePresent(rightIndex))
-            {
+            if (rightIndex % columns != 0 && Graph.IsNodePresent(rightIndex)){
                 Node rightNode = Graph.GetNode(rightIndex);
 
-                if (!IsPathObstructed(node.Position, rightNode.Position))
-                {
+                if (!IsPathObstructed(node.Position, rightNode.Position)){
                     var rightEdge = new Edge(nodeIndex, rightIndex, cellWidth);
                     Graph.AddEdge(rightEdge);
 					//AddEdgeObject(rightEdge, node.Position, rightNode.Position);
@@ -137,31 +127,26 @@ public class Grid : SearchSpace
             }
 
             int downIndex = nodeIndex + columns;
-            if (downIndex < Graph.NumNodes && Graph.IsNodePresent(downIndex))
-            {
+            if (downIndex < Graph.NumNodes && Graph.IsNodePresent(downIndex)){
                 Node downNode = Graph.GetNode(downIndex);
 
-                if (!IsPathObstructed(node.Position, downNode.Position))
-                {
+                if (!IsPathObstructed(node.Position, downNode.Position)){
                     var downEdge = new Edge(nodeIndex, downIndex, cellHeight);
                     Graph.AddEdge(downEdge);
 					//AddEdgeObject(downEdge, node.Position, downNode.Position);
                 }
             }
 
-            if (!useDiagonals)
-            {
+            if (!useDiagonals){
                 continue;
             }
 
             int diagIndex = nodeIndex + columns + 1;
             if (diagIndex < Graph.NumNodes && diagIndex % columns != 0 &&
-                Graph.IsNodePresent(diagIndex))
-            {
+                Graph.IsNodePresent(diagIndex)){
                 Node diagNode = Graph.GetNode(diagIndex);
 
-                if (!IsPathObstructed(node.Position, diagNode.Position))
-                {
+                if (!IsPathObstructed(node.Position, diagNode.Position)){
                     var diagEdge = new Edge(nodeIndex, diagIndex, cellDiagonal);
                     Graph.AddEdge(diagEdge);
 					//AddEdgeObject(diagEdge, node.Position, diagNode.Position);
@@ -170,12 +155,10 @@ public class Grid : SearchSpace
 
             int backDiagIndex = nodeIndex + columns - 1;
             if (backDiagIndex < Graph.NumNodes && backDiagIndex % columns != columns - 1 &&
-                Graph.IsNodePresent(backDiagIndex))
-            {
+                Graph.IsNodePresent(backDiagIndex)){
                 Node backDiagNode = Graph.GetNode(backDiagIndex);
 
-                if (!IsPathObstructed(node.Position, backDiagNode.Position))
-                {
+                if (!IsPathObstructed(node.Position, backDiagNode.Position)){
                     var backDiagEdge = new Edge(nodeIndex, backDiagIndex, cellDiagonal);
                     Graph.AddEdge(backDiagEdge);
 					//AddEdgeObject(backDiagEdge, node.Position, backDiagNode.Position);
@@ -184,10 +167,8 @@ public class Grid : SearchSpace
         }
 	}
 	
-	protected override void DrawNodeGizmo(Node node)
-	{	
-		if (drawCellGizmos)
-		{
+	protected override void DrawNodeGizmo(Node node){	
+		if (drawCellGizmos){
 			Gizmos.color = Color.gray;
 			Gizmos.DrawCube(World.Instance.GroundPositionAt(node.Position), new Vector3(cellWidth - 0.1f, 0.1f, cellHeight - 0.1f));
 		}

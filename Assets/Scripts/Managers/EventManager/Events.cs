@@ -56,12 +56,9 @@ namespace Thot.GameAI
     {
         public static int Count { get; private set; }
 
-        public static string GetDescription(EventType eventType)
-        {
-            foreach (var fieldInfo in typeof(Events).GetFields())
-            {
-                if ((EventType)fieldInfo.GetValue(null) != eventType)
-                {
+        public static string GetDescription(EventType eventType){
+            foreach (var fieldInfo in typeof(Events).GetFields()){
+                if ((EventType)fieldInfo.GetValue(null) != eventType){
                     continue;
                 }
 
@@ -70,8 +67,7 @@ namespace Thot.GameAI
                         typeof(DescriptionAttribute),
                         false);
 
-                if (attributes.Length > 0)
-                {
+                if (attributes.Length > 0){
                     return attributes[0].Description;
                 }
             }

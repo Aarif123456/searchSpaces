@@ -67,8 +67,7 @@ namespace Thot.GameAI
         /// Initializes a new instance of the Telegram class.
         /// </summary>
         public Telegram()
-            : this(-1, int.MaxValue, int.MaxValue, (MessageTypes)(-1), null)
-        {
+            : this(-1, int.MaxValue, int.MaxValue, (MessageTypes)(-1), null){
         }
 
         /// <summary>
@@ -87,8 +86,7 @@ namespace Thot.GameAI
         /// The message.
         /// </param>
         public Telegram(float dispatchTime, int sender, int receiver, MessageTypes msg)
-            : this(dispatchTime, sender, receiver, msg, null)
-        {
+            : this(dispatchTime, sender, receiver, msg, null){
         }
 
         /// <summary>
@@ -114,8 +112,7 @@ namespace Thot.GameAI
             int sender,
             int receiver,
             MessageTypes msg,
-            object extraInfo)
-        {
+            object extraInfo){
             DispatchTime = dispatchTime;
             Sender = sender;
             Receiver = receiver;
@@ -166,10 +163,8 @@ namespace Thot.GameAI
         /// <returns>
         /// True if this telegram is earlier than the specified one.
         /// </returns>
-        public bool IsEarlierThan(Telegram t)
-        {
-            if (this == t)
-            {
+        public bool IsEarlierThan(Telegram t){
+            if (this == t){
                 return false;
             }
 
@@ -186,8 +181,7 @@ namespace Thot.GameAI
         /// <returns>
         /// True if this telegram is considered the same as the specified one.
         /// </returns>
-        public bool IsSameAs(Telegram t)
-        {
+        public bool IsSameAs(Telegram t){
             return Math.Abs(DispatchTime - t.DispatchTime) < SMALLEST_DELAY && Sender == t.Sender &&
                    Receiver == t.Receiver && Msg == t.Msg;
         }
@@ -198,8 +192,7 @@ namespace Thot.GameAI
         /// <returns>
         /// The message as a string.
         /// </returns>
-        public override string ToString()
-        {
+        public override string ToString(){
             return "time: " + DispatchTime + "  Sender: " + Sender + "   Receiver: " +
                 Receiver + "   Msg: " + Msg;
         }

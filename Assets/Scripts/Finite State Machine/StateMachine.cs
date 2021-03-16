@@ -67,8 +67,7 @@ namespace Thot.GameAI
         /// <param name="owner">
         /// The game object that owns this state machine.
         /// </param>
-        public StateMachine(T owner)
-        {
+        public StateMachine(T owner){
             Owner = owner;
             CurrentState = null;
             PreviousState = null;
@@ -104,10 +103,8 @@ namespace Thot.GameAI
         /// <param name="newState">
         /// The new state.
         /// </param>
-        public void ChangeState(State<T> newState)
-        {
-            if (newState == null)
-            {
+        public void ChangeState(State<T> newState){
+            if (newState == null){
                 Debug.LogError("StateMachine.ChangeState: trying to assign null state to current");
                 return;
             }
@@ -131,14 +128,12 @@ namespace Thot.GameAI
         /// <returns>
         /// The name of the current state.
         /// </returns>
-        public string GetNameOfCurrentState()
-        {
+        public string GetNameOfCurrentState(){
             string s = CurrentState.GetType().Name;
 
             // TODO: need to check this (C# vs C++)
             // remove the 'class ' part from the front of the string
-            if (s.Length > 5)
-            {
+            if (s.Length > 5){
                 s = s.Substring(6);
             }
 
@@ -154,12 +149,10 @@ namespace Thot.GameAI
         /// <returns>
         /// True if message was handled. Otherwise, false.
         /// </returns>
-        public bool HandleMessage(Telegram msg)
-        {
+        public bool HandleMessage(Telegram msg){
             // first see if the current state is valid and that it can handle
             // the message
-            if (CurrentState != null && CurrentState.OnMessage(Owner, msg))
-            {
+            if (CurrentState != null && CurrentState.OnMessage(Owner, msg)){
                 return true;
             }
 
@@ -179,16 +172,14 @@ namespace Thot.GameAI
         /// True if the current state's type is equal to the type of the class passed as a
         /// parameter.
         /// </returns>
-        public bool IsInState(State<T> st)
-        {
+        public bool IsInState(State<T> st){
             return CurrentState.GetType() == st.GetType();
         }
 
         /// <summary>
         /// Change state back to the previous state.
         /// </summary>
-        public void RevertToPreviousState()
-        {
+        public void RevertToPreviousState(){
             ChangeState(PreviousState);
         }
 
@@ -198,8 +189,7 @@ namespace Thot.GameAI
         /// <param name="s">
         /// The new current state.
         /// </param>
-        public void SetCurrentState(State<T> s)
-        {
+        public void SetCurrentState(State<T> s){
             CurrentState = s;
         }
 
@@ -209,8 +199,7 @@ namespace Thot.GameAI
         /// <param name="s">
         /// The new global state.
         /// </param>
-        public void SetGlobalState(State<T> s)
-        {
+        public void SetGlobalState(State<T> s){
             GlobalState = s;
         }
 
@@ -220,25 +209,21 @@ namespace Thot.GameAI
         /// <param name="s">
         /// The new previous state.
         /// </param>
-        public void SetPreviousState(State<T> s)
-        {
+        public void SetPreviousState(State<T> s){
             PreviousState = s;
         }
 
         /// <summary>
         /// Call this to update the FSM.
         /// </summary>
-        public void Update()
-        {
+        public void Update(){
             // if a global state exists, call its execute method, else do nothing
-            if (GlobalState != null)
-            {
+            if (GlobalState != null){
                 GlobalState.Execute(Owner);
             }
 
             // same for the current state
-            if (CurrentState != null)
-            {
+            if (CurrentState != null){
                 CurrentState.Execute(Owner);
             }
         }

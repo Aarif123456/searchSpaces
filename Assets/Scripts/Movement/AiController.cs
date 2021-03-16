@@ -57,10 +57,8 @@ public sealed class AiController : MonoBehaviour
 {
 	private Motor motor;
 	
-	public void SetMotor(Motor motor)
-	{
-		if (motor != null && steering != null && motor.IsKinematic != steering.IsKinematic)
-		{
+	public void SetMotor(Motor motor){
+		if (motor != null && steering != null && motor.IsKinematic != steering.IsKinematic){
 			Debug.LogError((steering.IsKinematic ? "Kinematic" : "Dynamic") +  " steering cannot be used with " + (motor.IsKinematic ? "Kinematic" : "Dynamic") + " motor. Steering removed.");
 			steering = null;
 		}
@@ -70,42 +68,33 @@ public sealed class AiController : MonoBehaviour
 	
 	public Steering steering;
 	
-	public void SetSteering(Steering steering)
-	{
-		if (motor != null && steering != null && motor.IsKinematic != steering.IsKinematic)
-		{
+	public void SetSteering(Steering steering){
+		if (motor != null && steering != null && motor.IsKinematic != steering.IsKinematic){
 			Debug.LogWarning("Steering behaviour must be " + (motor.IsKinematic ? "Kinematic" : "Dynamic"));
 		}
-		else
-		{
+		else {
 			this.steering = steering;
 		}
 	}
 	
-	private void Awake()
-	{
+	private void Awake(){
 		motor = GetComponent<Motor>();
 		
-		if (motor == null)
-		{
+		if (motor == null){
 			Debug.Log("Provide a motor.");
 		}
 	}
 	
-	private void Update()
-	{
-		if (motor == null || !motor.isAiControlled)
-		{
+	private void Update(){
+		if (motor == null || !motor.isAiControlled){
 			return;
 		}
 		
 		CalculateSteering();
 	}
 	
-	private void CalculateSteering()
-	{	
-		if (steering != null && motor != null)
-		{
+	private void CalculateSteering(){	
+		if (steering != null && motor != null){
 			steering.CalculateWeightedSteering(out motor.desiredLinear, out motor.desiredAngular);
 		}
 	}

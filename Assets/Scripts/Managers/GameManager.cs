@@ -63,47 +63,38 @@ public sealed class GameManager : MonoBehaviour
     /// </summary>
     public static GameManager Instance
     {
-        get
-        {
+        get {
 			return _instance;
         }
     }
 
-	public void Awake()
-	{
-		if (_instance != null)
-		{
+	public void Awake(){
+		if (_instance != null){
 			Debug.Log("Multiple instances of GameManager!");
 		}
 		
 		_instance = this;
 	}
 	
-	public async void Start()
-	{
+	public async void Start(){
 		const float weebleHeightOffset = 1.1f;
 		
-		foreach (Transform weebleTransform in GameObject.Find("Agents/Weebles").transform)
-		{
-			if (World.Instance != null)
-			{	
+		foreach (Transform weebleTransform in GameObject.Find("Agents/Weebles").transform){
+			if (World.Instance != null){	
 				MovingEntity movingEntity = weebleTransform.GetComponent<MovingEntity>();
 				
-				if (movingEntity != null)
-				{
+				if (movingEntity != null){
                     SearchSpace searchSpace = weebleTransform.GetComponent<SearchSpace>();
                     weebleTransform.position = World.Instance.GroundPositionAt(World.Instance.GetRandomPosition(), weebleHeightOffset);
                     await new WaitForBackgroundThread();
                     SetUp(weebleTransform, movingEntity);
                     await new WaitForSeconds(1.0f);
 				}
-				else
-				{
+				else {
 					weebleTransform.position = World.Instance.GroundPositionAt(World.Instance.GetRandomPosition(), weebleHeightOffset);
 				}
 			}
-			else
-			{
+			else {
 				weebleTransform.position = Vector3.up * weebleHeightOffset;
 			}
 		}
@@ -114,8 +105,7 @@ public sealed class GameManager : MonoBehaviour
         await new WaitUntil(() => searchSpace != null && searchSpace.Graph != null);
         weebleTransform.position = movingEntity.PositionAt(searchSpace.GetRandomEntityPosition());
     }
-    public void Update()
-    {
+    public void Update(){
         // dispatch any delayed messages
         MessageDispatcher.Instance.DispatchDelayedMessages();
 		

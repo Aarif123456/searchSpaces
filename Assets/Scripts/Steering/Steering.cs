@@ -59,8 +59,7 @@ public struct ArrivalEventPayload
     public GameObject gameObject;
     public Vector2 destination;
 
-    public ArrivalEventPayload(GameObject gameObject, Vector2 destination)
-    {
+    public ArrivalEventPayload(GameObject gameObject, Vector2 destination){
         this.gameObject = gameObject;
         this.destination = destination;
     }
@@ -92,18 +91,14 @@ public abstract class Steering : MonoBehaviour
 	
 	public float MaximumSpeed
 	{
-		get
-		{
-			if (MovingEntity != null && MovingEntity.enabled)
-			{
+		get {
+			if (MovingEntity != null && MovingEntity.enabled){
 				return MovingEntity.MaximumSpeed;
 			}
-			else if (Motor != null && Motor.enabled)
-			{
+			else if (Motor != null && Motor.enabled){
 				return Motor.maximumSpeed;
 			}
-			else
-			{
+			else {
 				return 0;
 			}
 		}
@@ -111,18 +106,14 @@ public abstract class Steering : MonoBehaviour
 	
 	public float MaximumAcceleration
 	{
-		get
-		{
-			if (MovingEntity != null && MovingEntity.enabled)
-			{
+		get {
+			if (MovingEntity != null && MovingEntity.enabled){
 				return MovingEntity.MaximumAcceleration;
 			}
-			else if (Motor != null && Motor.enabled)
-			{
+			else if (Motor != null && Motor.enabled){
 				return Motor.maximumAcceleration;
 			}
-			else
-			{
+			else {
 				Debug.Log("NO AC");
 				return 0;
 			}
@@ -131,18 +122,14 @@ public abstract class Steering : MonoBehaviour
 	
 	public Vector3 LinearVelocity
 	{
-		get
-		{
-			if (MovingEntity != null && MovingEntity.enabled)
-			{
+		get {
+			if (MovingEntity != null && MovingEntity.enabled){
 				return MovingEntity.LinearVelocity;
 			}
-			else if (Motor != null && Motor.enabled)
-			{
+			else if (Motor != null && Motor.enabled){
 				return Motor.LinearVelocity;
 			}
-			else
-			{
+			else {
 				return Vector3.zero;
 			}
 		}
@@ -150,17 +137,14 @@ public abstract class Steering : MonoBehaviour
 	
     public GameObject TargetObject
     {
-        get
-        {
+        get {
             return targetObject;
         }
 
-        set
-        {
+        set {
             targetObject = value;
             
-            if (targetObject != null)
-            {
+            if (targetObject != null){
                 targetPosition = targetObject.transform.position;
             }
         }
@@ -168,13 +152,11 @@ public abstract class Steering : MonoBehaviour
 	
     public Vector3? TargetPosition
     {
-        get
-        {
+        get {
             return targetPosition;
         }
 
-        set
-        {
+        set {
             targetPosition = value;
             targetObject = null;
         }
@@ -185,8 +167,7 @@ public abstract class Steering : MonoBehaviour
 	// Game object that this steering behaviour will influence
 	public GameObject MovingObject
 	{
-		get 
-		{ 
+		get { 
 			return movingObject; 
 		}
 	}
@@ -196,8 +177,7 @@ public abstract class Steering : MonoBehaviour
 	// Entity that this steering behaviour will influence
 	public MovingEntity MovingEntity 
 	{
-		get 
-		{ 
+		get { 
 			return movingEntity; 
 		}
 	}
@@ -205,8 +185,7 @@ public abstract class Steering : MonoBehaviour
 	protected Motor motor;
 	public Motor Motor 
 	{
-		get 
-		{ 
+		get { 
 			return motor; 
 		}
 	}
@@ -217,12 +196,10 @@ public abstract class Steering : MonoBehaviour
 	// Weight assigned to this steering behaviour
 	public float Weight 
 	{
-		get 
-		{
+		get {
 			return weight;
 		}
-		set 
-		{
+		set {
 			weight = value;
 		}
 	}
@@ -233,62 +210,51 @@ public abstract class Steering : MonoBehaviour
 	// Priority assigned to this steering behaviour
 	public float Priority 
 	{
-		get 
-		{
+		get {
 			return priority;
 		}
-		set 
-		{
+		set {
 			priority = value;
 		}
 	}
 
-	protected virtual void Awake()
-	{
+	protected virtual void Awake(){
 		movingObject = gameObject;
 		movingEntity = GetComponent<MovingEntity>();
 		motor = GetComponent<Motor>();
 		tickManager = new TickManager();
 	}
 	
-	public bool CalculateWeightedSteering(out Vector3? weightedLinear, out Vector3? weightAngular)
-	{	
+	public bool CalculateWeightedSteering(out Vector3? weightedLinear, out Vector3? weightAngular){	
 		Vector3? linear = null;
 		Vector3? angular = null;
 		
-		if (tickManager.ShouldTick(tickLapse))
-		{	
+		if (tickManager.ShouldTick(tickLapse)){	
 			CalculateSteering(out linear, out angular);	
 		}
 		
-		if (linear.HasValue)
-		{
+		if (linear.HasValue){
 			weightedLinear = linear.Value * Weight;
 		}
-		else
-		{
+		else {
 			weightedLinear = null;
 		}
 		
-		if (angular.HasValue)
-		{
+		if (angular.HasValue){
 			weightAngular = angular.Value * Weight;
 		}
-		else
-		{
+		else {
 			weightAngular = null;
 		}
 		
 		return linear.HasValue || angular.HasValue;	
 	}
 	
-	public bool CalculateUnweightedSteering(out Vector3? linear, out Vector3? angular)
-	{	
+	public bool CalculateUnweightedSteering(out Vector3? linear, out Vector3? angular){	
 		linear = null;
 		angular = null;
 		
-		if (tickManager.ShouldTick(tickLapse))
-		{	
+		if (tickManager.ShouldTick(tickLapse)){	
 			return CalculateSteering(out linear, out angular);	
 		}
 		

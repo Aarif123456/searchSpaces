@@ -54,23 +54,19 @@ namespace Thot.GameAI
     {
         private readonly int _eventType;
 
-        public EventType(int eventType)
-        {
+        public EventType(int eventType){
             _eventType = eventType;
         }
 
-        public static implicit operator int(EventType eventType)
-        {
+        public static implicit operator int(EventType eventType){
             return eventType._eventType;
         }
 
-        public static explicit operator EventType(int eventType)
-        {
+        public static explicit operator EventType(int eventType){
             return new EventType(eventType);
         }
 
-        public override string ToString()
-        {
+        public override string ToString(){
             return Events.GetDescription(this);
         }
     }

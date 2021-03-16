@@ -68,29 +68,24 @@ public sealed class MessageDisplayer : MonoBehaviour
     private Queue<string> messages = new Queue<string>();
     private StringBuilder builder = new StringBuilder();
 
-    public void DisplayMessage(string message)
-    {
+    public void DisplayMessage(string message){
         messages.Enqueue(message);
         UpdateDisplay();
         Invoke("DeleteOldestMessage", messageLifespan);
     }
 
-    private void DeleteOldestMessage()
-    {
-        // This protects agains getting called by SendMessage from another script and crashing.
-        if (messages.Count > 0)
-        {
+    private void DeleteOldestMessage(){
+        // This protects again getting called by SendMessage from another script and crashing.
+        if (messages.Count > 0){
             messages.Dequeue();
             UpdateDisplay();
         }
     }
 
-    private void UpdateDisplay()
-    {
+    private void UpdateDisplay(){
         builder.Length = 0; // clear
 
-        foreach (string message in messages)
-        {
+        foreach (string message in messages){
             builder.AppendLine(message);
         }
 

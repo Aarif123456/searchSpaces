@@ -67,20 +67,16 @@ public class SimpleFollowCamera : TargetedCamera
     // After all objects are initialized, Awake is called when the script
     // is being loaded. This occurs before any Start calls.
     // Use Awake instead of the constructor for initialization.
-    public void Awake()
-    {
-        if (target == null)
-        {
+    public void Awake(){
+        if (target == null){
             Debug.Log("Please assign a target to the SimpleFollowCamera script.");
         }
     }
 
     // If this behaviour is enabled, LateUpdate is called once per frame
     // after all Update functions have been called.
-    public void LateUpdate()
-    {
-        if (target != null)
-        {
+    public void LateUpdate(){
+        if (target != null){
             // Convert the angle into a rotation, by which we then reposition the camera.
             Quaternion currentRotation = Quaternion.Euler(0, target.eulerAngles.y, 0);
 

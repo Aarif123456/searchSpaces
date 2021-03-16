@@ -11,8 +11,7 @@ public struct FollowCompletedEventPayload
 
     public FollowCompletedEventPayload(
         GameObject gameObject,
-        Path path)
-    {
+        Path path){
         this.gameObject = gameObject;
         this.path = path;
     }
@@ -25,8 +24,7 @@ public struct FollowFailedEventPayload
 
     public FollowFailedEventPayload(
         GameObject gameObject,
-        Path path)
-    {
+        Path path){
         this.gameObject = gameObject;
         this.path = path;
     }
@@ -51,8 +49,7 @@ public sealed class PathFollower : MonoBehaviour
 
 	public bool StopOnEachArrival { get; private set; }
 	
-	private void OnEnable()
-	{
+	private void OnEnable(){
 		EventManager.Instance.Subscribe<TraversalCompletedEventPayload>(
 			Events.TraversalCompleted, 
 		    OnTraversalCompleted);
@@ -66,8 +63,7 @@ public sealed class PathFollower : MonoBehaviour
 		    OnPathReady);
 	}
 	
-	private void OnDisable()
-	{
+	private void OnDisable(){
 		EventManager.Instance.Unsubscribe<TraversalCompletedEventPayload>(
 			Events.TraversalCompleted, 
 		    OnTraversalCompleted);
@@ -81,8 +77,7 @@ public sealed class PathFollower : MonoBehaviour
 		    OnPathReady);
 	}
 	
-	public bool Follow(Path pathToFollow)
-    {
+	public bool Follow(Path pathToFollow){
         return Follow(pathToFollow, true, true, false, false);
     }
 	
@@ -91,15 +86,12 @@ public sealed class PathFollower : MonoBehaviour
         bool brakeOnFinalApproach,
         bool stopOnFinalArrival,
         bool brakeOnEachApproach,
-        bool stopOnEachArrival)
-    {
-		if (edgeTraverser == null)
-		{
+        bool stopOnEachArrival){
+		if (edgeTraverser == null){
         	edgeTraverser = GetComponent<EdgeTraverser>();
 		}
 		
-        if (edgeTraverser == null)
-        {
+        if (edgeTraverser == null){
             return false;
         }
 		
@@ -112,8 +104,7 @@ public sealed class PathFollower : MonoBehaviour
         StopOnEachArrival = stopOnEachArrival;
         IsFollowing = true;
 		
-		if (PathToFollow != null)
-		{
+		if (PathToFollow != null){
 			PathToFollow.ShowPath(true);
 		}
 
@@ -122,14 +113,11 @@ public sealed class PathFollower : MonoBehaviour
         return true;
     }
 	
-	private void StopIfFollowingPath()
-	{
-		if (PathToFollow != null)
-		{
+	private void StopIfFollowingPath(){
+		if (PathToFollow != null){
 			PathToFollow.ShowPath(false);
 			
-			if (IsFollowing)
-			{
+			if (IsFollowing){
 				IsFollowing = false;
 				
 				// TODO: Perhaps this should be a FollowCancelled event
@@ -140,18 +128,15 @@ public sealed class PathFollower : MonoBehaviour
 		}
 	}
 	
-	private void TraverseNextEdge()
-    {
-        if (PathToFollow == null)
-        {
+	private void TraverseNextEdge(){
+        if (PathToFollow == null){
             return;
         }
 		
         ////TODO: probably should add NextEdge method to Path class
         PathEdge edgeToFollow = PathToFollow.Dequeue();
 		
-		if (edgeToFollow == null)
-		{
+		if (edgeToFollow == null){
 			return;
 		}
 
@@ -162,8 +147,7 @@ public sealed class PathFollower : MonoBehaviour
                  BrakeOnFinalApproach,
                  StopOnFinalArrival);
         }
-        else
-        {
+        else {
             edgeTraverser.Traverse(
                  edgeToFollow,
                  BrakeOnEachApproach,
@@ -171,8 +155,7 @@ public sealed class PathFollower : MonoBehaviour
         }
     }
 
-    private void OnTraversalCompleted(Event<TraversalCompletedEventPayload> eventArg)
-    {
+    private void OnTraversalCompleted(Event<TraversalCompletedEventPayload> eventArg){
 		TraversalCompletedEventPayload payload = eventArg.EventData;
 		
         if (payload.gameObject != gameObject) // event not for us
@@ -180,13 +163,11 @@ public sealed class PathFollower : MonoBehaviour
             return;
         }
 		
-		if (payload.edge != null)
-		{
+		if (payload.edge != null){
 			payload.edge.ShowEdge(false);
 		}
 
-        if (PathToFollow != null && PathToFollow.IsEmpty)
-        {
+        if (PathToFollow != null && PathToFollow.IsEmpty){
             IsFollowing = false;
             EventManager.Instance.Enqueue<FollowCompletedEventPayload>(
 			    Events.FollowCompleted,
@@ -197,8 +178,7 @@ public sealed class PathFollower : MonoBehaviour
         TraverseNextEdge();
     }
 
-    private void OnTraversalFailed(Event<TraversalFailedEventPayload> eventArg)
-    {
+    private void OnTraversalFailed(Event<TraversalFailedEventPayload> eventArg){
 		TraversalFailedEventPayload payload = eventArg.EventData;
 		
         if (payload.gameObject != gameObject) // event not for us
@@ -206,8 +186,7 @@ public sealed class PathFollower : MonoBehaviour
             return;
         }
 		
-		if (payload.edge != null)
-		{
+		if (payload.edge != null){
 			payload.edge.ShowEdge(false);
 		}
 
@@ -217,8 +196,7 @@ public sealed class PathFollower : MonoBehaviour
             new FollowFailedEventPayload(payload.gameObject, PathToFollow));
     }
 
-    private void OnPathReady(Event<PathReadyEventPayload> eventArg)
-    {	
+    private void OnPathReady(Event<PathReadyEventPayload> eventArg){	
 		PathReadyEventPayload payload = eventArg.EventData;
 			
         if (payload.gameObject != gameObject) // event not for us

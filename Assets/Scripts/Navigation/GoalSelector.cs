@@ -77,27 +77,23 @@ public class GoalSelector : WindowManager
     // After all objects are initialized, Awake is called when the script
     // is being loaded. This occurs before any Start calls.
     // Use Awake instead of the constructor for initialization.
-    public void Awake()
-    {	
+    public void Awake(){	
 		motor = GetComponent<Motor>();
-		if (motor == null)
-		{
+		if (motor == null){
 			Debug.Log("No Motor");
 		}
 		
 		searchSpace = GetComponent<SearchSpace>();
 		
 		GameObject mainCamera = GameObject.Find("Main Camera");
-		if (mainCamera != null)
-		{
+		if (mainCamera != null){
 			targetedCameras = mainCamera.GetComponents<TargetedCamera>();
 		}
 		
 		targetRowsPerColumn = Mathf.Max(3, targetRowsPerColumn);
     }
 	
-	private void OnEnable()
-	{
+	private void OnEnable(){
 		EventManager.Instance.Subscribe<FollowCompletedEventPayload>(
 			Events.FollowCompleted, 
 		    OnFollowCompleted);
@@ -107,8 +103,7 @@ public class GoalSelector : WindowManager
 		    OnFollowFailed);
 	}
 	
-	private void OnDisable()
-	{
+	private void OnDisable(){
 		EventManager.Instance.Unsubscribe<FollowCompletedEventPayload>(
 			Events.FollowCompleted, 
 		    OnFollowCompleted);
@@ -121,8 +116,7 @@ public class GoalSelector : WindowManager
 	/// <summary>
     /// This is called when the path follower successful completes following a path.
     /// </summary>
-    protected void OnFollowCompleted(Event<FollowCompletedEventPayload> eventArg)
-    {
+    protected void OnFollowCompleted(Event<FollowCompletedEventPayload> eventArg){
 		FollowCompletedEventPayload payload = eventArg.EventData;
 		
         if (payload.gameObject != gameObject) // event not for us
@@ -136,8 +130,7 @@ public class GoalSelector : WindowManager
     /// <summary>
     /// This is called when the path follower failed to complete following a path.
     /// </summary>
-    protected void OnFollowFailed(Event<FollowFailedEventPayload> eventArg)
-    {
+    protected void OnFollowFailed(Event<FollowFailedEventPayload> eventArg){
 		FollowFailedEventPayload payload = eventArg.EventData;
 			
         if (payload.gameObject != gameObject) // event not for us
@@ -157,16 +150,14 @@ public class GoalSelector : WindowManager
 //		}
 //		else
 //		{
-//			// How can thos happen?
+//			// How can this happen?
 //		}
     }
 
     // If this behaviour is enabled, OnGUI is called for rendering and handling GUI events.
     // It might be called several times per frame (one call per event).
-    public void OnGUI()
-    {
-        if (width != Screen.width || height != Screen.height)
-        {
+    public void OnGUI(){
+        if (width != Screen.width || height != Screen.height){
             width = Screen.width;
             height = Screen.height;
             windowRectangle = new Rect(Screen.width * 0.02f + windowPositionOffset.x, Screen.height * 0.02f + windowPositionOffset.y, 120, 0); // GUILayout will determine height
@@ -177,36 +168,30 @@ public class GoalSelector : WindowManager
 
     // This creates the GUI inside the window.
     // It requires the id of the window it's currently making GUI for.
-    private void WindowFunction(int windowID)
-    {
+    private void WindowFunction(int windowID){
         // Draw any Controls inside the window here.
 		
-		if (motor == null)
-        {
+		if (motor == null){
             Debug.Log("Getting Motor");
             motor = GetComponent<Motor>();
         }
 
-        if (motor == null)
-        {
+        if (motor == null){
             Debug.Log("No Motor");
 			return;
         }
 		
-		if (searchSpace == null)
-        {
+		if (searchSpace == null){
             Debug.Log("Getting Search Space");
             searchSpace = GetComponent<SearchSpace>();
         }
 
-        if (searchSpace == null)
-        {
+        if (searchSpace == null){
             Debug.Log("No Search Space");
 			return;
         }
 
-        if (centeredLabelStyle == null)
-        {
+        if (centeredLabelStyle == null){
             centeredLabelStyle = new GUIStyle(GUI.skin.GetStyle("Label"));
             centeredLabelStyle.alignment = TextAnchor.MiddleCenter;
         }
@@ -215,15 +200,12 @@ public class GoalSelector : WindowManager
 
         GUILayout.Label(name, centeredLabelStyle);
 		
-		if (GUILayout.Button(motor.isAiControlled ? "is an AI" : "is a Player"))
-        {
+		if (GUILayout.Button(motor.isAiControlled ? "is an AI" : "is a Player")){
 			motor.isAiControlled = !motor.isAiControlled;
 		}
 		
-		if (targetedCameras != null && GUILayout.Button("Watch"))
-		{
-			foreach (TargetedCamera targetedCamera in targetedCameras)
-			{
+		if (targetedCameras != null && GUILayout.Button("Watch")){
+			foreach (TargetedCamera targetedCamera in targetedCameras){
 				targetedCamera.target = transform;
 			}
 		}
@@ -237,29 +219,24 @@ public class GoalSelector : WindowManager
 		
 		GUILayout.BeginVertical();
 
-        if (GUILayout.Button("None"))
-        {
+        if (GUILayout.Button("None")){
 			currentDestination = null;
         }
 
-        if (GUILayout.Button("Origin"))
-        {
+        if (GUILayout.Button("Origin")){
 			currentDestination = Vector2.zero;
 			
-			if (currentDestination.HasValue)
-			{
+			if (currentDestination.HasValue){
 				EventManager.Instance.Enqueue<PathRequestEventPayload>(
 					Events.PathRequest,
 				    new PathRequestEventPayload(searchSpace.gameObject, currentDestination.Value));
 			}
         }
 
-        if (GUILayout.Button("Random"))
-        {
+        if (GUILayout.Button("Random")){
 			currentDestination = searchSpace.GetRandomEntityPosition();
 			
-			if (currentDestination.HasValue)
-			{
+			if (currentDestination.HasValue){
 				EventManager.Instance.Enqueue<PathRequestEventPayload>(
 					Events.PathRequest,
 				    new PathRequestEventPayload(searchSpace.gameObject, currentDestination.Value));
@@ -268,14 +245,11 @@ public class GoalSelector : WindowManager
 		
 		targetRow = 3;
 		
-		while (targetRow < targetRowsPerColumn && targetIndex < targets.Length)
-		{
-			if (GUILayout.Button(targets[targetIndex].name))
-	        {
+		while (targetRow < targetRowsPerColumn && targetIndex < targets.Length){
+			if (GUILayout.Button(targets[targetIndex].name)){
 				currentDestination = targets[targetIndex].transform.position.To2D();
 			
-				if (currentDestination.HasValue)
-				{
+				if (currentDestination.HasValue){
 					EventManager.Instance.Enqueue<PathRequestEventPayload>(
 						Events.PathRequest,
 					    new PathRequestEventPayload(searchSpace.gameObject, currentDestination.Value));
@@ -288,20 +262,16 @@ public class GoalSelector : WindowManager
 		
 		GUILayout.EndVertical();	
 		
-		while (targetIndex < targets.Length)
-		{	
+		while (targetIndex < targets.Length){	
 			GUILayout.BeginVertical();
 			
 			targetRow = 0;
 		
-			while (targetRow < targetRowsPerColumn && targetIndex < targets.Length)
-			{
-				if (GUILayout.Button(targets[targetIndex].name))
-		        {
+			while (targetRow < targetRowsPerColumn && targetIndex < targets.Length){
+				if (GUILayout.Button(targets[targetIndex].name)){
 					currentDestination = targets[targetIndex].transform.position.To2D();
 			
-					if (currentDestination.HasValue)
-					{
+					if (currentDestination.HasValue){
 						EventManager.Instance.Enqueue<PathRequestEventPayload>(
 							Events.PathRequest,
 						    new PathRequestEventPayload(searchSpace.gameObject, currentDestination.Value));

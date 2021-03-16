@@ -78,18 +78,15 @@ public class TargetSelector : WindowManager
     // After all objects are initialized, Awake is called when the script
     // is being loaded. This occurs before any Start calls.
     // Use Awake instead of the constructor for initialization.
-    public void Awake()
-    {
+    public void Awake(){
         steerings = GetComponents<Steering>();
 		
-		if (steerings == null || steerings.Length == 0)
-		{
+		if (steerings == null || steerings.Length == 0){
 			Debug.Log("No Steering Behaviours");
 		}
 		
 		motor = GetComponent<Motor>();
-		if (motor == null)
-		{
+		if (motor == null){
 			Debug.Log("No Motor");
 		}
 		
@@ -97,8 +94,7 @@ public class TargetSelector : WindowManager
 		aiController = GetComponent<AiController>(); // optional
 		
 		GameObject mainCamera = GameObject.Find("Main Camera");
-		if (mainCamera != null)
-		{
+		if (mainCamera != null){
 			targetedCameras = mainCamera.GetComponents<TargetedCamera>();
 		}
 		
@@ -108,10 +104,8 @@ public class TargetSelector : WindowManager
 
     // If this behaviour is enabled, OnGUI is called for rendering and handling GUI events.
     // It might be called several times per frame (one call per event).
-    public void OnGUI()
-    {
-        if (width != Screen.width || height != Screen.height)
-        {
+    public void OnGUI(){
+        if (width != Screen.width || height != Screen.height){
             width = Screen.width;
             height = Screen.height;
             windowRectangle = new Rect(Screen.width * 0.02f + windowPositionOffset.x, Screen.height * 0.02f + windowPositionOffset.y, 120, 0); // GUILayout will determine height
@@ -122,112 +116,72 @@ public class TargetSelector : WindowManager
 
     // This creates the GUI inside the window.
     // It requires the id of the window it's currently making GUI for.
-    private void WindowFunction(int windowID)
-    {
+    private void WindowFunction(int windowID){
         // Draw any Controls inside the window here.
-		
-		if (steerings == null || steerings.Length == 0)
-		{
+		if (steerings == null || steerings.Length == 0){
 			Debug.Log("Getting Steering Behaviours");
 			steerings = GetComponents<Steering>();
 		}
-		
-		if (steerings == null || steerings.Length == 0)
-		{
+		if (steerings == null || steerings.Length == 0){
 			Debug.Log("No Steering Behaviours");
 		}
-		
-		if (motor == null)
-        {
+		if (motor == null){
             Debug.Log("Getting Motor");
             motor = GetComponent<Motor>();
         }
-
-        if (motor == null)
-        {
+        if (motor == null){
             Debug.Log("No Motor");
 			return;
         }
-		
-		if (movingEntity == null)
-        {
+		if (movingEntity == null){
             movingEntity = GetComponent<MovingEntity>(); // optional
         }
-		
-		if (aiController == null)
-        {
+		if (aiController == null){
             aiController = GetComponent<AiController>(); // optional
         }
-		
-		if (aiController != null)
-        {
-			if (movingEntity != null && movingEntity.enabled)
-			{
+		if (aiController != null){
+			if (movingEntity != null && movingEntity.enabled){
 				aiController.SetSteering(null);
 			}
-			else
-			{	
+			else {	
 				aiController.SetSteering(activeSteering);
 			}
 		}
 
-        if (centeredLabelStyle == null)
-        {
+        if (centeredLabelStyle == null){
             centeredLabelStyle = new GUIStyle(GUI.skin.GetStyle("Label"));
             centeredLabelStyle.alignment = TextAnchor.MiddleCenter;
         }
-		
 		GUILayout.BeginHorizontal();
-
         GUILayout.Label(name, centeredLabelStyle);
-		
-		if (GUILayout.Button(motor.isAiControlled ? "is an AI" : "is a Player"))
-        {
+		if (GUILayout.Button(motor.isAiControlled ? "is an AI" : "is a Player")){
 			motor.isAiControlled = !motor.isAiControlled;
 		}
-		
-		if (targetedCameras != null && GUILayout.Button("Watch"))
-		{
-			foreach (TargetedCamera targetedCamera in targetedCameras)
-			{
+		if (targetedCameras != null && GUILayout.Button("Watch")){
+			foreach (TargetedCamera targetedCamera in targetedCameras){
 				targetedCamera.target = transform;
 			}
 		}
-		
 		GUILayout.EndHorizontal();
-		
 		GUILayout.BeginHorizontal();
-		
 		int behaviourIndex = 0;
-		
-		while (behaviourIndex < steerings.Length)
-		{	
+		while (behaviourIndex < steerings.Length){	
 			GUILayout.BeginVertical();
-			
 			int behaviourRow = 0;
-			
-			while (behaviourRow < behaviourRowsPerColumn && behaviourIndex < steerings.Length)
-			{
-				if (GUILayout.Button(steerings[behaviourIndex].GetType().Name))
-		        {
-					foreach (Steering steering in steerings)
-					{
-						if (steering != steerings[behaviourIndex])
-						{
+			while (behaviourRow < behaviourRowsPerColumn && behaviourIndex < steerings.Length){
+				if (GUILayout.Button(steerings[behaviourIndex].GetType().Name)){
+					foreach (Steering steering in steerings){
+						if (steering != steerings[behaviourIndex]){
 							steering.enabled = steering.isOn = false;
 						}
 					}
-					
 		            steerings[behaviourIndex].enabled = steerings[behaviourIndex].isOn = true;
 					activeSteering = steerings[behaviourIndex];
-					if (aiController != null)
-			        {
-						if (movingEntity != null && movingEntity.enabled)
-						{
+					if (aiController != null){
+						if (movingEntity != null && movingEntity.enabled){
 							aiController.SetSteering(null);
 						}
-						else
-						{	
+						else {	
 							aiController.SetSteering(activeSteering);
 						}
 					}
@@ -249,30 +203,25 @@ public class TargetSelector : WindowManager
 		
 		GUILayout.BeginVertical();
 
-        if (GUILayout.Button("None") && activeSteering != null)
-        {
+        if (GUILayout.Button("None") && activeSteering != null){
             activeSteering.targetObject = null;
             activeSteering.targetPosition = transform.position;
         }
 
-        if (GUILayout.Button("Origin") && activeSteering != null)
-        {
+        if (GUILayout.Button("Origin") && activeSteering != null){
             activeSteering.targetObject = null;
             activeSteering.targetPosition = Vector3.zero;
         }
 
-        if (GUILayout.Button("Random") && activeSteering != null)
-        {
+        if (GUILayout.Button("Random") && activeSteering != null){
             activeSteering.targetObject = null;
             activeSteering.targetPosition = Random.insideUnitSphere * 50;
         }
 		
 		targetRow = 3;
 		
-		while (targetRow < targetRowsPerColumn && targetIndex < targets.Length)
-		{
-			if (GUILayout.Button(targets[targetIndex].name) && activeSteering != null)
-	        {
+		while (targetRow < targetRowsPerColumn && targetIndex < targets.Length){
+			if (GUILayout.Button(targets[targetIndex].name) && activeSteering != null){
 	            activeSteering.targetObject = targets[targetIndex];
 	        }
 			
@@ -282,16 +231,13 @@ public class TargetSelector : WindowManager
 		
 		GUILayout.EndVertical();	
 		
-		while (targetIndex < targets.Length)
-		{	
+		while (targetIndex < targets.Length){	
 			GUILayout.BeginVertical();
 			
 			targetRow = 0;
 		
-			while (targetRow < targetRowsPerColumn && targetIndex < targets.Length)
-			{
-				if (GUILayout.Button(targets[targetIndex].name) && activeSteering != null)
-		        {
+			while (targetRow < targetRowsPerColumn && targetIndex < targets.Length){
+				if (GUILayout.Button(targets[targetIndex].name) && activeSteering != null){
 		            activeSteering.targetObject = targets[targetIndex];
 		        }
 				

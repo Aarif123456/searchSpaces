@@ -48,22 +48,17 @@
 
 #endregion Copyright © ThotLab Games 2011. Licensed under the terms of the Microsoft Reciprocal Licence (Ms-RL).
 
-//using Thot.GameAI;
-
 using UnityEngine;
 
 public sealed class SimpleKinematicWeebleMotor : KinematicWeebleMotor 
 {
-	protected override void UpdateVelocity()
-	{
-		if (desiredLinear.HasValue)
-		{
+	protected override void UpdateVelocity(){
+		if (desiredLinear.HasValue){
 			Vector3 desiredVelocity = LocalToWorld(desiredLinear.Value);
 
 			linearVelocity = desiredVelocity;
 			
-			if (linearVelocity.magnitude > maximumSpeed)
-			{
+			if (linearVelocity.magnitude > maximumSpeed){
 				linearVelocity = linearVelocity.normalized * maximumSpeed;
 			}
 			
@@ -71,16 +66,13 @@ public sealed class SimpleKinematicWeebleMotor : KinematicWeebleMotor
 		}
 	}
 	
-	protected override void UpdateAngularVelocity()
-	{
-		if (desiredAngular.HasValue)
-		{
+	protected override void UpdateAngularVelocity(){
+		if (desiredAngular.HasValue){
 			angularVelocity = desiredAngular.Value;
 			angularVelocity.x = 0;
 			angularVelocity.z = 0;
 			
-			if (angularVelocity.y > maximumAngularSpeed)
-			{
+			if (angularVelocity.y > maximumAngularSpeed){
 				angularVelocity.y = maximumAngularSpeed;
 			}
 			

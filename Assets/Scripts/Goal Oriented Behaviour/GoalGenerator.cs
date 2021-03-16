@@ -68,24 +68,20 @@ public class GoalGenerator : MonoBehaviour
 	private SearchSpace searchSpace;
 	private Vector2? currentDestination;
 	
-	public void Awake()
-	{
+	public void Awake(){
 		searchSpace = GetComponent<SearchSpace>();
 	}
 	
-	public IEnumerator Start()
-	{
+	public IEnumerator Start(){
 		while ( searchSpace == null ||
-		        searchSpace.Graph == null)
-		{
+		        searchSpace.Graph == null){
 			yield return 0;
 		}
 		
 		FindPathToNextDestination();
 	}
 	
-	private void OnEnable()
-	{
+	private void OnEnable(){
 		EventManager.Instance.Subscribe<FollowCompletedEventPayload>(
 			Events.FollowCompleted, 
 		    OnFollowCompleted);
@@ -95,8 +91,7 @@ public class GoalGenerator : MonoBehaviour
 		    OnFollowFailed);
 	}
 	
-	private void OnDisable()
-	{
+	private void OnDisable(){
 		EventManager.Instance.Unsubscribe<FollowCompletedEventPayload>(
 			Events.FollowCompleted, 
 		    OnFollowCompleted);
@@ -110,27 +105,22 @@ public class GoalGenerator : MonoBehaviour
     /// Called to determine the next target either randomly or from the destination queue.
     /// This posts a path-finding request for the target.
     /// </summary>
-    private void FindPathToNextDestination()
-    {
+    private void FindPathToNextDestination(){
 		currentDestination = null;
 		
 		if ( searchSpace == null ||
-		     searchSpace.Graph == null)
-		{
+		     searchSpace.Graph == null){
 			return;
 		}
 		
-        if (chooseRandomly)
-        {
+        if (chooseRandomly){
 			currentDestination = searchSpace.GetRandomEntityPosition();
 		}
-		else if (destinationQueue.Count > 0)
-        {
+		else if (destinationQueue.Count > 0){
             currentDestination = destinationQueue.Dequeue();
         }
 		
-		if (currentDestination.HasValue)
-		{
+		if (currentDestination.HasValue){
 			EventManager.Instance.Enqueue<PathRequestEventPayload>(
 				Events.PathRequest,
 			    new PathRequestEventPayload(searchSpace.gameObject, currentDestination.Value));
@@ -140,8 +130,7 @@ public class GoalGenerator : MonoBehaviour
 	/// <summary>
     /// This is called when the path follower successful completes following a path.
     /// </summary>
-    protected void OnFollowCompleted(Event<FollowCompletedEventPayload> eventArg)
-    {
+    protected void OnFollowCompleted(Event<FollowCompletedEventPayload> eventArg){
 		FollowCompletedEventPayload payload = eventArg.EventData;
 		
         if (payload.gameObject != gameObject) // event not for us
@@ -155,8 +144,7 @@ public class GoalGenerator : MonoBehaviour
     /// <summary>
     /// This is called when the path follower failed to complete following a path.
     /// </summary>
-    protected void OnFollowFailed(Event<FollowFailedEventPayload> eventArg)
-    {
+    protected void OnFollowFailed(Event<FollowFailedEventPayload> eventArg){
 		FollowFailedEventPayload payload = eventArg.EventData;
 			
         if (payload.gameObject != gameObject) // event not for us

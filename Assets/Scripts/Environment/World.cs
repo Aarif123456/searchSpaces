@@ -58,8 +58,7 @@ public abstract class World : MonoBehaviour
 
     public static World Instance
     {
-        get
-        {
+        get {
 			return _instance;
         }
     }
@@ -70,10 +69,8 @@ public abstract class World : MonoBehaviour
 	public Vector2 Size { get; protected set; }
 	public Vector2 Center { get; protected set; }
 	
-	public virtual void Awake()
-	{
-		if (_instance != null)
-		{
+	public virtual void Awake(){
+		if (_instance != null){
 			Debug.Log("Multiple instances of World!");
 		}
 		
@@ -84,17 +81,14 @@ public abstract class World : MonoBehaviour
 	public abstract Vector3 GroundPositionAt(Vector2 point);
 	public abstract Vector3 GroundPositionAt(Vector2 point, float heightOffset);
 	
-	public bool IsPointInObstacle(Vector2 point)
-	{
+	public bool IsPointInObstacle(Vector2 point){
 		Vector3 groundPosition = GroundPositionAt(point);
 		groundPosition.y -= 1;
 		
-		foreach (RaycastHit hit in Physics.RaycastAll(groundPosition, Vector3.up, float.MaxValue))
-		{
+		foreach (RaycastHit hit in Physics.RaycastAll(groundPosition, Vector3.up, float.MaxValue)){
 			Entity entity = hit.collider.gameObject.GetComponent<Entity>();
 
-			if (entity != null && entity.isObstacle)
-			{
+			if (entity != null && entity.isObstacle){
 				return true;
 			}
 		}
@@ -102,8 +96,7 @@ public abstract class World : MonoBehaviour
 		return false;
 	}
 	
-	public Vector2 GetRandomPosition()
-    {
+	public Vector2 GetRandomPosition(){
         int attempts = 0;
         var position = new Vector2();
         while (attempts < 1000) // shouldn't hardcode max attempts
@@ -112,8 +105,7 @@ public abstract class World : MonoBehaviour
             position.y =
                 Random.Range(Center.y - Size.y / 2, Center.y + Size.y / 2);
 
-            if (!IsPointInObstacle(position))
-            {
+            if (!IsPointInObstacle(position)){
                 return position;
             }
 
@@ -124,8 +116,7 @@ public abstract class World : MonoBehaviour
         return position;
     }
 	
-	public Vector2 GetRandomEntityPosition(MovingEntity movingEntity)
-    {
+	public Vector2 GetRandomEntityPosition(MovingEntity movingEntity){
         int attempts = 0;
         var position = new Vector2();
         while (attempts < 1000) // shouldn't hardcode max attempts
@@ -134,8 +125,7 @@ public abstract class World : MonoBehaviour
             position.y =
                 Random.Range(Center.y - Size.y / 2, Center.y + Size.y / 2);
 
-            if (!movingEntity.IsEntityInObstacle(position))
-            {
+            if (!movingEntity.IsEntityInObstacle(position)){
                 return position;
             }
 

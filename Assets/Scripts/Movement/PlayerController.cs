@@ -61,20 +61,16 @@ public sealed class PlayerController : MonoBehaviour
 	
 	private Motor motor;
 	
-	private void Awake()
-	{
+	private void Awake(){
 		motor = GetComponent<Motor>();
 		
-		if (motor == null)
-		{
+		if (motor == null){
 			Debug.Log("Provide a motor.");
 		}
 	}
 	
-	private void Update()
-	{
-		if (motor == null || motor.isAiControlled)
-		{
+	private void Update(){
+		if (motor == null || motor.isAiControlled){
 			return;
 		}
 		
@@ -83,46 +79,38 @@ public sealed class PlayerController : MonoBehaviour
 		HandleActionInput();
 	}
 	
-	private void GetLocomotionInput()
-	{
+	private void GetLocomotionInput(){
 		float deadZone = 0.1f;
 		
 		Vector2 moveVector = Vector2.zero;
 		
 		float longitudinalMoveInput = Input.GetAxis(LongitudinalMoveAxis);
-		if (Mathf.Abs(longitudinalMoveInput) > deadZone)
-		{
+		if (Mathf.Abs(longitudinalMoveInput) > deadZone){
 			moveVector += Vector2.up * longitudinalMoveInput;
 		}
 		
 		float lateralMoveInput = Input.GetAxis(LateralMoveAxis);
-		if (Mathf.Abs(lateralMoveInput) > deadZone)
-		{
+		if (Mathf.Abs(lateralMoveInput) > deadZone){
 			moveVector += Vector2.right * lateralMoveInput;
 		}
 		
-		if (motor.IsKinematic)
-		{
+		if (motor.IsKinematic){
 			moveVector *= motor.maximumSpeed;		
 			motor.desiredLinear = new Vector3(moveVector.x, 0, moveVector.y);
 		}
-		else
-		{
+		else {
 			moveVector *= motor.maximumAcceleration;
 			motor.desiredLinear = new Vector3(moveVector.x, 0, moveVector.y);
 		}
 	}
 	
-	private void HandleActionInput()
-	{
-		if (Input.GetButtonDown(JumpButton))
-		{
+	private void HandleActionInput(){
+		if (Input.GetButtonDown(JumpButton)){
 			Jump();
 		}	
 	}
 	
-	private void Jump()
-	{
+	private void Jump(){
 		//motor.JumpDesired = true;
 	}
 	

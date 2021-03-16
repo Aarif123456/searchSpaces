@@ -11,8 +11,7 @@ public struct TraversalCompletedEventPayload
 
     public TraversalCompletedEventPayload(
         GameObject gameObject,
-        PathEdge edge)
-    {
+        PathEdge edge){
         this.gameObject = gameObject;
         this.edge = edge;
     }
@@ -25,8 +24,7 @@ public struct TraversalFailedEventPayload
 
     public TraversalFailedEventPayload(
         GameObject gameObject,
-        PathEdge edge)
-    {
+        PathEdge edge){
         this.gameObject = gameObject;
         this.edge = edge;
     }
@@ -49,8 +47,7 @@ public sealed class EdgeTraverser : MonoBehaviour
 
     public int TraversalMargin { get; set; }
 	
-	public void Awake()
-	{
+	public void Awake(){
 		TraversalMargin = 3;
 		movingEntity = GetComponent<MovingEntity>();
 		aiController = GetComponent<AiController>();
@@ -58,42 +55,35 @@ public sealed class EdgeTraverser : MonoBehaviour
 		arrive = GetComponent<Arrive>();
 	}
 	
-	public void Update()
-	{
+	public void Update(){
 		CheckIfStuck();
 	}
 	
-	private void OnEnable()
-	{
+	private void OnEnable(){
 		EventManager.Instance.Subscribe<ArrivalEventPayload>(
 			Events.Arrival, 
 		    OnArrival);
 	}
 	
-	private void OnDisable()
-	{
+	private void OnDisable(){
 		EventManager.Instance.Unsubscribe<ArrivalEventPayload>(
 			Events.Arrival, 
 		    OnArrival);
 	}
 	
-	public bool Traverse(PathEdge edgeToFollow, bool brakeOnApproach, bool stopOnArrival)
-    {	
+	public bool Traverse(PathEdge edgeToFollow, bool brakeOnApproach, bool stopOnArrival){	
 		if ((movingEntity == null || !movingEntity.enabled) && 
-		    (aiController == null || !aiController.enabled))
-		{
+		    (aiController == null || !aiController.enabled)){
 			return false;
 		}
 		
 		// Seek must exist and not be active
-		if (seek == null || seek.TargetPosition.HasValue)
-		{
+		if (seek == null || seek.TargetPosition.HasValue){
 			return false;
 		}
 		
 		// Arrive must exist and not be active
-		if (arrive == null || arrive.TargetPosition.HasValue)
-		{
+		if (arrive == null || arrive.TargetPosition.HasValue){
 			return false;
 		}
 		
@@ -102,10 +92,8 @@ public sealed class EdgeTraverser : MonoBehaviour
 
         EdgeToFollow = edgeToFollow;
 
-        if (brakeOnApproach)
-        {
-			if (steering != null)
-			{
+        if (brakeOnApproach){
+			if (steering != null){
 				steering.enabled = steering.isOn = false;
 			}
 			
@@ -115,15 +103,12 @@ public sealed class EdgeTraverser : MonoBehaviour
 					? movingEntity.PositionAt(EdgeToFollow.Destination) 
 					: World.Instance.GroundPositionAt(EdgeToFollow.Destination);
 			steering.enabled = steering.isOn = true;
-			if ((movingEntity == null || !movingEntity.enabled) && aiController != null && aiController.enabled)
-			{
+			if ((movingEntity == null || !movingEntity.enabled) && aiController != null && aiController.enabled){
 				aiController.SetSteering(steering);
 			}
         }
-        else
-        {
-			if (steering != null)
-			{
+        else {
+			if (steering != null){
 				steering.enabled = steering.isOn = false;
 			}
 			
@@ -133,8 +118,7 @@ public sealed class EdgeTraverser : MonoBehaviour
 					? movingEntity.PositionAt(EdgeToFollow.Destination) 
 					: World.Instance.GroundPositionAt(EdgeToFollow.Destination);
 			steering.enabled = steering.isOn = true;
-			if ((movingEntity == null || !movingEntity.enabled) && aiController != null && aiController.enabled)
-			{
+			if ((movingEntity == null || !movingEntity.enabled) && aiController != null && aiController.enabled){
 				aiController.SetSteering(steering);
 			}
         }
@@ -142,8 +126,7 @@ public sealed class EdgeTraverser : MonoBehaviour
         return true;
     }
 
-    private void OnArrival(Event<ArrivalEventPayload> eventArg)
-    {
+    private void OnArrival(Event<ArrivalEventPayload> eventArg){
 		ArrivalEventPayload payload = eventArg.EventData;
 	
         if (payload.gameObject != gameObject) // event not for us
@@ -151,37 +134,30 @@ public sealed class EdgeTraverser : MonoBehaviour
             return;
         }
 
-        if (EdgeToFollow != null && payload.destination == EdgeToFollow.Destination)
-        {
+        if (EdgeToFollow != null && payload.destination == EdgeToFollow.Destination){
             EventManager.Instance.Enqueue<TraversalCompletedEventPayload>(
                 Events.TraversalCompleted,
                 new TraversalCompletedEventPayload(payload.gameObject, EdgeToFollow));
         }
     }
 
-    private bool IsStuck()
-    {
+    private bool IsStuck(){
         //// TODO: add stuck test based on difference between current and
         //// previous position (perhaps taking expected velocity and elapsed time into account)
         return false; // for now, just return false
     }
 
-    private void CheckIfStuck()
-    {
-        if (IsStuck())
-        {
+    private void CheckIfStuck(){
+        if (IsStuck()){
 			GameObject traverserGameObject/* = gameObject */; // depends if the EdgeTraverser is attached to the traversing object
 			
-			if (movingEntity != null && movingEntity.enabled)
-			{
+			if (movingEntity != null && movingEntity.enabled){
 				traverserGameObject = movingEntity.gameObject;
 			}
-			else if (aiController != null && aiController.enabled)
-			{
+			else if (aiController != null && aiController.enabled){
 				traverserGameObject = aiController.gameObject;
 			}
-			else
-			{
+			else {
 				traverserGameObject = gameObject;
 			}
 		 
@@ -190,16 +166,13 @@ public sealed class EdgeTraverser : MonoBehaviour
                 new TraversalFailedEventPayload(traverserGameObject, EdgeToFollow));
         }
 		
-		if (movingEntity != null && movingEntity.enabled)
-		{
+		if (movingEntity != null && movingEntity.enabled){
 			previousPosition = movingEntity.Position2D;
 		}
-		else if (aiController != null && aiController.enabled)
-		{
+		else if (aiController != null && aiController.enabled){
 			previousPosition = aiController.transform.position.To2D();
 		}
-		else
-		{
+		else {
 			previousPosition = transform.position.To2D();
 		}
     }

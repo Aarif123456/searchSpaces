@@ -78,8 +78,7 @@ namespace Thot.GameAI
             /// <param name="eventDelegate">The event delegate.</param>
             /// <param name="eventKey">The event key.</param>
             public Subscription(System.Delegate eventDelegate, object eventKey)
-                : this()
-            {
+                : this(){
                 EventDelegate = eventDelegate;
                 EventKey = eventKey;
             }

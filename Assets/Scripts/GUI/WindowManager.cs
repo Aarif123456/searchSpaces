@@ -80,8 +80,7 @@ public class WindowManager : MonoBehaviour
     //     base.Start();
     //     // etc.
     // }
-    public virtual void Start()
-    {
+    public virtual void Start(){
         windowId = nextWindowId++;
     }
 }

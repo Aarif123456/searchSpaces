@@ -62,37 +62,30 @@ public class Entity : MonoBehaviour
 
     private MessageDisplayer messageDisplayer;
 
-    public virtual void Awake()
-    {
+    public virtual void Awake(){
         id = _nextId++;
         EntityManager.Add(this);
 
         messageDisplayer = GetComponent<MessageDisplayer>();
     }
 
-    public virtual void Start()
-    {
+    public virtual void Start(){
     }
 
-    public virtual void Update()
-    {
+    public virtual void Update(){
     }
 
-    public virtual bool HandleMessage(Telegram telegram)
-    {
+    public virtual bool HandleMessage(Telegram telegram){
         return false;
     }
 	
 	// TODO: Replace Message system with Event system.
-	public virtual bool HandleEvent<T>(Event<T> eventArguments)
-    {
+	public virtual bool HandleEvent<T>(Event<T> eventArguments){
         return false;
     }
 
-    public void DisplayMessage(string message)
-    {
-        if (messageDisplayer != null)
-        {
+    public void DisplayMessage(string message){
+        if (messageDisplayer != null){
             messageDisplayer.DisplayMessage(name + ": " + message);
         }
     }

@@ -58,8 +58,7 @@ namespace Thot.GameAI
 	
 	public sealed class Maze
 	{
-		public Maze(int rows, int cols)
-        {
+		public Maze(int rows, int cols){
             Rows = rows;
             Columns = cols;
             Labrynth = new MazeCell[rows, cols];
@@ -83,12 +82,9 @@ namespace Thot.GameAI
 		/// <summary>
         /// Create a maze.
         /// </summary>
-        public void CreateMaze()
-        {
-            for (int i = 0; i < Rows; i++)
-            {
-                for (int j = 0; j < Columns; j++)
-                {
+        public void CreateMaze(){
+            for (int i = 0; i < Rows; i++){
+                for (int j = 0; j < Columns; j++){
                     Labrynth[i, j] = new MazeCell(i, j, this);
                 }
             }
@@ -99,42 +95,34 @@ namespace Thot.GameAI
 
             var a = new List<MazeCell> { Labrynth[0, 0] }; // the fringe
             MazeCell currentCell;
-            while (numconnected < (Rows * Columns))
-            {
+            while (numconnected < (Rows * Columns)){
                 int r = Random.Range(0, a.Count);
                 currentCell = (MazeCell)a[r];
                 int count = 0;
                 if (currentCell.CanGoUp() || currentCell.CanGoDown() ||
-                    currentCell.CanGoLeft() || currentCell.CanGoRight())
-                {
+                    currentCell.CanGoLeft() || currentCell.CanGoRight()){
                     // we can knock down a wall
                     // count the number of ways we can go, and then pick a wall to knock down.
-                    if (currentCell.CanGoUp())
-                    {
+                    if (currentCell.CanGoUp()){
                         count++;
                     }
 
-                    if (currentCell.CanGoDown())
-                    {
+                    if (currentCell.CanGoDown()){
                         count++;
                     }
 
-                    if (currentCell.CanGoLeft())
-                    {
+                    if (currentCell.CanGoLeft()){
                         count++;
                     }
 
-                    if (currentCell.CanGoRight())
-                    {
+                    if (currentCell.CanGoRight()){
                         count++;
                     }
 
                     int temp = Random.Range(0, count);
-                    if (currentCell.CanGoUp())
-                    {
+                    if (currentCell.CanGoUp()){
                         temp--;
-                        if (temp == -1)
-                        {
+                        if (temp == -1){
                             currentCell.UpCell.IsConnected = true;
                             currentCell.UpCell.Bottom = false;
                             a.Add(currentCell.UpCell);
@@ -142,11 +130,9 @@ namespace Thot.GameAI
                         }
                     }
 
-                    if (currentCell.CanGoDown())
-                    {
+                    if (currentCell.CanGoDown()){
                         temp--;
-                        if (temp == -1)
-                        {
+                        if (temp == -1){
                             currentCell.DownCell.IsConnected = true;
                             currentCell.Bottom = false;
                             a.Add(currentCell.DownCell);
@@ -154,11 +140,9 @@ namespace Thot.GameAI
                         }
                     }
 
-                    if (currentCell.CanGoLeft())
-                    {
+                    if (currentCell.CanGoLeft()){
                         temp--;
-                        if (temp == -1)
-                        {
+                        if (temp == -1){
                             currentCell.LeftCell.IsConnected = true;
                             currentCell.LeftCell.Right = false;
                             a.Add(currentCell.LeftCell);
@@ -166,11 +150,9 @@ namespace Thot.GameAI
                         }
                     }
 
-                    if (currentCell.CanGoRight())
-                    {
+                    if (currentCell.CanGoRight()){
                         temp--;
-                        if (temp == -1)
-                        {
+                        if (temp == -1){
                             currentCell.RightCell.IsConnected = true;
                             currentCell.Right = false;
                             a.Add(currentCell.RightCell);
@@ -189,10 +171,8 @@ namespace Thot.GameAI
         /// Output a character-based representation of the map.
         /// </summary>
         /// <param name="filename">The filename to output to.</param>
-        public void OutputMap(string filename)
-        {
-            if (string.IsNullOrEmpty(filename))
-            {
+        public void OutputMap(string filename){
+            if (string.IsNullOrEmpty(filename)){
                 return;
             }
 
@@ -204,8 +184,7 @@ namespace Thot.GameAI
                 streamWriter.WriteLine(this);
                 streamWriter.Close();
             }
-            catch (System.Exception e)
-            {
+            catch (System.Exception e){
                 Debug.LogError("Error outputting map: " + e.Message);
                 throw;
             }
@@ -215,46 +194,38 @@ namespace Thot.GameAI
         /// Load a map from the specified filename.
         /// </summary>
         /// <param name="filename">The filename to load from.</param>
-        public void LoadMap(string filename)
-        {
-            if (string.IsNullOrEmpty(filename))
-            {
+        public void LoadMap(string filename){
+            if (string.IsNullOrEmpty(filename)){
                 return;
             }
 
             try
             {
-                for (int i = 0; i < Rows; i++)
-                {
-                    for (int j = 0; j < Columns; j++)
-                    {
+                for (int i = 0; i < Rows; i++){
+                    for (int j = 0; j < Columns; j++){
                         Labrynth[i, j] = new MazeCell(i, j, this);
                     }
                 }
                 // Create an instance of StreamReader to read from a file.
                 // The using statement also closes the StreamReader.
-                using (StreamReader sr = new StreamReader(filename))
-                {
+                using (StreamReader sr = new StreamReader(filename)){
                     string line;
                     /* Skip the header*/
                     for(int i=0; i<3; i++){
                         sr.ReadLine(); 
                     }
                     
-                    for (int row = 0; (line = sr.ReadLine()) != null && row < Rows; row++)
-                    {
+                    for (int row = 0; (line = sr.ReadLine()) != null && row < Rows; row++){
                         line = line.Substring(3);
                         char[] input = line.ToCharArray();
-                        for (int col = 0; col+1<input.Length; col+=2)
-                        { 
+                        for (int col = 0; col+1<input.Length; col+=2){ 
                             Labrynth[row, col/2].Right = input[col]=='|';
                             Labrynth[row, col/2].Bottom = input[col+1]=='_';
                         }
                     }
                 }
             }
-            catch (System.Exception e)
-            {
+            catch (System.Exception e){
                Debug.LogError("Error loading map: " + e.Message);
                throw;
             }
@@ -264,8 +235,7 @@ namespace Thot.GameAI
         /// Save a map to the specified filename.
         /// </summary>
         /// <param name="filename">The filename to savee to.</param>
-        public void SaveMap(string filename)
-        {
+        public void SaveMap(string filename){
             //// TODO
         }
 
@@ -273,28 +243,23 @@ namespace Thot.GameAI
         /// Create a string representation of the map.
         /// </summary>
         /// <returns>A string representation of the map.</returns>
-        public override string ToString()
-        {
+        public override string ToString(){
             var stringBuilder = new StringBuilder();
 
             // column headers
             stringBuilder.Append("    ");
-            for (int column = 0; column < Columns; column++)
-            {
-                if (column / 10 > 0)
-                {
+            for (int column = 0; column < Columns; column++){
+                if (column / 10 > 0){
                     stringBuilder.Append(column / 10 + " ");
                 }
-                else
-                {
+                else {
                     stringBuilder.Append("  ");
                 }
             }
 
             stringBuilder.Append(System.Environment.NewLine);
             stringBuilder.Append("    ");
-            for (int column = 0; column < Columns; column++)
-            {
+            for (int column = 0; column < Columns; column++){
                 stringBuilder.Append(column % 10 + " ");
             }
 
@@ -302,41 +267,33 @@ namespace Thot.GameAI
 
             stringBuilder.Append("   ");
             stringBuilder.Append(" ");
-            for (int column = 0; column < Columns; column++)
-            {
+            for (int column = 0; column < Columns; column++){
                 stringBuilder.Append("_ ");
             }
 
             stringBuilder.Append(System.Environment.NewLine);
 
             // maze
-            for (int row = 0; row < Rows; row++)
-            {
+            for (int row = 0; row < Rows; row++){
                 // number the rows
-                if (row < 10)
-                {
+                if (row < 10){
                     stringBuilder.Append(" ");
                 }
 
                 stringBuilder.Append(row + " ");
                 stringBuilder.Append("|");
-                for (int column = 0; column < Columns; column++)
-                {
-                    if (Labrynth[row, column].Bottom)
-                    {
+                for (int column = 0; column < Columns; column++){
+                    if (Labrynth[row, column].Bottom){
                         stringBuilder.Append("_");
                     }
-                    else
-                    {
+                    else {
                         stringBuilder.Append(" ");
                     }
 
-                    if (Labrynth[row, column].Right)
-                    {
+                    if (Labrynth[row, column].Right){
                         stringBuilder.Append("|");
                     }
-                    else
-                    {
+                    else {
                         stringBuilder.Append(" ");
                     }
                 }

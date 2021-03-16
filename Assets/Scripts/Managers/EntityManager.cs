@@ -58,30 +58,25 @@ namespace Thot.GameAI
         private static Dictionary<int, Entity> _entityIdDictionary = new Dictionary<int, Entity>();
         private static Dictionary<string, Entity> _entityNameDictionary = new Dictionary<string, Entity>();
 
-        public static void Add(Entity entity)
-        {
-            if (!_entityIdDictionary.ContainsKey(entity.id))
-            {
+        public static void Add(Entity entity){
+            if (!_entityIdDictionary.ContainsKey(entity.id)){
                 _entityIdDictionary.Add(entity.id, entity);
             }
 
             // TODO: catch duplicate name errors
-            if (!_entityNameDictionary.ContainsKey(entity.name))
-            {
+            if (!_entityNameDictionary.ContainsKey(entity.name)){
                 _entityNameDictionary.Add(entity.name, entity);
             }
         }
 
-        public static void Remove(Entity entity)
-        {
+        public static void Remove(Entity entity){
             _entityIdDictionary.Remove(entity.id);
             _entityNameDictionary.Remove(entity.name);
         }
 
         public static T Find<T>(int entityId) where T : Entity
         {
-            if (!_entityIdDictionary.ContainsKey(entityId))
-            {
+            if (!_entityIdDictionary.ContainsKey(entityId)){
                 return null;
             }
 
@@ -90,8 +85,7 @@ namespace Thot.GameAI
 
         public static T Find<T>(string entityName) where T : Entity
         {
-            if (!_entityNameDictionary.ContainsKey(entityName))
-            {
+            if (!_entityNameDictionary.ContainsKey(entityName)){
                 return null;
             }
 
@@ -101,10 +95,8 @@ namespace Thot.GameAI
         public static List<T> FindAll<T>() where T : Entity
         {
             List<T> resultList = new List<T>();
-            foreach (T entityT in _entityIdDictionary.Values)
-            {
-                if (entityT != null)
-                {
+            foreach (T entityT in _entityIdDictionary.Values){
+                if (entityT != null){
                     resultList.Add(entityT);
                 }
             }

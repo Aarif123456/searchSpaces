@@ -64,8 +64,7 @@ namespace Thot.GameAI
         /// <param name="row">The cell's row index.</param>
         /// <param name="column">The cell's column index.</param>
         /// <param name="maze">The maze that owns this cell.</param>
-        public MazeCell(int row, int column, Maze maze)
-        {
+        public MazeCell(int row, int column, Maze maze){
             _row = row;
             _column = column;
             Bottom = true;
@@ -116,10 +115,8 @@ namespace Thot.GameAI
         /// Determine whether it is possible to move to the up.
         /// </summary>
         /// <returns>True if it is possible to move to the up.</returns>
-        public bool CanGoUp()
-        {
-            if (_row == 0)
-            {
+        public bool CanGoUp(){
+            if (_row == 0){
                 return false;
             }
 
@@ -130,10 +127,8 @@ namespace Thot.GameAI
         /// Determine whether it is possible to move to the left.
         /// </summary>
         /// <returns>True if it is possible to move to the left.</returns>
-        public bool CanGoLeft()
-        {
-            if (_column == 0)
-            {
+        public bool CanGoLeft(){
+            if (_column == 0){
                 return false;
             }
 
@@ -144,10 +139,8 @@ namespace Thot.GameAI
         /// Determine whether it is possible to move to the down.
         /// </summary>
         /// <returns>True if it is possible to move to the down.</returns>
-        public bool CanGoDown()
-        {
-            if (_row == _maze.Rows - 1)
-            {
+        public bool CanGoDown(){
+            if (_row == _maze.Rows - 1){
                 return false;
             }
 
@@ -158,10 +151,8 @@ namespace Thot.GameAI
         /// Determine whether it is possible to move to the right.
         /// </summary>
         /// <returns>True if it is possible to move to the right.</returns>
-        public bool CanGoRight()
-        {
-            if (_column == _maze.Columns - 1)
-            {
+        public bool CanGoRight(){
+            if (_column == _maze.Columns - 1){
                 return false;
             }
 

@@ -12,32 +12,28 @@ namespace Thot.GameAI
 	{
 		public GameObject gameObject;
 		
-		public Edge(int from, int to, float cost)
-        {
+		public Edge(int from, int to, float cost){
             Cost = cost;
             From = from;
             To = to;
         }
 
         public Edge(int from, int to)
-            : this(from, to, 1.0f)
-        {
+            : this(from, to, 1.0f){
         }
 
         public Edge()
             : this(
                 Node.INVALID_NODE_INDEX,
                 Node.INVALID_NODE_INDEX,
-                1.0f)
-        {
+                1.0f){
         }
 
         public Edge(Edge src)
             : this(
                 src.From,
                 src.To,
-                src.Cost)
-        {
+                src.Cost){
         }
 
         /// <summary>
@@ -61,8 +57,7 @@ namespace Thot.GameAI
         /// Generate a string representation of this edge.
         /// </summary>
         /// <returns>A string representation of this edge.</returns>
-        public override string ToString()
-        {
+        public override string ToString(){
             var edgeText = new StringBuilder();
             edgeText.AppendFormat("{0}--[{1}]-->{2}", From, Cost, To);
             return edgeText.ToString();

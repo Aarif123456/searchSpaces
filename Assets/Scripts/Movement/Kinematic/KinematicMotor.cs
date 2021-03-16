@@ -52,8 +52,7 @@ using UnityEngine;
 
 public abstract class KinematicMotor : Motor 
 {
-	protected override void Awake()
-	{
+	protected override void Awake(){
 		base.Awake();
 		
 		IsKinematic = true;

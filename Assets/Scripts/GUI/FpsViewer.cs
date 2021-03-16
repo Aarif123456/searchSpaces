@@ -83,22 +83,19 @@ public class FpsViewer : WindowManager
 
     // If this behaviour is enabled, Start is called once
     // after all Awake calls and before all any Update calls.
-    public override void Start()
-    {
+    public override void Start(){
         base.Start(); // initializes the window id
         timeLeft = updateInterval;
     }
 
     // If this behaviour is enabled, Update is called once per frame.
-    public void Update()
-    {
+    public void Update(){
         timeLeft -= Time.deltaTime;
         accumulatedFps += Time.timeScale / Time.deltaTime;
         ++frames;
 
         // Interval ended - update fps and start new interval
-        if (timeLeft <= 0.0f)
-        {
+        if (timeLeft <= 0.0f){
             fps = accumulatedFps / frames;
             timeLeft = updateInterval;
             accumulatedFps = 0.0f;
@@ -106,18 +103,15 @@ public class FpsViewer : WindowManager
         }
     }
 
-    public void OnEnable()
-    {
+    public void OnEnable(){
         width = 0;
         height = 0;
     }
 
     // If this behaviour is enabled, OnGUI is called for rendering and handling GUI events.
     // It might be called several times per frame (one call per event).
-    public void OnGUI()
-    {
-        if (width != Screen.width || height != Screen.height)
-        {
+    public void OnGUI(){
+        if (width != Screen.width || height != Screen.height){
             float x = alignRight
                           ? Screen.width * 0.98f - positionOffset.x - 50
                           : Screen.width * 0.02f + positionOffset.x;
@@ -134,8 +128,7 @@ public class FpsViewer : WindowManager
 
     // This creates the GUI inside the window.
     // It requires the id of the window it's currently making GUI for.
-    private void WindowFunction(int windowID)
-    {
+    private void WindowFunction(int windowID){
         // Draw any Controls inside the window here.
 
         GUI.Label(new Rect(10, 10, 60, 20), fps.ToString("f1"));

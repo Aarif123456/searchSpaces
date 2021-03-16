@@ -22,8 +22,7 @@ namespace Thot.GameAI
 		    Node fromNode, 
 		    Node toNode,
 		    Edge edge,
-		    GameObject movingObject)
-		{
+		    GameObject movingObject){
 			Source = source;
             Destination = destination;
 			FromNode = fromNode;
@@ -50,39 +49,30 @@ namespace Thot.GameAI
 		public MovingEntity MovingEntity { get; set; }
 		public float Radius
 		{
-			get
-			{
-				if (MovingEntity != null && MovingEntity.enabled)
-				{
+			get {
+				if (MovingEntity != null && MovingEntity.enabled){
 					return MovingEntity.Radius;
 				}
-				else
-				{
+				else {
 					return 1;
 				}
 			}
 		}
 				
-		public override string ToString()
-		{
+		public override string ToString(){
 			return Source + "-->" + Destination;
 		}
 		
-		public void ShowEdge(bool show)
-		{
+		public void ShowEdge(bool show){
 			
-			if (ToNode != null)
-			{		
-				if (show)
-				{
-					if (UniversalPathManager.Instance.showPath)
-					{
+			if (ToNode != null){		
+				if (show){
+					if (UniversalPathManager.Instance.showPath){
 						waypointBeacon = CreatePointBeacon(ToNode.Position);
 						waypointMarker = CreatePointMarker(ToNode.Position);
 					}
 				}
-				else
-				{
+				else {
 					Object.Destroy(waypointBeacon);
 					waypointBeacon = null;
 					Object.Destroy(waypointMarker);
@@ -90,37 +80,28 @@ namespace Thot.GameAI
 				}
 			}
 			
-			if (Edge != null)
-			{
-				if (show)
-				{
-					if (UniversalPathManager.Instance.showPath)
-					{
+			if (Edge != null){
+				if (show){
+					if (UniversalPathManager.Instance.showPath){
 //						edgeMarker = CreateEdgeMarker(FromNode.Position, ToNode.Position);
 						edgeBeacon = CreateEdgeBeacon(FromNode.Position, ToNode.Position);
 					}
 				}
-				else
-				{
+				else {
 					Object.Destroy(edgeBeacon);
 					edgeBeacon = null;
 				}
 			}
 			
-			if (Edge == null)
-			{
-				if (FromNode == null && ToNode != null)
-				{
-					if (show)
-					{
-						if (UniversalPathManager.Instance.showPath)
-						{
+			if (Edge == null){
+				if (FromNode == null && ToNode != null){
+					if (show){
+						if (UniversalPathManager.Instance.showPath){
 //							edgeMarker = CreateEdgeMarker(Source, ToNode.Position);
 							edgeBeacon = CreateEdgeBeacon(Source, ToNode.Position);
 						}
 					}
-					else
-					{
+					else {
 //						Object.Destroy(edgeMarker);
 //						edgeMarker = null;
 						Object.Destroy(edgeBeacon);
@@ -128,20 +109,16 @@ namespace Thot.GameAI
 					}	
 				}
 				
-				if (FromNode != null && ToNode == null)
-				{
-					if (show)
-					{
-						if (UniversalPathManager.Instance.showPath)
-						{
+				if (FromNode != null && ToNode == null){
+					if (show){
+						if (UniversalPathManager.Instance.showPath){
 //							edgeMarker = CreateEdgeMarker(FromNode.Position, Destination);
 							edgeBeacon = CreateEdgeBeacon(FromNode.Position, Destination);
 							waypointMarker = CreatePointMarker(Destination);
 							waypointBeacon = CreatePointBeacon(Destination);
 						}
 					}
-					else
-					{
+					else {
 //						Object.Destroy(edgeMarker);
 //						edgeMarker = null;
 						Object.Destroy(edgeBeacon);
@@ -155,8 +132,7 @@ namespace Thot.GameAI
 			}
 		}
 		
-		private GameObject CreatePointBeacon(Vector2 point)
-		{
+		private GameObject CreatePointBeacon(Vector2 point){
 			GameObject nodeMarkers = GameObject.Find("Game/NodeMarkers");
 			GameObject pointMarker = GameObject.CreatePrimitive(PrimitiveType.Cylinder);	
 			pointMarker.transform.position = World.Instance.GroundPositionAt(point);
@@ -174,8 +150,7 @@ namespace Thot.GameAI
 			return pointMarker;
 		}
 		
-		private GameObject CreateEdgeBeacon(Vector2 startPoint, Vector2 endPoint)
-		{
+		private GameObject CreateEdgeBeacon(Vector2 startPoint, Vector2 endPoint){
 			GameObject edgeMarkers = GameObject.Find("Game/EdgeMarkers");
 			GameObject edgeBeacon = GameObject.CreatePrimitive(PrimitiveType.Cube);
 			edgeBeacon.name = "EdgeBeacon " + startPoint + " ---> " + endPoint;
@@ -188,8 +163,7 @@ namespace Thot.GameAI
 	    	Vector2 direction = endPoint - startPoint;
 	    	float angle = Vector2.Angle(Vector2.up, direction);
 	    	Vector3 cross = Vector3.Cross(Vector2.up, direction);
-	    	if (cross.z > 0)
-			{
+	    	if (cross.z > 0){
 				angle = 360f - angle;
 			}
 	
@@ -207,8 +181,7 @@ namespace Thot.GameAI
 			return edgeBeacon;
 		}
 		
-		private GameObject CreatePointMarker(Vector2 point)
-		{
+		private GameObject CreatePointMarker(Vector2 point){
 			GameObject nodeMarkers = GameObject.Find("Game/NodeMarkers");
 			GameObject pointMarker = GameObject.CreatePrimitive(PrimitiveType.Sphere);	
 			pointMarker.transform.position = World.Instance.GroundPositionAt(point);

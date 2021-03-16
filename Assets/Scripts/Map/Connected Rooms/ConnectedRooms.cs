@@ -83,8 +83,7 @@ namespace Thot.GameAI
         /// </summary>
         /// <param name="rows">The number of rows in the map.</param>
         /// <param name="columns">The number of columns in the map.</param>
-        public ConnectedRooms(int rows, int columns)
-        {
+        public ConnectedRooms(int rows, int columns){
             Rows = rows < 10 ? 10 : rows;
             Columns = columns < 10 ? 10 : columns;
             MapFilename = "ConnectedRooms.txt";
@@ -131,8 +130,7 @@ namespace Thot.GameAI
         /// </remarks>
         public int Seed
         {
-            set
-            {
+            set {
                 _random = new System.Random(value);
             }
         }
@@ -249,8 +247,7 @@ namespace Thot.GameAI
         /// <summary>
         /// Reset the map.
         /// </summary>
-        public void ResetMap()
-        {
+        public void ResetMap(){
             Map = new int[Rows, Columns];
             Rooms = new List<Rect>(MaximumRoomCount);
             Corridors = new List<Rect>(MaximumRoomCount * 4);
@@ -262,47 +259,38 @@ namespace Thot.GameAI
         /// <summary>
         /// Build a map.
         /// </summary>
-        public void BuildMap()
-        {
+        public void BuildMap(){
             // Build a room at a random available location.
-            if (_currentRoomCount >= MaximumRoomCount || !BuildRoom(new Vector2(1, 1)))
-            {
+            if (_currentRoomCount >= MaximumRoomCount || !BuildRoom(new Vector2(1, 1))){
                 return;
             }
 
-            if (!BuildCorridorOnRoomEdge())
-            {
+            if (!BuildCorridorOnRoomEdge()){
                 return;
             }
 
-            for (int attempt = 0; attempt < MaximumAttempts; attempt++)
-            {
+            for (int attempt = 0; attempt < MaximumAttempts; attempt++){
                 int roll = _random.Next(0, 100);
 
-                if (roll < CorridorOnCorridorGenerationProbability)
-                {
+                if (roll < CorridorOnCorridorGenerationProbability){
                     BuildCorridorOnCorridor();
                 }
                 
-                if (roll < CorridorOnCorridorEndGenerationProbability)
-                {
+                if (roll < CorridorOnCorridorEndGenerationProbability){
                     BuildCorridorOnCorridorEnd();
                 }
                 
-                if (roll < CorridorOnRoomEdgeGenerationProbability)
-                {
+                if (roll < CorridorOnRoomEdgeGenerationProbability){
                     BuildCorridorOnRoomEdge();
                 }
 
                 if (_currentRoomCount < MaximumRoomCount && 
-                    roll < RoomOnCorridorGenerationProbability)
-                {
+                    roll < RoomOnCorridorGenerationProbability){
                     BuildRoomOnCorridor();
                 }
 
                 if (_currentRoomCount < MaximumRoomCount && 
-                    roll < RoomOnCorridorEndGenerationProbability)
-                {
+                    roll < RoomOnCorridorEndGenerationProbability){
                     BuildRoomOnCorridorEnd();
                 }
             }
@@ -315,58 +303,46 @@ namespace Thot.GameAI
         /// NOTE: This does not correctly handle corridor-corridor connections (no doors!).
         /// TODO: Fix!
         /// </remarks>
-        public void AddPointsOfVisibilityWaypoints()
-        {
-            foreach (Vector2 door in Doors)
-            {
+        public void AddPointsOfVisibilityWaypoints(){
+            foreach (Vector2 door in Doors){
                 var column = (int)door.x;
                 var row = (int)door.y;
-                if (Map[column, row] != (int)MapElements.Door)
-                {
+                if (Map[column, row] != (int)MapElements.Door){
                     continue;
                 }
 
-                if (column > 0 && Map[column - 1, row] == (int)MapElements.Space)
-                {
+                if (column > 0 && Map[column - 1, row] == (int)MapElements.Space){
                     Map[column - 1, row] = (int)MapElements.Waypoint;
                 }
 
-                if (column < Columns - 1 && Map[column + 1, row] == (int)MapElements.Space)
-                {
+                if (column < Columns - 1 && Map[column + 1, row] == (int)MapElements.Space){
                     Map[column + 1, row] = (int)MapElements.Waypoint;
                 }
 
-                if (row > 0 && Map[column, row - 1] == (int)MapElements.Space)
-                {
+                if (row > 0 && Map[column, row - 1] == (int)MapElements.Space){
                     Map[column, row - 1] = (int)MapElements.Waypoint;
                 }
 
-                if (row < Map.GetLength(1) - 1 && Map[column, row + 1] == (int)MapElements.Space)
-                {
+                if (row < Map.GetLength(1) - 1 && Map[column, row + 1] == (int)MapElements.Space){
                     Map[column, row + 1] = (int)MapElements.Waypoint;
                 }
             }
         }
 
-        public void AddCornerWayPoints()
-        {
-            for (int row = 1; row < Rows-1; row++)
-            {
-                for (int column = 1; column < Columns-1; column++)
-                {
+        public void AddCornerWayPoints(){
+            for (int row = 1; row < Rows-1; row++){
+                for (int column = 1; column < Columns-1; column++){
                     if(Map[column, row] == (int)MapElements.Wall){
                         if( (Map[column+1, row] == (int)MapElements.Space || Map[column+1, row] == (int)MapElements.Door) 
                             && (Map[column+1, row+1] == (int)MapElements.Space || Map[column+1, row+1] == (int)MapElements.Door)
                             && (Map[column, row+1] == (int)MapElements.Space || Map[column, row+1] == (int)MapElements.Door) 
-                          )
-                        {
+                          ){
                              Map[column+1, row +1] = (int)MapElements.Waypoint;
                         }
                         else if( (Map[column-1, row] == (int)MapElements.Space  || Map[column-1, row] == (int)MapElements.Door)
                             && (Map[column-1, row-1] == (int)MapElements.Space  || Map[column-1, row-1] == (int)MapElements.Door)
                             && (Map[column, row-1] == (int)MapElements.Space  || Map[column, row-1] == (int)MapElements.Door)
-                          )
-                        {
+                          ){
                             Map[column-1, row -1] = (int)MapElements.Waypoint;
                         }
                     }
@@ -378,10 +354,8 @@ namespace Thot.GameAI
         /// Output a character-based representation of the map.
         /// </summary>
         /// <param name="filename">The filename to output to.</param>
-        public void OutputMap(string filename)
-        {
-            if (string.IsNullOrEmpty(filename))
-            {
+        public void OutputMap(string filename){
+            if (string.IsNullOrEmpty(filename)){
                 return;
             }
 
@@ -393,8 +367,7 @@ namespace Thot.GameAI
                 streamWriter.WriteLine(this);
                 streamWriter.Close();
             }
-            catch (System.Exception e)
-            {
+            catch (System.Exception e){
                 Debug.LogError("Error outputting map: " + e.Message);
                 throw;
             }
@@ -404,10 +377,8 @@ namespace Thot.GameAI
         /// Load a map from the specified filename.
         /// </summary>
         /// <param name="filename">The filename to load from.</param>
-        public void LoadMap(string filename)
-        {
-            if (string.IsNullOrEmpty(filename))
-            {
+        public void LoadMap(string filename){
+            if (string.IsNullOrEmpty(filename)){
                 return;
             }
 
@@ -416,17 +387,14 @@ namespace Thot.GameAI
                 ResetMap();
                 // Create an instance of StreamReader to read from a file.
                 // The using statement also closes the StreamReader.
-                using (StreamReader sr = new StreamReader(filename))
-                {
+                using (StreamReader sr = new StreamReader(filename)){
                     string line;
                     // Read and display lines from the file until the end of
                     // the file is reached.
-                    for (int row = 0; (line = sr.ReadLine()) != null && row < Rows; row++)
-                    {
+                    for (int row = 0; (line = sr.ReadLine()) != null && row < Rows; row++){
                         int column=0;
                         foreach(char c in line){
-                            switch (c)
-                            {
+                            switch (c){
                                 case 'w': // wall
                                     Map[column, row] = (int)MapElements.Wall;
                                     break;
@@ -448,8 +416,7 @@ namespace Thot.GameAI
                     }
                 }
             }
-            catch (System.Exception e)
-            {
+            catch (System.Exception e){
                Debug.LogError("Error loading map: " + e.Message);
                throw;
             }
@@ -459,8 +426,7 @@ namespace Thot.GameAI
         /// Save a map to the specified filename.
         /// </summary>
         /// <param name="filename">The filename to save to.</param>
-        public void SaveMap(string filename)
-        {
+        public void SaveMap(string filename){
            //// TODO
         }
 
@@ -468,16 +434,12 @@ namespace Thot.GameAI
         /// Create a string representation of the map.
         /// </summary>
         /// <returns>A string representation of the map.</returns>
-        public override string ToString()
-        {
+        public override string ToString(){
             var stringBuilder = new StringBuilder((Columns + 2) * Rows);
 
-            for (int row = 0; row < Rows; row++)
-            {
-                for (int column = 0; column < Columns; column++)
-                {
-                    switch (Map[column, row])
-                    {
+            for (int row = 0; row < Rows; row++){
+                for (int column = 0; column < Columns; column++){
+                    switch (Map[column, row]){
                         case (int)MapElements.Wall: // wall
                             stringBuilder.Append("w");
                             break;
@@ -512,8 +474,7 @@ namespace Thot.GameAI
         /// <returns>
         /// True if a room was placed. Otherwise false.
         /// </returns>
-        private bool BuildRoom(Vector2 desiredRoomLocation)
-        {
+        private bool BuildRoom(Vector2 desiredRoomLocation){
             var desiredRoomSize = new Vector2(
                 _random.Next(MinimumRoomColumns, MaximumRoomColumns), 
                 _random.Next(MinimumRoomRows, MaximumRoomRows));
@@ -526,8 +487,7 @@ namespace Thot.GameAI
 				         desiredRoomSize.y);
             Rect fitRectangle;
 
-            if (FitAndBuildRoomRectangle(desiredRectangle, out fitRectangle))
-            {
+            if (FitAndBuildRoomRectangle(desiredRectangle, out fitRectangle)){
                 Rooms.Add(fitRectangle);
                 _currentRoomCount++;
                 return true;
@@ -546,10 +506,8 @@ namespace Thot.GameAI
         /// If it does not fit, another size and location is chosen. (The number of attempts is limited).
         /// </remarks>
         /// <returns>True if a room was placed. Otherwise false.</returns>
-        private bool BuildRoom()
-        {
-            for (int attempt = 0; attempt < MaximumAttempts; attempt++)
-            {
+        private bool BuildRoom(){
+            for (int attempt = 0; attempt < MaximumAttempts; attempt++){
                 var desiredRoomSize = 
                     new Vector2(
                         _random.Next(MinimumRoomColumns, MaximumRoomColumns), 
@@ -568,8 +526,7 @@ namespace Thot.GameAI
 					         desiredRoomSize.y);
                 Rect fitRectangle;
 
-                if (FitAndBuildRoomRectangle(desiredRectangle, out fitRectangle))
-                {
+                if (FitAndBuildRoomRectangle(desiredRectangle, out fitRectangle)){
                     Rooms.Add(fitRectangle);
                     _currentRoomCount++;
                     return true;
@@ -586,19 +543,15 @@ namespace Thot.GameAI
         /// <param name="rectangle">The initial rectangle to fit and build.</param>
         /// <param name="currentRectangle">The final fitted rectangle.</param>
         /// <returns>True if the rectangle was fit and built. Otherwise, false.</returns>
-        private bool FitAndBuildRoomRectangle(Rect rectangle, out Rect currentRectangle)
-        {
+        private bool FitAndBuildRoomRectangle(Rect rectangle, out Rect currentRectangle){
             currentRectangle = rectangle;
 
-            for (int width = (int)rectangle.width; width >= MinimumRoomColumns; width--)
-            {
+            for (int width = (int)rectangle.width; width >= MinimumRoomColumns; width--){
                 currentRectangle.width = width;
-                for (int height = (int)rectangle.height; height >= MinimumRoomRows; height--)
-                {
+                for (int height = (int)rectangle.height; height >= MinimumRoomRows; height--){
                     currentRectangle.height = height;
 
-                    if (RectangleFits(currentRectangle))
-                    {
+                    if (RectangleFits(currentRectangle)){
                         BuildRectangle(currentRectangle);
                         return true;
                     }
@@ -613,8 +566,7 @@ namespace Thot.GameAI
         /// </summary>
         /// <param name="rectangle">The rectangle to test.</param>
         /// <returns>True if the rectangle fits.</returns>
-        private bool RectangleFits(Rect rectangle)
-        {
+        private bool RectangleFits(Rect rectangle){
             // Inflate the rectangle, to ensure no overlaps occur
             if (rectangle.width == 0) // is corridor
             {
@@ -629,17 +581,13 @@ namespace Thot.GameAI
                 rectangle = Inflate(rectangle, 1, 1);
             }
 
-            for (int row = (int)rectangle.x; row <= rectangle.xMax; row++)
-            {
-                if (row < 0 || row >= Rows)
-                {
+            for (int row = (int)rectangle.x; row <= rectangle.xMax; row++){
+                if (row < 0 || row >= Rows){
                     return false;
                 }
 
-                for (int column = (int)rectangle.yMin; column <= rectangle.yMax; column++)
-                {
-                    if (column < 0 || column >= Columns || Map[row, column] != (int)MapElements.Wall)
-                    {
+                for (int column = (int)rectangle.yMin; column <= rectangle.yMax; column++){
+                    if (column < 0 || column >= Columns || Map[row, column] != (int)MapElements.Wall){
                         return false;
                     }
                 }
@@ -656,12 +604,9 @@ namespace Thot.GameAI
         /// calling this method.
         /// </remarks>
         /// <param name="rectangle">The rectangle to place in the map.</param>
-        private void BuildRectangle(Rect rectangle)
-        {
-            for (int row = (int)rectangle.xMin; row <= rectangle.xMax; row++)
-            {
-                for (int column = (int)rectangle.yMin; column <= rectangle.yMax; column++)
-                {
+        private void BuildRectangle(Rect rectangle){
+            for (int row = (int)rectangle.xMin; row <= rectangle.xMax; row++){
+                for (int column = (int)rectangle.yMin; column <= rectangle.yMax; column++){
                     Map[row, column] = (int)MapElements.Space;
                 }
             }
@@ -673,16 +618,13 @@ namespace Thot.GameAI
         /// <returns>
         /// True if a corridor was built. Otherwise, false.
         /// </returns>
-        private bool BuildCorridorOnRoomEdge()
-        {
-            for (int attempt = 0; attempt < MaximumAttempts; attempt++)
-            {
+        private bool BuildCorridorOnRoomEdge(){
+            for (int attempt = 0; attempt < MaximumAttempts; attempt++){
                 int direction;
                 Vector2 door = GetRoomEdge(out direction);
 
                 Rect corridor = GetCorridor(door, direction);
-                if (RectangleFits(corridor))
-                {
+                if (RectangleFits(corridor)){
                     Corridors.Add(corridor);
                     BuildRectangle(corridor);
                     Map[(int)door.x, (int)door.y] = (int)MapElements.Door;
@@ -701,8 +643,7 @@ namespace Thot.GameAI
         /// Direction of wall, e.g. 0 for north (top),  1 for east (right) etc.
         /// </param>
         /// <returns>Point containing location.</returns>
-        private Vector2 GetRoomEdge(out int directionAwayFromRoom)
-        {
+        private Vector2 GetRoomEdge(out int directionAwayFromRoom){
             Rect room = Rooms[_random.Next(0, Rooms.Count)];
             directionAwayFromRoom = GetDirection();
             var pointOnWallOfRoom = new Vector2();
@@ -710,8 +651,7 @@ namespace Thot.GameAI
             // Boundary of the inflated rectangle will contain the pointOnWallOfRoom.
             room = Inflate(room, 1, 1);
 
-            switch (directionAwayFromRoom)
-            {
+            switch (directionAwayFromRoom){
                 case (int)Directions.North:
                     pointOnWallOfRoom = 
                         new Vector2(_random.Next((int)room.xMin + 1, (int)room.xMax), room.yMin);
@@ -737,8 +677,7 @@ namespace Thot.GameAI
         /// Get a random direction.
         /// </summary>
         /// <returns>A random direction (North, East, South or West).</returns>
-        private int GetDirection()
-        {
+        private int GetDirection(){
             // North, East, South or West
             return _random.Next((int)Directions.First, (int)Directions.Last);
         }
@@ -750,13 +689,11 @@ namespace Thot.GameAI
         /// <param name="connectionPoint">The connection point (door or corridor endpoint).</param>
         /// <param name="direction">The corridor direction.</param>
         /// <returns>A rectangle representing a corridor.</returns>
-        private Rect GetCorridor(Vector2 connectionPoint, int direction)
-        {
+        private Rect GetCorridor(Vector2 connectionPoint, int direction){
             int length = GetCorridorLength();
             var corridor = new Rect(connectionPoint.x, connectionPoint.y, 0, 0);
 
-            switch (direction)
-            {
+            switch (direction){
                 case (int)Directions.North:
                     corridor.y -= length + 1;
                     corridor.height = length;
@@ -782,8 +719,7 @@ namespace Thot.GameAI
         /// Get a valid random length for a corridor.
         /// </summary>
         /// <returns>A length for a corridor.</returns>
-        private int GetCorridorLength()
-        {
+        private int GetCorridorLength(){
             return _random.Next(MinimumCorridorLength, MaximumCorridorLength);
         }
 
@@ -791,18 +727,15 @@ namespace Thot.GameAI
         /// Attempt to build a room at the end of a corridor.
         /// </summary>
         /// <returns>True if room built at the end of a corridor.</returns>
-        private bool BuildRoomOnCorridorEnd()
-        {
-            for (int attempt = 0; attempt < MaximumAttempts; attempt++)
-            {
+        private bool BuildRoomOnCorridorEnd(){
+            for (int attempt = 0; attempt < MaximumAttempts; attempt++){
                 int directionAwayFromCorridor;
                 Vector2 corridorEndpoint = GetEndOfCorridor(out directionAwayFromCorridor);
                 Vector2 door;
 
                 Rect room = GetRoom(corridorEndpoint, directionAwayFromCorridor, out door);
 
-                if (RectangleFits(room))
-                {
+                if (RectangleFits(room)){
                     BuildRectangle(room);
                     Rooms.Add(room);
                     Doors.Add(door);
@@ -820,39 +753,31 @@ namespace Thot.GameAI
         /// </summary>
         /// <param name="direction">The direction away from the corridor.</param>
         /// <returns>The end point of a corridor.</returns>
-        private Vector2 GetEndOfCorridor(out int direction)
-        {
+        private Vector2 GetEndOfCorridor(out int direction){
             Rect corridor = Corridors[_random.Next(0, Corridors.Count)];
             Vector2 endPoint = new Vector2(corridor.x, corridor.y);
 
-            if (corridor.height > 0)
-            {
+            if (corridor.height > 0){
                 // Randomly switch to other end of the corridor.
-                if (_random.Next(0, 2) == 0)
-                {
+                if (_random.Next(0, 2) == 0){
                     direction = (int)Directions.North;   
                     endPoint.y += corridor.height;
                 }
-                else
-                {
+                else {
                     direction = (int)Directions.South;
                 }          
             }
-            else if (corridor.width > 0)
-            {
+            else if (corridor.width > 0){
                 // Randomly switch to other end of the corridor.
-                if (_random.Next(0, 2) == 0)
-                {
+                if (_random.Next(0, 2) == 0){
                     direction = (int)Directions.East;
                     endPoint.x += corridor.width;
                 }
-                else
-                {
+                else {
                     direction = (int)Directions.West;
                 }
             }
-            else
-            {
+            else {
                 direction = 0; // invalid!
                 Debug.LogError(string.Format("Invalid corridor [{0}]", corridor));
                 throw new System.Exception(string.Format("Invalid corridor [{0}]", corridor));
@@ -868,8 +793,7 @@ namespace Thot.GameAI
         /// <param name="direction">The direction to the room from the starting point.</param>
         /// <param name="door">The door location (once cell from the connection point in the given direction).</param>
         /// <returns>A rectangle representing a room.</returns>
-        private Rect GetRoom(Vector2 connectionPoint, int direction, out Vector2 door)
-        {
+        private Rect GetRoom(Vector2 connectionPoint, int direction, out Vector2 door){
             var location = new Vector2();
             door = connectionPoint;
 
@@ -878,8 +802,7 @@ namespace Thot.GameAI
                     _random.Next(MinimumRoomColumns, MaximumRoomColumns),
                     _random.Next(MinimumRoomRows, MaximumRoomRows));
 
-            switch (direction)
-            {
+            switch (direction){
                 case (int)Directions.North:
                     door = Offset(door, 0, -1);
                     connectionPoint= Offset(connectionPoint, 0, -2);
@@ -919,13 +842,11 @@ namespace Thot.GameAI
         /// <returns>
         /// True if the a room is built on the corridor. Otherwise, false.
         /// </returns>
-        private bool BuildRoomOnCorridor()
-        {
+        private bool BuildRoomOnCorridor(){
             //// the offest of start is to move one point in the direction
             //// the room is being built, to ensure it has a discrete entry point
 
-            for (int attempt = 0; attempt < MaximumAttempts; attempt++)
-            {
+            for (int attempt = 0; attempt < MaximumAttempts; attempt++){
                 int directionAwayFromCorridor;
                 Vector2 corridorPoint = GetCorridorPoint(out directionAwayFromCorridor);
 
@@ -933,8 +854,7 @@ namespace Thot.GameAI
 
                 Rect room = GetRoom(corridorPoint, directionAwayFromCorridor, out door);
 
-                if (RectangleFits(room))
-                {
+                if (RectangleFits(room)){
                     BuildRectangle(room);
                     Rooms.Add(room);
                     Doors.Add(door);
@@ -956,36 +876,28 @@ namespace Thot.GameAI
         /// <returns>
         /// A point on a corridor.
         /// </returns>
-        private Vector2 GetCorridorPoint(out int directionAwayFromCorridor)
-        {
+        private Vector2 GetCorridorPoint(out int directionAwayFromCorridor){
             Rect corridor = Corridors[_random.Next(0, Corridors.Count)];
 
-            if (corridor.height > 0)
-            {
+            if (corridor.height > 0){
                 // Randomly pick a direction perpendicular to the corridor
-                if (_random.Next(0, 2) == 0)
-                {
+                if (_random.Next(0, 2) == 0){
                     directionAwayFromCorridor = (int)Directions.East;
                 }
-                else
-                {
+                else {
                     directionAwayFromCorridor = (int)Directions.West;
                 }
             }
-            else if (corridor.width > 0)
-            {
+            else if (corridor.width > 0){
                 // Randomly pick a direction perpendicular to the corridor
-                if (_random.Next(0, 2) == 0)
-                {
+                if (_random.Next(0, 2) == 0){
                     directionAwayFromCorridor = (int)Directions.North;
                 }
-                else
-                {
+                else {
                     directionAwayFromCorridor = (int)Directions.South;
                 }
             }
-            else
-            {
+            else {
                 directionAwayFromCorridor = 0; // invalid!
                 Debug.LogError(string.Format("Invalid corridor [{0}]", corridor));
                 throw new System.Exception(string.Format("Invalid corridor [{0}]", corridor));
@@ -1001,16 +913,13 @@ namespace Thot.GameAI
         /// Attempt to build a corridor at a random point on a random corridor.
         /// </summary>
         /// <returns>True if a corridor was built. Otherwise, false.</returns>
-        private bool BuildCorridorOnCorridor()
-        {
-            for (int attempt = 0; attempt < MaximumAttempts; attempt++)
-            {
+        private bool BuildCorridorOnCorridor(){
+            for (int attempt = 0; attempt < MaximumAttempts; attempt++){
                 int directionAwayFromCorridor;
                 Vector2 corridorPoint = GetCorridorPoint(out directionAwayFromCorridor);
 
                 Rect corridor = GetCorridor(corridorPoint, directionAwayFromCorridor);
-                if (RectangleFits(corridor))
-                {
+                if (RectangleFits(corridor)){
                     Corridors.Add(corridor);
                     BuildRectangle(corridor);
                     return true;
@@ -1026,16 +935,13 @@ namespace Thot.GameAI
         /// <returns>
         /// True if a corridor was built. Otherwise, false.
         /// </returns>
-        private bool BuildCorridorOnCorridorEnd()
-        {
-            for (int attempt = 0; attempt < MaximumAttempts; attempt++)
-            {
+        private bool BuildCorridorOnCorridorEnd(){
+            for (int attempt = 0; attempt < MaximumAttempts; attempt++){
                 int directionAwayFromCorridor;
                 Vector2 corridorEndpoint = GetEndOfCorridor(out directionAwayFromCorridor);
 
                 Rect corridor = GetCorridor(corridorEndpoint, directionAwayFromCorridor);
-                if (RectangleFits(corridor))
-                {
+                if (RectangleFits(corridor)){
                     Corridors.Add(corridor);
                     BuildRectangle(corridor);
                     return true;
@@ -1045,8 +951,7 @@ namespace Thot.GameAI
             return false;
         }
 		
-		private Rect Inflate(Rect rectangle, int width, int height)
-        {
+		private Rect Inflate(Rect rectangle, int width, int height){
             rectangle.x -= width;
             rectangle.y -= height;
             rectangle.width += 2 * width;
@@ -1054,8 +959,7 @@ namespace Thot.GameAI
 			return rectangle;
         }
 		
-		private Vector2 Offset(Vector2 point, int dx, int dy)
-        {
+		private Vector2 Offset(Vector2 point, int dx, int dy){
             point.x += dx;
             point.y += dy;
 			return point;

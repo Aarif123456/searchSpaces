@@ -48,27 +48,21 @@
 
 #endregion Copyright © ThotLab Games 2011. Licensed under the terms of the Microsoft Reciprocal Licence (Ms-RL).
 
-//using Thot.GameAI;
-
 using UnityEngine;
 
 public sealed class SimpleDynamicWeebleMotor : DynamicWeebleMotor 
 {
-	protected override void UpdateVelocity()
-	{
-		if (desiredLinear.HasValue)
-		{
+	protected override void UpdateVelocity(){
+		if (desiredLinear.HasValue){
 			Vector3 desiredAcceleration = LocalToWorld(desiredLinear.Value); // align to surface normal
 			
-			if (desiredAcceleration.magnitude > maximumAcceleration)
-			{
+			if (desiredAcceleration.magnitude > maximumAcceleration){
 				desiredAcceleration = desiredAcceleration.normalized * maximumSpeed;
 			}
 			
 			linearVelocity += desiredAcceleration * Time.deltaTime;
 			
-			if (linearVelocity.magnitude > maximumSpeed)
-			{
+			if (linearVelocity.magnitude > maximumSpeed){
 				linearVelocity = linearVelocity.normalized * maximumSpeed;
 			}
 			
@@ -76,23 +70,19 @@ public sealed class SimpleDynamicWeebleMotor : DynamicWeebleMotor
 		}
 	}
 	
-	protected override void UpdateAngularVelocity()
-	{
-		if (desiredAngular.HasValue)
-		{
+	protected override void UpdateAngularVelocity(){
+		if (desiredAngular.HasValue){
 			Vector3 angularAcceleration = desiredAngular.Value; // weebles always y-aligned	
 			angularAcceleration.x = 0;
 			angularAcceleration.z = 0;
 			
-			if (angularAcceleration.y > maximumAngularAcceleration)
-			{
+			if (angularAcceleration.y > maximumAngularAcceleration){
 				angularAcceleration.y = maximumAngularAcceleration;
 			}
 			
 			angularVelocity += angularAcceleration * Time.deltaTime;
 			
-			if (angularVelocity.y > maximumAngularSpeed)
-			{
+			if (angularVelocity.y > maximumAngularSpeed){
 				angularVelocity.y = maximumAngularSpeed;
 			}
 			

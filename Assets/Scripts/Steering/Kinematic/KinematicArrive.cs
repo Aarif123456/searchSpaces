@@ -57,51 +57,43 @@ using UnityEngine;
 
 public class KinematicArrive : Arrive
 {
-	protected override void Awake()
-	{
+	protected override void Awake(){
 		base.Awake();
 		
 		IsKinematic = true;
 	}
 	
-    protected override bool CalculateSteering(out Vector3? linear, out Vector3? angular)
-    {
+    protected override bool CalculateSteering(out Vector3? linear, out Vector3? angular){
 		Vector3? desiredVelocity = null;
 		Vector3? desiredAngularVelocity = null;
 		
         // If a target object was specified, use its position as the target position.
-        if (targetObject != null)
-        {
+        if (targetObject != null){
             targetPosition = targetObject.transform.position;
         }
 		
-		if (targetPosition.HasValue)
-		{
+		if (targetPosition.HasValue){
 	        Vector3 desiredDirection = targetPosition.Value - transform.position;
 			desiredDirection.y = 0;
 	
-	        // Get the length of the directon vector which is the distance to the target.
+	        // Get the length of the direction vector which is the distance to the target.
 	        distanceToTarget = desiredDirection.magnitude;
 	
 	        // if not there yet ...
-	        if (distanceToTarget > satisfactionRadius)
-			{
+	        if (distanceToTarget > satisfactionRadius){
 				// desiredDirection.normalized equals desiredDirection / distanceToTarget
 				desiredDirection /= distanceToTarget;
 				
-				if (distanceToTarget > brakingDistance)
-				{
+				if (distanceToTarget > brakingDistance){
 					desiredVelocity = MaximumSpeed * desiredDirection;
 				}
-				else
-				{
+				else {
 					float brakingSpeed = Mathf.Min(distanceToTarget / brakingTime, MaximumSpeed);
 					
 					desiredVelocity = brakingSpeed * desiredDirection;
 				}			
 			}
-			else
-			{
+			else {
 	            // we're there (close enough). Stop seeking.
 							
 				EventManager.Instance.Enqueue<ArrivalEventPayload>(
@@ -113,21 +105,17 @@ public class KinematicArrive : Arrive
 	        }
 		}
 			
-		if (desiredVelocity.HasValue)
-		{
+		if (desiredVelocity.HasValue){
 			linear = desiredVelocity.Value;
 		}
-		else
-		{
+		else {
 			linear = null;
 		}
 		
-		if (desiredAngularVelocity.HasValue)
-		{
+		if (desiredAngularVelocity.HasValue){
 			angular = desiredAngularVelocity.Value;
 		}
-		else
-		{
+		else {
 			angular = null;
 		}
 		

@@ -65,8 +65,7 @@ namespace Thot.GameAI
         /// <summary>
         /// Initializes a new instance of the Regulator class.
         /// </summary>
-        public Regulator()
-        {
+        public Regulator(){
             _nextUpdateTime = Time.time * 1000 + Random.Range(0, 1000);
             UpdatePeriod = 10;
         }
@@ -78,8 +77,7 @@ namespace Thot.GameAI
         /// Number of times to update per second.
         /// </param>
         public Regulator(float updatesPerSecond)
-            : this()
-        {
+            : this(){
             UpdatesPerSecond = updatesPerSecond;
         }
 
@@ -93,8 +91,7 @@ namespace Thot.GameAI
         /// Parameter for randomly varying the updates per second.
         /// </param>
         public Regulator(float updatesPerSecond, long updatePeriodVariator)
-            : this(updatesPerSecond)
-        {
+            : this(updatesPerSecond){
             UpdatePeriodVariator = updatePeriodVariator;
         }
 
@@ -103,26 +100,22 @@ namespace Thot.GameAI
         /// </summary>
         public bool IsReady
         {
-            get
-            {
+            get {
                 // if a regulator is instantiated with a zero freq then it goes
                 // into stealth mode (doesn't regulate)
-                if (UpdatePeriod == 0.0f)
-                {
+                if (UpdatePeriod == 0.0f){
                     return true;
                 }
 
                 // if the regulator is instantiated with a negative freq then it
                 // will never allow the code to flow
-                if (UpdatePeriod < 0.0f)
-                {
+                if (UpdatePeriod < 0.0f){
                     return false;
                 }
 
                 float currentTime = Time.time * 1000;
 
-                if (currentTime >= _nextUpdateTime)
-                {
+                if (currentTime >= _nextUpdateTime){
                     _nextUpdateTime =
                         currentTime + UpdatePeriod +
                         ((Random.value - Random.value) *
@@ -150,33 +143,26 @@ namespace Thot.GameAI
         /// </summary>
         public float UpdatesPerSecond
         {
-            get
-            {
-                if (0 == UpdatePeriod)
-                {
+            get {
+                if (0 == UpdatePeriod){
                     return 0.0f;
                 }
 
-                if (UpdatePeriod < 0.0f)
-                {
+                if (UpdatePeriod < 0.0f){
                     return -1.0f;
                 }
 
                 return 1000.0f / UpdatePeriod;
             }
 
-            set
-            {
-                if (value > 0.0f)
-                {
+            set {
+                if (value > 0.0f){
                     UpdatePeriod = 1000 / value;
                 }
-                else if (value == 0.0f)
-                {
+                else if (value == 0.0f){
                     UpdatePeriod = 0;
                 }
-                else if (value < 0.0f)
-                {
+                else if (value < 0.0f){
                     UpdatePeriod = -1;
                 }
             }

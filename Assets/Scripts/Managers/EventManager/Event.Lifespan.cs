@@ -56,24 +56,19 @@ namespace Thot.GameAI
         {
             private readonly int _lifespan;
 
-            public Lifespan(int lifespan)
-                : this()
-            {
+            public Lifespan(int lifespan) : this() {
                 _lifespan = lifespan;
             }
 
-            public static implicit operator int(Lifespan lifespan)
-            {
+            public static implicit operator int(Lifespan lifespan){
                 return lifespan._lifespan;
             }
 
-            public static explicit operator Lifespan(int lifespan)
-            {
+            public static explicit operator Lifespan(int lifespan){
                 return new Lifespan(lifespan);
             }
 
-            public override string ToString()
-            {
+            public override string ToString(){
                 return Lifespans.GetDescription(this);
             }
         }

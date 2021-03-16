@@ -52,8 +52,7 @@ using UnityEngine;
 
 public sealed class PlanarWorld : World
 {
-	public override void Awake()
-	{
+	public override void Awake(){
 		base.Awake();
 		
 		// This is based on assumption that the ground is a 10 x 10 unity plane.
@@ -61,18 +60,15 @@ public sealed class PlanarWorld : World
 		Center = new Vector2(transform.position.x, transform.position.z);
 	}
 	
-	public override float GroundHeightAt(Vector2 point)
-	{
+	public override float GroundHeightAt(Vector2 point){
 		return transform.position.y;
 	}
 	
-	public override Vector3 GroundPositionAt(Vector2 point)
-	{
+	public override Vector3 GroundPositionAt(Vector2 point){
 		return GroundPositionAt(point, 0);
 	}
 	
-	public override Vector3 GroundPositionAt(Vector2 point, float heightOffset)
-	{
+	public override Vector3 GroundPositionAt(Vector2 point, float heightOffset){
 		return new Vector3(point.x, GroundHeightAt(point) + heightOffset, point.y);
 	}
 }

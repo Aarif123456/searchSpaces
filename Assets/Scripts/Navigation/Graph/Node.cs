@@ -15,13 +15,11 @@ namespace Thot.GameAI
 		
 		public GameObject gameObject;
 
-        public Node()
-        {
+        public Node(){
             Index = INVALID_NODE_INDEX;
         }
 
-        public Node(int index)
-        {
+        public Node(int index){
             Index = index;
         }
 
@@ -40,8 +38,7 @@ namespace Thot.GameAI
         /// </summary>
         /// <param name="index">The node index.</param>
         /// <returns>True if the node index is valid. Otherwise, false.</returns>
-        public static bool IsInvalidIndex(int index)
-        {
+        public static bool IsInvalidIndex(int index){
             return index == INVALID_NODE_INDEX;
         }
 
@@ -49,8 +46,7 @@ namespace Thot.GameAI
         /// Generate a string representation of this node.
         /// </summary>
         /// <returns>A string representation of this node.</returns>
-        public override string ToString()
-        {
+        public override string ToString(){
             return "NodeIndex: " + (IsInvalidIndex(Index) ? "INVALID" : Index.ToString());
         }
 	}

@@ -84,20 +84,16 @@ public class FadeOutLineOfSight : TargetedCamera
     // After all objects are initialized, Awake is called when the script
     // is being loaded. This occurs before any Start calls.
     // Use Awake instead of the constructor for initialization.
-    public void Awake()
-    {
-        if (!target)
-        {
+    public void Awake(){
+        if (!target){
             Debug.Log("Please assign a target to the camera.");
         }
     }
 
     // If this behaviour is enabled, LateUpdate is called once per frame
     // after all Update functions have been called.
-    public void LateUpdate()
-    {
-        if (!target)
-        {
+    public void LateUpdate(){
+        if (!target){
             return;
         }
 
@@ -106,45 +102,38 @@ public class FadeOutLineOfSight : TargetedCamera
         float castDistance = Vector3.Distance(to, from);
 
         // Mark all objects as not needing fade out
-        foreach (FadeOutLOSInfo fade in fadedOutObjects)
-        {
+        foreach (FadeOutLOSInfo fade in fadedOutObjects){
             fade.needFadeOut = false;
         }
 
         Vector3[] offsets = new Vector3[] { new Vector3(0, 0, 0), new Vector3(0, occlusionRadius, 0), new Vector3(0, -occlusionRadius, 0), new Vector3(occlusionRadius, 0, 0), new Vector3(-occlusionRadius, 0, 0) };
 
         // We cast 5 rays to really make sure even occluders that are partly occluding the player are faded out
-        foreach (Vector3 offset in offsets)
-        {
+        foreach (Vector3 offset in offsets){
             Vector3 relativeOffset = transform.TransformDirection(offset);
 
             // Find all blocking objects which we want to hide
             RaycastHit[] hits  = Physics.RaycastAll(from + relativeOffset, to - from, castDistance, layerMask.value);
-            foreach (RaycastHit hit in hits)
-            {
-				if (hit.transform.gameObject == target.gameObject)
-				{
+            foreach (RaycastHit hit in hits){
+				if (hit.transform.gameObject == target.gameObject){
 					continue;
 				}
 				
                 // Make sure we have a renderer
                 Renderer hitRenderer = hit.collider.GetComponent<Renderer>();
-                if (hitRenderer == null || !hitRenderer.enabled)
-                {
+                if (hitRenderer == null || !hitRenderer.enabled){
                     continue;
                 }
 
                 var info = FindLosInfo(hitRenderer);
 
                 // We are not fading this renderer already, so insert into faded objects map
-                if (info == null)
-                {
+                if (info == null){
                     info = new FadeOutLOSInfo();
                     info.originalMaterials = hitRenderer.sharedMaterials;
                     info.alphaMaterials = new Material[info.originalMaterials.Length];
                     info.renderer = hitRenderer;
-                    for (int i = 0; i < info.originalMaterials.Length; i++)
-                    {
+                    for (int i = 0; i < info.originalMaterials.Length; i++){
                         Material newMaterial = new Material(Shader.Find("Alpha/Diffuse"));
                         newMaterial.mainTexture = info.originalMaterials[i].mainTexture;
                         Color color = info.originalMaterials[i].color;
@@ -157,8 +146,7 @@ public class FadeOutLineOfSight : TargetedCamera
                     fadedOutObjects.Add(info);
                 }
                 // Just mark the renderer as needing fade out
-                else
-                {
+                else {
                     info.needFadeOut = true;
                 }
             }
@@ -166,14 +154,11 @@ public class FadeOutLineOfSight : TargetedCamera
 
         // Now go over all renderers and do the actual fading!
         float fadeDelta = fadeSpeed * Time.deltaTime;
-        for (int i = 0; i < fadedOutObjects.Count; i++)
-        {
+        for (int i = 0; i < fadedOutObjects.Count; i++){
             var fade = fadedOutObjects[i];
             // Fade out up to minimum alpha value
-            if (fade.needFadeOut)
-            {
-                foreach (Material alphaMaterial in fade.alphaMaterials)
-                {
+            if (fade.needFadeOut){
+                foreach (Material alphaMaterial in fade.alphaMaterials){
                     float alpha = alphaMaterial.color.a;
                     alpha -= fadeDelta;
                     alpha = Mathf.Max(alpha, fadedOutAlpha);
@@ -183,34 +168,28 @@ public class FadeOutLineOfSight : TargetedCamera
                 }
             }
             // Fade back in
-            else
-            {
+            else {
                 var totallyFadedIn = 0;
-                foreach (Material alphaMaterial in fade.alphaMaterials)
-                {
+                foreach (Material alphaMaterial in fade.alphaMaterials){
                     float alpha = alphaMaterial.color.a;
                     alpha += fadeDelta;
                     alpha = Mathf.Min(alpha, 1.0f);
                     Color color = alphaMaterial.color;
                     color.a = alpha;
                     alphaMaterial.color = color;
-                    if (alpha >= 0.99)
-                    {
+                    if (alpha >= 0.99){
                         totallyFadedIn++;
                     }
                 }
 
                 // All alpha materials are faded back to 100%
                 // Thus we can switch back to the original materials
-                if (totallyFadedIn == fade.alphaMaterials.Length)
-                {
-                    if (fade.renderer)
-                    {
+                if (totallyFadedIn == fade.alphaMaterials.Length){
+                    if (fade.renderer){
                         fade.renderer.sharedMaterials = fade.originalMaterials;
                     }
 
-                    foreach (Material newMaterial in fade.alphaMaterials)
-                    {
+                    foreach (Material newMaterial in fade.alphaMaterials){
                         Destroy(newMaterial);
                     }
 
@@ -221,12 +200,9 @@ public class FadeOutLineOfSight : TargetedCamera
         }
     }
 
-    private FadeOutLOSInfo FindLosInfo(Renderer r)
-    {
-        foreach (FadeOutLOSInfo fade in fadedOutObjects)
-        {
-            if (r == fade.renderer)
-            {
+    private FadeOutLOSInfo FindLosInfo(Renderer r){
+        foreach (FadeOutLOSInfo fade in fadedOutObjects){
+            if (r == fade.renderer){
                 return fade;
             }
         }

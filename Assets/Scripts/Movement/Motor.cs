@@ -78,16 +78,14 @@ public abstract class Motor : MonoBehaviour
 	
 	public Vector3 LinearVelocity
 	{
-		get
-		{
+		get {
 			return linearVelocity;
 		}
 	}
 	
 	public Vector3 AngularVelocity
 	{
-		get
-		{
+		get {
 			return angularVelocity;
 		}
 	}
@@ -98,24 +96,20 @@ public abstract class Motor : MonoBehaviour
 	
 	public virtual bool IsStuck
 	{
-		get
-		{
+		get {
 			// TODO:
 			return false;
 		}
 	}
 	
-	protected virtual void Awake()
-	{
+	protected virtual void Awake(){
 	}
 	
-	protected virtual void Update()
-	{
+	protected virtual void Update(){
 		ProcessMotion();
 	}
 	
-	protected virtual void ProcessMotion()
-	{
+	protected virtual void ProcessMotion(){
 		ApplyLinearDamping();
 		ApplyGravity();
 		IntegrateVelocity();
@@ -127,40 +121,32 @@ public abstract class Motor : MonoBehaviour
 		UpdateAngularVelocity();
 	}
 	
-	protected virtual void ApplyLinearDamping()
-	{
-		if (!IsGrounded)
-		{
+	protected virtual void ApplyLinearDamping(){
+		if (!IsGrounded){
 			linearVelocity *= (1 - linearAirDamping);
 		}
-		else
-		{
+		else {
 			linearVelocity *= (1 - linearGroundDamping);
 		}
 	}
 	
-	protected virtual void ApplyGravity()
-	{
-		if (!IsGrounded)
-		{
+	protected virtual void ApplyGravity(){
+		if (!IsGrounded){
 			fallingVelocity -= gravity * Time.deltaTime;;
 			linearVelocity.y += fallingVelocity;
 		}
-		else
-		{
+		else {
 			fallingVelocity = 0;
 		}
 		
-		if (linearVelocity.y < -terminalVelocity)
-		{
+		if (linearVelocity.y < -terminalVelocity){
 			linearVelocity.y = -terminalVelocity;
 		}
 	}
 	
 	protected abstract void IntegrateVelocity();
 	
-	protected virtual void ApplyAngularDamping()
-	{
+	protected virtual void ApplyAngularDamping(){
 		angularVelocity *= (1 - linearGroundDamping);
 	}
 	
@@ -170,29 +156,23 @@ public abstract class Motor : MonoBehaviour
 	
 	protected abstract void UpdateAngularVelocity();
 	
-	protected Vector3 LocalToWorld(Vector3 vector)
-	{
+	protected Vector3 LocalToWorld(Vector3 vector){
 		vector.y = 0;
 		RaycastHit hitInfo;
-		if (Physics.Raycast(transform.position, Vector3.down, out hitInfo))
-		{
+		if (Physics.Raycast(transform.position, Vector3.down, out hitInfo)){
 			return hitInfo.transform.TransformDirection(vector);
 		}
-		else
-		{
+		else {
 			return transform.TransformDirection(vector);
 		}
 	}
 	
-	protected Vector3 WorldToLocal(Vector3 vector)
-	{
+	protected Vector3 WorldToLocal(Vector3 vector){
 		RaycastHit hitInfo;
-		if (Physics.Raycast(transform.position, Vector3.down, out hitInfo))
-		{
+		if (Physics.Raycast(transform.position, Vector3.down, out hitInfo)){
 			return hitInfo.transform.InverseTransformDirection(vector);
 		}
-		else
-		{
+		else {
 			return transform.InverseTransformDirection(vector);
 		}
 	}

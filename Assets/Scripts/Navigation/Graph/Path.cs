@@ -16,8 +16,7 @@ namespace Thot.GameAI
             Vector2 source,
             Vector2 destination,
             List<int> pathNodeIndices,
-            SparseGraph graph)
-        {
+            SparseGraph graph){
             PathEdgeList = new List<PathEdge>();
             Source = source;
             Destination = destination;
@@ -30,8 +29,7 @@ namespace Thot.GameAI
 			Edge currentEdge = null;
 			
             Vector2 from = source;
-            foreach (int nodeIndex in pathNodeIndices)
-            {
+            foreach (int nodeIndex in pathNodeIndices){
 				fromNodeIndex = toNodeIndex;
 				toNodeIndex = nodeIndex;
 				
@@ -39,15 +37,13 @@ namespace Thot.GameAI
 				toNode = graph.GetNode(nodeIndex);
 			
                 Vector2 to = toNode.Position;
-                if (from == to)
-                {
+                if (from == to){
                     // this could happen when source is exactly on a node
                     // position. In this case, skip this redundant edge
                     continue;
                 }
 				
-				if (fromNodeIndex != -1 && toNodeIndex != -1)
-				{
+				if (fromNodeIndex != -1 && toNodeIndex != -1){
 					currentEdge = graph.GetEdge(fromNodeIndex, toNodeIndex);
 				}
 
@@ -55,8 +51,7 @@ namespace Thot.GameAI
                 from = to; // copy
             }
 
-            if (from != destination)
-            {
+            if (from != destination){
                 PathEdgeList.Add(new PathEdge(from, destination, toNode, null, null, MovingObject));
             }
         }
@@ -80,16 +75,13 @@ namespace Thot.GameAI
 		
 		public bool IsEmpty
 		{
-			get
-			{
+			get {
 				return PathEdgeList == null || PathEdgeList.Count == 0;
 			}
 		}
 		
-		public PathEdge Dequeue()
-		{
-			if (IsEmpty)
-	        {
+		public PathEdge Dequeue(){
+			if (IsEmpty){
 	            return null;
 	        }
 	
@@ -98,24 +90,19 @@ namespace Thot.GameAI
 			return firstEdge;
 		}
 		
-		public override string ToString()
-		{
+		public override string ToString(){
 			// TODO: use StringBuilder
 			string pathString = string.Empty;
-			for (int i = 0; i < PathEdgeList.Count; i++)
-			{
+			for (int i = 0; i < PathEdgeList.Count; i++){
 				pathString += "[ " + PathEdgeList[i].ToString() + " ] ";
 			}
 			
 			return pathString;
 		}
 		
-		public void ShowPath(bool show)
-		{
-			if (PathEdgeList != null)
-			{
-				foreach (PathEdge pathEdge in PathEdgeList)
-				{
+		public void ShowPath(bool show){
+			if (PathEdgeList != null){
+				foreach (PathEdge pathEdge in PathEdgeList){
 					pathEdge.ShowEdge(show);
 				}
 			}

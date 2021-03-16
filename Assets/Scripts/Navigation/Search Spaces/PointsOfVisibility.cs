@@ -56,36 +56,29 @@ using UnityEngine;
 
 public class PointsOfVisibility : SearchSpace
 {
-	public override void Start()
-	{
+	public override void Start(){
 		base.Start();
 		Create();		
 	}
 	
-	public override void Create()
-    {
+	public override void Create(){
         Graph = new SparseGraph(false);
         Make();
     }
     private async void Make(){
         await new WaitUntil(() => World.Instance.Waypoints !=null);
-        Debug.Log("setting graph");
-        for (int i = 0; i < World.Instance.Waypoints.Count; i++)
-        {
-            var node = new Node(i) { Position = new Vector2(World.Instance.Waypoints[i].x, World.Instance.Waypoints[i].z) };
+        for (int i = 0; i < World.Instance.Waypoints.Count; i++){
+            var node = new Node(i){ Position = new Vector2(World.Instance.Waypoints[i].x, World.Instance.Waypoints[i].z) };
             Graph.AddNode(node);
             //AddNodeObject(node, node.Position);
         }
 
-        for (int fromIndex = 0; fromIndex < Graph.NumNodes; fromIndex++)
-        {
+        for (int fromIndex = 0; fromIndex < Graph.NumNodes; fromIndex++){
             Node fromNode = Graph.GetNode(fromIndex);
-            for (int toIndex = 0; toIndex < Graph.NumNodes; toIndex++)
-            {
+            for (int toIndex = 0; toIndex < Graph.NumNodes; toIndex++){
                 Node toNode = Graph.GetNode(toIndex);
 
-                if (IsPathObstructed(fromNode.Position, toNode.Position))
-                {
+                if (IsPathObstructed(fromNode.Position, toNode.Position)){
                     continue;
                 }
 

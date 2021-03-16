@@ -82,16 +82,13 @@ public sealed class MapGenerator : MonoBehaviour
 
     public static MapGenerator Instance
     {
-        get
-        {
+        get {
 			return _instance;
         }
     }
 	
-	public void Awake()
-	{
-		if (_instance != null)
-		{
+	public void Awake(){
+		if (_instance != null){
 			Debug.Log("Multiple instances of Map Generator!");
 		}
 		
@@ -99,19 +96,16 @@ public sealed class MapGenerator : MonoBehaviour
 		
 		columns = (int)World.Instance.Size.x / cellWidth;
 		rows = (int)World.Instance.Size.y / cellHeight;
-		if (generateMapOnAwake)
-		{
+		if (generateMapOnAwake){
 			GenerateMap();
 		}
-        else{
+        else {
             LoadMap();
         }
 	}
 
-	public void LoadMap()
-    {
-        switch (World.Instance.mapType)
-        {
+	public void LoadMap(){
+        switch (World.Instance.mapType){
             case MapTypes.ConnectedRooms:
                 LoadConnectedRoomsMap(connectedRoomFile);
                 break;
@@ -124,10 +118,8 @@ public sealed class MapGenerator : MonoBehaviour
         }
     }
 
-    public void GenerateMap()
-    {
-        switch (World.Instance.mapType)
-        {
+    public void GenerateMap(){
+        switch (World.Instance.mapType){
             case MapTypes.ConnectedRooms:
                 GenerateConnectedRoomsMap();
                 break;
@@ -143,19 +135,15 @@ public sealed class MapGenerator : MonoBehaviour
 
     private void CreateConnectedRoomMap(ConnectedRooms connectedRooms){
         GameObject wallsObject = GameObject.Find("Environment/Walls");
-        //GameObject waypointsObject = GameObject.Find("Game/Waypoints");
 
         var wallScale = new Vector3(cellWidth, WALL_HEIGHT, cellHeight);
 
         //const float WAYPOINT_RADIUS = 1.0f; // entity size
         World.Instance.Waypoints = new List<Vector3>();
 
-        for (int column = 0; column < connectedRooms.Columns; column++)
-        {
-            for (int row = 0; row < connectedRooms.Rows; row++)
-            {
-                if (connectedRooms.Map[column, row] == (int)ConnectedRooms.MapElements.Wall)
-                {
+        for (int column = 0; column < connectedRooms.Columns; column++){
+            for (int row = 0; row < connectedRooms.Rows; row++){
+                if (connectedRooms.Map[column, row] == (int)ConnectedRooms.MapElements.Wall){
                     var wallPosition =
                         new Vector3(
                             World.Instance.Center.x - World.Instance.Size.x / 2 + column * cellWidth + cellWidth / 2.0f,
@@ -168,8 +156,7 @@ public sealed class MapGenerator : MonoBehaviour
                     wall.name = objName;
                     wall.transform.parent = wallsObject.transform;
                 }
-                else if (connectedRooms.Map[column, row] == (int)ConnectedRooms.MapElements.Waypoint)
-                {
+                else if (connectedRooms.Map[column, row] == (int)ConnectedRooms.MapElements.Waypoint){
                     var waypointPosition =
                         new Vector3(
                             World.Instance.Center.x - World.Instance.Size.x / 2 + column * cellWidth + cellWidth / 2.0f,
@@ -178,27 +165,26 @@ public sealed class MapGenerator : MonoBehaviour
                     
                     World.Instance.Waypoints.Add(waypointPosition);
                     
-//                  var waypoint =  GameObject.CreatePrimitive(PrimitiveType.Sphere);
-//                  Destroy(waypoint.collider);
-//                  waypoint.transform.position = waypointPosition;
-//                  waypoint.transform.localScale = new Vector3(WAYPOINT_RADIUS, WAYPOINT_RADIUS, WAYPOINT_RADIUS);
-//                  waypoint.name = "povWaypoint_" + row + "_" + column;
-//                  waypoint.collider.enabled = false;
-//                  waypoint.renderer.enabled = true;
-//                  waypoint.transform.parent = waypointsObject.transform;
+                /*
+                 var waypoint =  GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                 Destroy(waypoint.collider);
+                 waypoint.transform.position = waypointPosition;
+                 waypoint.transform.localScale = new Vector3(WAYPOINT_RADIUS, WAYPOINT_RADIUS, WAYPOINT_RADIUS);
+                 waypoint.name = "povWaypoint_" + row + "_" + column;
+                 waypoint.collider.enabled = false;
+                 waypoint.renderer.enabled = true;
+                 waypoint.transform.parent = waypointsObject.transform;
+                */
                 }
             }
         }
         
         wallScale.y *= 3;
         
-        for (int column = -1; column < connectedRooms.Columns + 1; column++)
-        {
-            for (int row = -1; row < connectedRooms.Rows + 1; row++)
-            {
+        for (int column = -1; column < connectedRooms.Columns + 1; column++){
+            for (int row = -1; row < connectedRooms.Rows + 1; row++){
                 if (column != -1 && column != connectedRooms.Columns &&
-                    row != -1 && row != connectedRooms.Rows)
-                {
+                    row != -1 && row != connectedRooms.Rows){
                     continue;
                 }
                 
@@ -227,8 +213,7 @@ public sealed class MapGenerator : MonoBehaviour
         Vector3 thicknessAdjustment;
         Vector3 lengthAdjustment;
         
-        for (int j = 0; j < columns; j++)
-        {
+        for (int j = 0; j < columns; j++){
             var horizontalWallPosition =
                 new Vector3(
                     World.Instance.Center.x - World.Instance.Size.x / 2 + j * cellWidth + cellWidth / 2.0f,
@@ -246,8 +231,7 @@ public sealed class MapGenerator : MonoBehaviour
             horizontalWall.transform.parent = wallsObject.transform;
         }
         
-        for (int i = 0; i < rows; i++)
-        {
+        for (int i = 0; i < rows; i++){
             var verticalWallPosition =
                 new Vector3(
                     World.Instance.Center.x - World.Instance.Size.x / 2,
@@ -262,15 +246,13 @@ public sealed class MapGenerator : MonoBehaviour
             verticalWall.transform.localScale += thicknessAdjustment;
             verticalWall.transform.Translate(-thicknessAdjustment / 2);
             
-            if (i == 0 || maze.Labrynth[i - 1, 0].Bottom)
-            {
+            if (i == 0 || maze.Labrynth[i - 1, 0].Bottom){
                 lengthAdjustment = new Vector3(0, 0, -WALL_THICKNESS / 2);
                 verticalWall.transform.localScale += lengthAdjustment;
                 verticalWall.transform.Translate(-lengthAdjustment / 2);
             }
     
-            if (maze.Labrynth[i, 0].Bottom)
-            {
+            if (maze.Labrynth[i, 0].Bottom){
                 lengthAdjustment = new Vector3(0, 0, -WALL_THICKNESS / 2);
                 verticalWall.transform.localScale += lengthAdjustment;
                 verticalWall.transform.Translate(lengthAdjustment / 2);
@@ -278,10 +260,8 @@ public sealed class MapGenerator : MonoBehaviour
             
             verticalWall.transform.parent = wallsObject.transform;
             
-            for (int j = 0; j < columns; j++)
-            {
-                if (maze.Labrynth[i, j].Bottom)
-                {
+            for (int j = 0; j < columns; j++){
+                if (maze.Labrynth[i, j].Bottom){
                     var horizontalWallPosition =
                         new Vector3(
                             World.Instance.Center.x - World.Instance.Size.x / 2 + j * cellWidth + cellWidth / 2.0f,
@@ -292,15 +272,13 @@ public sealed class MapGenerator : MonoBehaviour
                     horizontalWall.transform.localScale = horizontalWallScale;
                     horizontalWall.name = "Horizontal_Wall_" + i + "_" + j;
                     
-                    if (j != 0 && !maze.Labrynth[i, j - 1].Bottom)
-                    {
+                    if (j != 0 && !maze.Labrynth[i, j - 1].Bottom){
                         lengthAdjustment = new Vector3(WALL_THICKNESS / 2, 0, 0);
                         horizontalWall.transform.localScale += lengthAdjustment;
                         horizontalWall.transform.Translate(-lengthAdjustment / 2);
                     }
                     
-                    if (j != columns - 1 && !maze.Labrynth[i, j + 1].Bottom)
-                    {
+                    if (j != columns - 1 && !maze.Labrynth[i, j + 1].Bottom){
                         lengthAdjustment = new Vector3(WALL_THICKNESS / 2, 0, 0);
                         horizontalWall.transform.localScale += lengthAdjustment;
                         horizontalWall.transform.Translate(lengthAdjustment / 2);
@@ -309,8 +287,7 @@ public sealed class MapGenerator : MonoBehaviour
                     horizontalWall.transform.parent = wallsObject.transform;
                 }
 
-                if (maze.Labrynth[i, j].Right)
-                {
+                if (maze.Labrynth[i, j].Right){
                     var verticalWallPosition2 =
                         new Vector3(
                             World.Instance.Center.x - World.Instance.Size.x / 2 + j * cellWidth + cellWidth,
@@ -321,34 +298,29 @@ public sealed class MapGenerator : MonoBehaviour
                     verticalWall.transform.localScale = verticalWallScale;
                     verticalWall.name = "Vertical_Wall_" + i + "_" + j;
                     
-                    if (j == columns - 1)
-                    {
+                    if (j == columns - 1){
                         thicknessAdjustment = new Vector3(-WALL_THICKNESS / 2, 0, 0);
                         verticalWall.transform.localScale += thicknessAdjustment;
                         verticalWall.transform.Translate(thicknessAdjustment / 2);
                     }
                     
-                    if (i == 0)
-                    {
+                    if (i == 0){
                         lengthAdjustment = new Vector3(0, 0, -WALL_THICKNESS / 2);
                         verticalWall.transform.localScale += lengthAdjustment;
                         verticalWall.transform.Translate(-lengthAdjustment / 2);
                     }
-                    else if (maze.Labrynth[i - 1, j].Bottom || (j != columns - 1 && maze.Labrynth[i - 1, j + 1].Bottom))
-                    {
+                    else if (maze.Labrynth[i - 1, j].Bottom || (j != columns - 1 && maze.Labrynth[i - 1, j + 1].Bottom)){
                         lengthAdjustment = new Vector3(0, 0, -WALL_THICKNESS / 2);
                         verticalWall.transform.localScale += lengthAdjustment;
                         verticalWall.transform.Translate(-lengthAdjustment / 2);
                     }
             
-                    if (i == rows - 1)
-                    {
+                    if (i == rows - 1){
                         lengthAdjustment = new Vector3(0, 0, -WALL_THICKNESS / 2);
                         verticalWall.transform.localScale += lengthAdjustment;
                         verticalWall.transform.Translate(lengthAdjustment / 2);
                     }
-                    else if (maze.Labrynth[i, j].Bottom|| (j != columns - 1 && maze.Labrynth[i, j + 1].Bottom))
-                    {
+                    else if (maze.Labrynth[i, j].Bottom|| (j != columns - 1 && maze.Labrynth[i, j + 1].Bottom)){
                         lengthAdjustment = new Vector3(0, 0, -WALL_THICKNESS / 2);
                         verticalWall.transform.localScale += lengthAdjustment;
                         verticalWall.transform.Translate(lengthAdjustment / 2);
@@ -360,22 +332,19 @@ public sealed class MapGenerator : MonoBehaviour
         }   
     }
 
-    private void LoadConnectedRoomsMap(string filename)
-    {
+    private void LoadConnectedRoomsMap(string filename){
         var connectedRooms = new ConnectedRooms(columns, rows);
         connectedRooms.LoadMap(filename);
         CreateConnectedRoomMap(connectedRooms);
     }
 
-    private void LoadMazeMap(string filename)
-    {
+    private void LoadMazeMap(string filename){
         var maze = new Maze(rows, columns);
         maze.LoadMap(filename);
         CreateMazeMap(maze);
     }
 
-    private void GenerateConnectedRoomsMap()
-    {	
+    private void GenerateConnectedRoomsMap(){	
         var connectedRooms = new ConnectedRooms(columns, rows);
         connectedRooms.BuildMap();
         connectedRooms.AddPointsOfVisibilityWaypoints();
@@ -383,8 +352,7 @@ public sealed class MapGenerator : MonoBehaviour
         connectedRooms.OutputMap(connectedRoomFile);
     }
 
-    private void GenerateConnectedCornerRoomsMap()
-    {   
+    private void GenerateConnectedCornerRoomsMap(){   
         var connectedRooms = new ConnectedRooms(columns, rows);
         connectedRooms.BuildMap();
         connectedRooms.AddCornerWayPoints();
@@ -392,8 +360,7 @@ public sealed class MapGenerator : MonoBehaviour
         connectedRooms.OutputMap(cornerConnectedRoomFile);
     }
     
-    private void GenerateMazeMap()
-    {	
+    private void GenerateMazeMap(){	
 		
 		var maze = new Maze(rows, columns);
 		maze.CreateMaze();

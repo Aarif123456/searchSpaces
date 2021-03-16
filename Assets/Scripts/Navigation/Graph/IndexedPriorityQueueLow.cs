@@ -23,22 +23,19 @@ namespace Thot.GameAI
         /// </summary>
         /// <param name="keys">List of keys.</param>
         /// <param name="maximumSize">Maximum size of the priority queue.</param>
-        public IndexedPriorityQueueLow(List<float> keys, int maximumSize)
-        {
+        public IndexedPriorityQueueLow(List<float> keys, int maximumSize){
             _keys = keys;
             _maximumSize = maximumSize;
             _size = 0;
             _heap = new List<int>(maximumSize + 1);
 
-            for (int i = 0; i < maximumSize + 1; i++)
-            {
+            for (int i = 0; i < maximumSize + 1; i++){
                 _heap.Add(0);
             }
 
             _invHeap = new List<int>(maximumSize + 1);
 
-            for (int i = 0; i < maximumSize + 1; i++)
-            {
+            for (int i = 0; i < maximumSize + 1; i++){
                 _invHeap.Add(0);
             }
         }
@@ -47,8 +44,7 @@ namespace Thot.GameAI
         /// Tests if the priority queue is empty.
         /// </summary>
         /// <returns>True if the priority queue is empty. Otherwise, false.</returns>
-        public bool Empty()
-        {
+        public bool Empty(){
             return _size == 0;
         }
 
@@ -57,10 +53,8 @@ namespace Thot.GameAI
         /// and then the heap is reordered from the bottom up.
         /// </summary>
         /// <param name="index">The index to insert.</param>
-        public void Insert(int index)
-        {
-            if (_size + 1 >= _maximumSize)
-            {
+        public void Insert(int index){
+            if (_size + 1 >= _maximumSize){
                 Debug.LogError("IndexedPriorityQueue.Insert: overflow.");
                 throw new System.Exception("IndexedPriorityQueue.Insert: overflow.");
             }
@@ -79,8 +73,7 @@ namespace Thot.GameAI
         /// lowest in the heap and then the heap is reordered from the top down. 
         /// </summary>
         /// <returns>The minimum item.</returns>
-        public int Pop()
-        {
+        public int Pop(){
             Swap(1, _size);
 
             ReorderDownwards(1, _size - 1);
@@ -93,13 +86,11 @@ namespace Thot.GameAI
         /// call this with the key's index to adjust the queue accordingly.
         /// </summary>
         /// <param name="index">The index of the item to change.</param>
-        public void ChangePriority(int index)
-        {
+        public void ChangePriority(int index){
             ReorderUpwards(_invHeap[index]);
         }
 
-        private void Swap(int a, int b)
-        {
+        private void Swap(int a, int b){
             int temp = _heap[a];
             _heap[a] = _heap[b];
             _heap[b] = temp;
@@ -109,35 +100,29 @@ namespace Thot.GameAI
             _invHeap[_heap[b]] = b;
         }
 
-        private void ReorderUpwards(int nodeIndex)
-        {
+        private void ReorderUpwards(int nodeIndex){
             // move up the heap swapping the elements until the heap is ordered
             while ((nodeIndex > 1) &&
-                (_keys[_heap[nodeIndex / 2]] > _keys[_heap[nodeIndex]]))
-            {
+                (_keys[_heap[nodeIndex / 2]] > _keys[_heap[nodeIndex]])){
                 Swap(nodeIndex / 2, nodeIndex);
                 nodeIndex /= 2;
             }
         }
 
-        private void ReorderDownwards(int nodeIndex, int heapSize)
-        {
+        private void ReorderDownwards(int nodeIndex, int heapSize){
             // move down the heap from node nodeIndex swapping the elements until
             // the heap is reordered
-            while (2 * nodeIndex <= heapSize)
-            {
+            while (2 * nodeIndex <= heapSize){
                 int child = 2 * nodeIndex;
 
                 // set child to smaller of nodeIndex's two children
                 if ((child < heapSize) &&
-                    (_keys[_heap[child]] > _keys[_heap[child + 1]]))
-                {
+                    (_keys[_heap[child]] > _keys[_heap[child + 1]])){
                     ++child;
                 }
 
                 // if this nodeIndex is larger than its child, swap
-                if (_keys[_heap[nodeIndex]] <= _keys[_heap[child]])
-                {
+                if (_keys[_heap[nodeIndex]] <= _keys[_heap[child]]){
                     break;
                 }
 

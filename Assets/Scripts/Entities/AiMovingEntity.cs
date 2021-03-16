@@ -62,28 +62,22 @@ public class AiMovingEntity : MovingEntity
 	
 	public enum SummingMethods { Blended, Prioritized, Dithered };
 	
-	public void FixedUpdate()
-	{
-		if (useFixedUpdate)
-		{
+	public void FixedUpdate(){
+		if (useFixedUpdate){
 			ApplySteering();
 		}
 	}
 	
-	public override void Update()
-	{
+	public override void Update(){
 		base.Update();
 		
-		if (!useFixedUpdate)
-		{
+		if (!useFixedUpdate){
 			ApplySteering();
 		}
 	}
 	
-	private void ApplySteering()
-	{
-		switch (summingMethod)
-		{
+	private void ApplySteering(){
+		switch (summingMethod){
 			case SummingMethods.Blended:
 				ApplyBlendedSteering();
 				break;
@@ -98,73 +92,56 @@ public class AiMovingEntity : MovingEntity
 		}
 	}
 	
-	private void ApplyDitheredSteering()
-	{
-		for (int count = 0; count < Steerings.Length; count++)
-		{
+	private void ApplyDitheredSteering(){
+		for (int count = 0; count < Steerings.Length; count++){
 			lastDitheredSteeringIndex = (lastDitheredSteeringIndex + 1) % Steerings.Length;
 			Steering steering = Steerings[lastDitheredSteeringIndex];
-			if (steering.enabled && steering.isOn)
-			{
-				if (steering.CalculateUnweightedSteering(out motor.desiredLinear, out motor.desiredAngular))
-				{
+			if (steering.enabled && steering.isOn){
+				if (steering.CalculateUnweightedSteering(out motor.desiredLinear, out motor.desiredAngular)){
 					break;
 				}
 			}
 		}
 	}
 	
-	private void ApplyPrioritizedSteering()
-	{
-		foreach (Steering steering in Steerings)
-		{
-			if (steering.enabled && steering.isOn)
-			{
-				if (steering.CalculateUnweightedSteering(out motor.desiredLinear, out motor.desiredAngular))
-				{
+	private void ApplyPrioritizedSteering(){
+		foreach (Steering steering in Steerings){
+			if (steering.enabled && steering.isOn){
+				if (steering.CalculateUnweightedSteering(out motor.desiredLinear, out motor.desiredAngular)){
 					break;
 				}
 			}
 		}
 	}
 	
-	private void ApplyBlendedSteering()
-	{
+	private void ApplyBlendedSteering(){
 		Vector3? totalWeightedLinear = null;
 		Vector3? totalWeightedAngular = null;
 		float totalWeightForLinear = 0;
 		float totalWeightForAngular = 0;
 		
-		foreach (Steering steering in Steerings)
-		{
-			if (steering.enabled && steering.isOn)
-			{
+		foreach (Steering steering in Steerings){
+			if (steering.enabled && steering.isOn){
 				Vector3? weightedLinear;
 				Vector3? weightedAngular;
 				steering.CalculateWeightedSteering(out weightedLinear, out weightedAngular);
 				
-				if (weightedLinear.HasValue)
-				{
-					if (totalWeightedLinear.HasValue)
-					{
+				if (weightedLinear.HasValue){
+					if (totalWeightedLinear.HasValue){
 						totalWeightedLinear += weightedLinear.Value;
 					}
-					else
-					{
+					else {
 						totalWeightedLinear = weightedLinear.Value;
 					}
 					
 					totalWeightForLinear += steering.Weight;
 				}
 				
-				if (weightedAngular.HasValue)
-				{
-					if (totalWeightedAngular.HasValue)
-					{
+				if (weightedAngular.HasValue){
+					if (totalWeightedAngular.HasValue){
 						totalWeightedAngular += weightedAngular.Value;
 					}
-					else
-					{
+					else {
 						totalWeightedAngular = weightedAngular.Value;
 					}
 					
@@ -173,13 +150,11 @@ public class AiMovingEntity : MovingEntity
 			}
 		}
 
-		if (totalWeightedLinear.HasValue)
-		{
+		if (totalWeightedLinear.HasValue){
 			motor.desiredLinear = totalWeightedLinear.Value / totalWeightForLinear;
 		}
 		
-		if (totalWeightedAngular.HasValue)
-		{
+		if (totalWeightedAngular.HasValue){
 			motor.desiredAngular = totalWeightedAngular.Value / totalWeightForAngular;
 		}
 	}

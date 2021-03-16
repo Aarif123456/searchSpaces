@@ -82,34 +82,24 @@ public abstract class SearchSpace : MonoBehaviour
 	
 	public bool CreatedNodeMarkers
 	{
-		get
-		{
+		get {
 			return createdNodeMarkers;
 		}
 		
-		set
-		{
-			if (value && !createdNodeMarkers)
-			{
-				if (Graph != null)
-				{
-					foreach (Node node in Graph.Nodes)
-					{
-						if (node.gameObject == null)
-						{
+		set {
+			if (value && !createdNodeMarkers){
+				if (Graph != null){
+					foreach (Node node in Graph.Nodes){
+						if (node.gameObject == null){
 							AddNodeObject(node, node.Position);
 						}
 					}
 				}
 			}
-			else if (!value && createdNodeMarkers)
-			{
-				if (Graph != null)
-				{
-					foreach (Node node in Graph.Nodes)
-					{
-						if (node.gameObject != null)
-						{
+			else if (!value && createdNodeMarkers){
+				if (Graph != null){
+					foreach (Node node in Graph.Nodes){
+						if (node.gameObject != null){
 							Destroy(node.gameObject);
 						}
 					}
@@ -122,23 +112,16 @@ public abstract class SearchSpace : MonoBehaviour
 	
 	public bool CreatedEdgeMarkers
 	{
-		get
-		{
+		get {
 			return createdEdgeMarkers;
 		}
 		
-		set
-		{
-			if (value && !createdEdgeMarkers)
-			{
-				if (Graph != null)
-				{
-					foreach (LinkedList<Edge> edgeList in Graph.Edges)
-					{
-						foreach (Edge edge in edgeList)
-						{
-							if (edge.gameObject == null)
-							{
+		set {
+			if (value && !createdEdgeMarkers){
+				if (Graph != null){
+					foreach (LinkedList<Edge> edgeList in Graph.Edges){
+						foreach (Edge edge in edgeList){
+							if (edge.gameObject == null){
 								Vector2 fromPosition = Graph.GetNode(edge.From).Position;
 								Vector2 toPosition = Graph.GetNode(edge.To).Position;
 								AddEdgeObject(edge, fromPosition, toPosition);
@@ -147,16 +130,11 @@ public abstract class SearchSpace : MonoBehaviour
 					}
 				}
 			}
-			else if (!value && createdEdgeMarkers)
-			{
-				if (Graph != null)
-				{
-					foreach (LinkedList<Edge> edgeList in Graph.Edges)
-					{
-						foreach (Edge edge in edgeList)
-						{
-							if (edge.gameObject != null)
-							{
+			else if (!value && createdEdgeMarkers){
+				if (Graph != null){
+					foreach (LinkedList<Edge> edgeList in Graph.Edges){
+						foreach (Edge edge in edgeList){
+							if (edge.gameObject != null){
 								Destroy(edge.gameObject);
 							}
 						}
@@ -170,21 +148,15 @@ public abstract class SearchSpace : MonoBehaviour
 	
 	public bool ShowingNodeMarkers
 	{
-		get
-		{
+		get {
 			return showingNodeMarkers;
 		}
 		
-		set
-		{
-			if (value != showingNodeMarkers)
-			{
-				if (Graph != null)
-				{
-					foreach (Node node in Graph.Nodes)
-					{
-						if (node.gameObject != null)
-						{
+		set {
+			if (value != showingNodeMarkers){
+				if (Graph != null){
+					foreach (Node node in Graph.Nodes){
+						if (node.gameObject != null){
 							node.gameObject.GetComponent<Renderer>().enabled = value;
 						}
 					}
@@ -197,23 +169,16 @@ public abstract class SearchSpace : MonoBehaviour
 	
 	public bool ShowingEdgeMarkers
 	{
-		get
-		{
+		get {
 			return showingEdgeMarkers;
 		}
 		
-		set
-		{
-			if (value != showingEdgeMarkers)
-			{
-				if (Graph != null)
-				{
-					foreach (LinkedList<Edge> edgeList in Graph.Edges)
-					{
-						foreach (Edge edge in edgeList)
-						{
-							if (edge.gameObject != null)
-							{
+		set {
+			if (value != showingEdgeMarkers){
+				if (Graph != null){
+					foreach (LinkedList<Edge> edgeList in Graph.Edges){
+						foreach (Edge edge in edgeList){
+							if (edge.gameObject != null){
 								edge.gameObject.GetComponent<Renderer>().enabled = value;
 							}
 						}
@@ -225,19 +190,16 @@ public abstract class SearchSpace : MonoBehaviour
 		}
 	}
 	
-	public virtual void Awake()
-	{
+	public virtual void Awake(){
 		MovingEntity = gameObject.GetComponent<MovingEntity>();
 		nodeMarkers = GameObject.Find("Game/NodeMarkers");
 		edgeMarkers = GameObject.Find("Game/EdgeMarkers");
 	}
 	
-	public virtual void Start()
-	{
+	public virtual void Start(){
 	}
 	
-	public virtual void Update()
-	{
+	public virtual void Update(){
 		ShowingNodeMarkers = showNodeMarkers;
 		ShowingEdgeMarkers = showEdgeMarkers;
 		CreatedNodeMarkers = createNodeMarkers;
@@ -253,8 +215,7 @@ public abstract class SearchSpace : MonoBehaviour
     /// TODO: This is a dumb approach. Replace.
     /// </remarks>
     /// <returns>A random position.</returns>
-    public Vector2 GetRandomPosition()
-    {
+    public Vector2 GetRandomPosition(){
         int attempts = 0;
         var position = new Vector2();
         while (attempts < 1000) // shouldn't hardcode max attempts
@@ -268,8 +229,7 @@ public abstract class SearchSpace : MonoBehaviour
                 World.Instance.Center.y + World.Instance.Size.y / 2);
 
             if (!IsPointInObstacle(position) && 
-			    GetClosestNodeToPosition(position) != NO_CLOSEST_NODE_FOUND)
-            {
+			    GetClosestNodeToPosition(position) != NO_CLOSEST_NODE_FOUND){
                 return position;
             }
 
@@ -280,8 +240,7 @@ public abstract class SearchSpace : MonoBehaviour
         return Graph.GetRandomNodePosition();
     }
 	
-	public Vector2 GetRandomEntityPosition()
-    {
+	public Vector2 GetRandomEntityPosition(){
         int attempts = 0;
         var position = new Vector2();
         while (attempts < 1000) // shouldn't hardcode max attempts
@@ -295,8 +254,7 @@ public abstract class SearchSpace : MonoBehaviour
                 World.Instance.Center.y + World.Instance.Size.y / 2);
 
             if (!MovingEntity.IsEntityInObstacle(position) && 
-			    GetClosestNodeToPosition(position) != NO_CLOSEST_NODE_FOUND)
-            {
+			    GetClosestNodeToPosition(position) != NO_CLOSEST_NODE_FOUND){
                 return position;
             }
 
@@ -314,22 +272,17 @@ public abstract class SearchSpace : MonoBehaviour
     /// <returns>
     /// The index of the closest visible graph node to the given position.
     /// </returns>
-    public int GetClosestNodeToPosition(Vector2 position)
-    {
+    public int GetClosestNodeToPosition(Vector2 position){
         return GetClosestNodeToPosition(position, false);
     }
 
-    public int GetClosestNodeToPosition(Vector2 position, bool ignoreObstructions)
-    {
+    public int GetClosestNodeToPosition(Vector2 position, bool ignoreObstructions){
         float closestSoFar = float.MaxValue;
         int closestNode = NO_CLOSEST_NODE_FOUND;
 		
-		if (Graph != null)
-		{
-			for (int nodeIndex = 0; nodeIndex < Graph.NumNodes; nodeIndex++)
-	        {
-	            if (!Graph.IsNodePresent(nodeIndex))
-	            {
+		if (Graph != null){
+			for (int nodeIndex = 0; nodeIndex < Graph.NumNodes; nodeIndex++){
+	            if (!Graph.IsNodePresent(nodeIndex)){
 	                continue;
 	            }
 	
@@ -337,16 +290,14 @@ public abstract class SearchSpace : MonoBehaviour
 				
 				// if the path between this node and position is unobstructed
 	            // calculate the distance
-	            if (!ignoreObstructions && IsPathObstructed(position, currentNode.Position))
-	            {
+	            if (!ignoreObstructions && IsPathObstructed(position, currentNode.Position)){
 	                continue;
 	            }
 	
 	            float distance = Vector2.Distance(position, currentNode.Position);
 	
 	            // keep a record of the closest so far
-	            if (distance >= closestSoFar)
-	            {
+	            if (distance >= closestSoFar){
 	                continue;
 	            }
 	
@@ -358,17 +309,14 @@ public abstract class SearchSpace : MonoBehaviour
 		return closestNode;
 	}
 	
-	protected bool IsPointInObstacle(Vector2 point)
-	{
+	protected bool IsPointInObstacle(Vector2 point){
 		Vector3 groundPosition = World.Instance.GroundPositionAt(point);
 		groundPosition.y -= 1;
 		
-		foreach (RaycastHit hit in Physics.RaycastAll(groundPosition, Vector3.up, float.MaxValue))
-		{
+		foreach (RaycastHit hit in Physics.RaycastAll(groundPosition, Vector3.up, float.MaxValue)){
 			Entity entity = hit.collider.gameObject.GetComponent<Entity>();
 
-			if (entity != null && entity.isObstacle)
-			{
+			if (entity != null && entity.isObstacle){
 				return true;
 			}
 		}
@@ -376,11 +324,9 @@ public abstract class SearchSpace : MonoBehaviour
 		return false;
 	}
 	
-	protected bool IsPathObstructed(Vector2 startPoint, Vector2 endPoint)
-	{
+	protected bool IsPathObstructed(Vector2 startPoint, Vector2 endPoint){
 		if (Mathf.Approximately(startPoint.x, endPoint.x) && 
-		    Mathf.Approximately(startPoint.y, endPoint.y))
-		{
+		    Mathf.Approximately(startPoint.y, endPoint.y)){
 			return false;
 		}
 		
@@ -399,22 +345,18 @@ public abstract class SearchSpace : MonoBehaviour
 		            movingEntityTopPosition, 
 		            MovingEntity.Radius,
 		            direction,
-					distance))
-		{
+					distance)){
 			Entity entity = hit.collider.gameObject.GetComponent<Entity>();
-			if (entity != null && entity.isObstacle)
-			{
+			if (entity != null && entity.isObstacle){
 				return true;
 			}
 		}
 		
 		RaycastHit hitInfo;
-		if (Physics.Raycast(startGroundPosition, direction, out hitInfo, distance))
-		{
+		if (Physics.Raycast(startGroundPosition, direction, out hitInfo, distance)){
 			Entity entity = hitInfo.collider.gameObject.GetComponent<Entity>();
 
-			if (entity != null && entity.isObstacle)
-			{
+			if (entity != null && entity.isObstacle){
 				// TODO: Bug? This should not happen. Why wasn't it caught in the capsule cast?
 				Debug.Log("HUH?: " + entity.name);
 				Debug.Log("HUH?: " + movingEntityBottomPosition);
@@ -432,52 +374,40 @@ public abstract class SearchSpace : MonoBehaviour
 		return false;
 	}
 	
-	private void OnDrawGizmosSelected()
-	{
-		if (Graph == null)
-		{
+	private void OnDrawGizmosSelected(){
+		if (Graph == null){
 			return;
 		}
 		
-		if (drawNodeGizmos)
-		{
+		if (drawNodeGizmos){
 			DrawNodeGizmos();
 		}
 				
-		if (drawEdgeGizmos)
-		{
+		if (drawEdgeGizmos){
 			DrawEdgeGizmos();
 		}
 	}
 	
-	protected virtual void DrawNodeGizmos()
-	{
-		foreach (Node node in Graph.Nodes)
-		{
-			if (node.Index != Node.INVALID_NODE_INDEX)
-			{				
+	protected virtual void DrawNodeGizmos(){
+		foreach (Node node in Graph.Nodes){
+			if (node.Index != Node.INVALID_NODE_INDEX){				
 				DrawNodeGizmo(node);
 			}
 		}
 	}
 	
-	protected virtual void DrawNodeGizmo(Node node)
-	{
+	protected virtual void DrawNodeGizmo(Node node){
 		Gizmos.color = Color.blue;
 		Gizmos.DrawCube(World.Instance.GroundPositionAt(node.Position), Vector3.one * MovingEntity.Radius);
 	}
 	
-	protected virtual void DrawEdgeGizmos()
-	{
-		foreach(LinkedList<Edge> edgeList in Graph.Edges)
-		{
-			foreach (Edge edge in edgeList)
-			{
+	protected virtual void DrawEdgeGizmos(){
+		foreach(LinkedList<Edge> edgeList in Graph.Edges){
+			foreach (Edge edge in edgeList){
 				int fromIndex = edge.From;
 				int toIndex = edge.To;
 				
-				if (fromIndex == Node.INVALID_NODE_INDEX || toIndex == Node.INVALID_NODE_INDEX)
-				{
+				if (fromIndex == Node.INVALID_NODE_INDEX || toIndex == Node.INVALID_NODE_INDEX){
 					Debug.Log("Invalid node");
 					continue;
 				}
@@ -489,16 +419,13 @@ public abstract class SearchSpace : MonoBehaviour
 		}
 	}
 	
-	protected virtual void DrawEdgeGizmo(Node fromNode, Node toNode)
-	{
+	protected virtual void DrawEdgeGizmo(Node fromNode, Node toNode){
 		Gizmos.color = Color.red;
 		Gizmos.DrawLine(World.Instance.GroundPositionAt(fromNode.Position), World.Instance.GroundPositionAt(toNode.Position));
 	}
 	
-	protected void AddNodeObject(Node node, Vector2 nodePosition)
-	{
-		if (!createNodeMarkers)
-		{
+	protected void AddNodeObject(Node node, Vector2 nodePosition){
+		if (!createNodeMarkers){
 			return;
 		}
 		
@@ -513,10 +440,8 @@ public abstract class SearchSpace : MonoBehaviour
 		Destroy(node.gameObject.GetComponent<Collider>());
 	}
 	
-	protected void AddEdgeObject(Edge edge, Vector2 startPoint, Vector2 endPoint)
-	{
-		if (!createEdgeMarkers)
-		{
+	protected void AddEdgeObject(Edge edge, Vector2 startPoint, Vector2 endPoint){
+		if (!createEdgeMarkers){
 			return;
 		}
 		edge.gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -530,8 +455,7 @@ public abstract class SearchSpace : MonoBehaviour
     	Vector2 direction = endPoint - startPoint;
     	float angle = Vector2.Angle(Vector2.up, direction);
     	Vector3 cross = Vector3.Cross(Vector2.up, direction);
-    	if (cross.z > 0)
-		{
+    	if (cross.z > 0){
 			angle = 360f - angle;
 		}
 

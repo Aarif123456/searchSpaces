@@ -39,7 +39,6 @@ TODO
     b) Over and under:
         There is a half-bridge provided. Modify or create at least one search space representation that allows Weebles to correctly path over and under the bridge. The bridge is deliberately one way! This may require using a directed graph (which is an option in the underlying sparse graph implementation …).
     c) Create new PathManager and replace individual PathManger attached to Weeble:
-       
         iii) Implement Quick Path.
     d) Implement path smoothing.
 

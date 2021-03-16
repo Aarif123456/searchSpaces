@@ -94,12 +94,10 @@ namespace Thot.GameAI
             int receiverId,
             EventDelegate<T> eventDelegate,
             T eventData)
-            : base(eventId, eventType, lifespan, dispatchTime, senderId, receiverId, eventDelegate, typeof(T), eventData)
-        {
+            : base(eventId, eventType, lifespan, dispatchTime, senderId, receiverId, eventDelegate, typeof(T), eventData){
         }
 		
-		 private Event()
-        {
+		 private Event(){
         }
 
         /// <summary>
@@ -107,13 +105,11 @@ namespace Thot.GameAI
         /// </summary>
         public new T EventData
         {
-            get
-            {
+            get {
                 return (T)base.EventData;
             }
 
-            private set
-            {
+            private set {
                 base.EventData = value;
             }
         }
@@ -123,13 +119,11 @@ namespace Thot.GameAI
         /// </summary>
         public new EventDelegate<T> EventDelegate
         {
-            get
-            {
+            get {
                 return (EventDelegate<T>)base.EventDelegate;
             }
 
-            private set
-            {
+            private set {
                 base.EventDelegate = value;
             }
         }
@@ -142,9 +136,8 @@ namespace Thot.GameAI
             int senderId,
             int receiverId,
             EventDelegate<T> eventDelegate,
-            T eventData)
-        {
-			// TODO: make events poolable to reduce garbage
+            T eventData){
+			// TODO: make events pool-able to reduce garbage
             return new Event<T>(
                     eventId,
                     eventType,
@@ -160,8 +153,7 @@ namespace Thot.GameAI
         /// Returns a System.String that represents the event.
         /// </summary>
         /// <returns>A System.String that represents the event.</returns>
-        public override string ToString()
-        {
+        public override string ToString(){
             return string.Format(
                 "Id:{0}, Type:{1}, Lifespan:{2} Sender:{3}, Receiver:{4}, Data:{5}",
                 EventId,
@@ -178,22 +170,17 @@ namespace Thot.GameAI
         /// <param name="delegateToFire">
         /// The event delegate to fire.
         /// </param>
-        internal override void Fire(System.Delegate delegateToFire)
-        {
+        internal override void Fire(System.Delegate delegateToFire){
             var eventDelegate = delegateToFire as EventDelegate<T>;
-            if (eventDelegate != null)
-            {
+            if (eventDelegate != null){
                 eventDelegate(this);
             }
         }
 
-        internal override void Send()
-        {
-			if (ReceiverId != EventManager.RECEIVER_ID_IRRELEVANT)
-			{
+        internal override void Send(){
+			if (ReceiverId != EventManager.RECEIVER_ID_IRRELEVANT){
 				Entity entity = EntityManager.Find<Entity>(ReceiverId);
-				if (entity != null)
-				{
+				if (entity != null){
 					entity.HandleEvent(this);
 				}
 			}
