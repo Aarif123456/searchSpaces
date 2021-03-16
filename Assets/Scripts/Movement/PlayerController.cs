@@ -55,9 +55,9 @@ using UnityEngine;
 
 public sealed class PlayerController : MonoBehaviour 
 {
-	public string LongitudinalMoveAxis = "Vertical";
-	public string LateralMoveAxis = "Horizontal";
-	public string JumpButton = "Jump";
+	private string LongitudinalMoveAxis = "Vertical";
+	private string LateralMoveAxis = "Horizontal";
+	private string JumpButton = "Jump";
 	
 	private Motor motor;
 	

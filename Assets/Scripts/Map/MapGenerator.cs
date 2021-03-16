@@ -164,9 +164,10 @@ public sealed class MapGenerator : MonoBehaviour
                             transform.position.y + transform.localScale.y / 2.0f,
                             World.Instance.Center.y - World.Instance.Size.y / 2 + row * cellHeight + cellHeight / 2.0f);
 					
-					GameObject wall = Instantiate(wallTemplate, wallPosition, Quaternion.identity) as GameObject;	
+					GameObject wall = Instantiate(wallTemplate, wallPosition, Quaternion.identity) as GameObject;
 					wall.transform.localScale = wallScale;
-					wall.name = "Wall_" + row + "_" + column;
+                    var objName = "Wall_" + row + "_" + column;
+					wall.name = objName;
 					wall.transform.parent = wallsObject.transform;
                 }
                 else if (connectedRooms.Map[column, row] == (int)ConnectedRooms.MapElements.Waypoint)

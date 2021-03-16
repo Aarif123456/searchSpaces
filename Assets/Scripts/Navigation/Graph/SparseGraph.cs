@@ -119,7 +119,7 @@ namespace Thot.GameAI
         /// </returns>
         public bool IsNodePresent(int nodeIndex)
         {
-            return !Node.IsInvalidIndex(Nodes[nodeIndex].Index) && (nodeIndex < Nodes.Count);
+            return (nodeIndex < Nodes.Count) && !Node.IsInvalidIndex(Nodes[nodeIndex].Index);
         }
 
         /// <summary>
