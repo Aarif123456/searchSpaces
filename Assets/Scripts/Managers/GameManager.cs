@@ -91,6 +91,8 @@ public sealed class GameManager : MonoBehaviour
 				
 				if (movingEntity != null)
 				{
+                    SearchSpace searchSpace = weebleTransform.GetComponent<SearchSpace>();
+                    weebleTransform.position = World.Instance.GroundPositionAt(World.Instance.GetRandomPosition(), weebleHeightOffset);
                     await new WaitForBackgroundThread();
                     SetUp(weebleTransform, movingEntity);
                     await new WaitForSeconds(1.0f);
