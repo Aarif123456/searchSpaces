@@ -137,17 +137,16 @@ public class GoalSelector : WindowManager
         {
             return;
         }
-		
-		Debug.Log("Failed " + payload.path);
-		
-//		if (currentDestination.HasValue)
-//		{
-//	        // re-plan.
-//	        ////TODO: be smarter here. Otherwise could keep failing for the same reason.
-//	        EventManager.Instance.Enqueue<PathRequestEventPayload>(
-//	            Events.PathRequest,
-//	            new PathRequestEventPayload(payload.gameObject, currentDestination.Value));
-//		}
+
+		if (currentDestination.HasValue)
+		{
+            Debug.Log("FollowFailed");
+	        // re-plan.
+	        ////TODO: be smarter here. Otherwise could keep failing for the same reason.
+	        // EventManager.Instance.Enqueue<PathRequestEventPayload>(
+	        //     Events.PathRequest,
+	        //     new PathRequestEventPayload(payload.gameObject, currentDestination.Value));
+		}
 //		else
 //		{
 //			// How can this happen?

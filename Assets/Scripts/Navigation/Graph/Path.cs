@@ -3,7 +3,7 @@
 namespace Thot.GameAI
 {
 	using System.Collections.Generic;
-	
+	using System.Text;
 	using UnityEngine;
 	
 	/// <summary>
@@ -91,13 +91,12 @@ namespace Thot.GameAI
 		}
 		
 		public override string ToString(){
-			// TODO: use StringBuilder
-			string pathString = string.Empty;
+            if(IsEmpty) return "";
+            var stringBuilder = new StringBuilder((PathEdgeList[0].ToString().Length + 2) * PathEdgeList.Count);
 			for (int i = 0; i < PathEdgeList.Count; i++){
-				pathString += "[ " + PathEdgeList[i].ToString() + " ] ";
+				stringBuilder.Append("[ " + PathEdgeList[i].ToString() + " ] ");
 			}
-			
-			return pathString;
+            return stringBuilder.ToString();
 		}
 		
 		public void ShowPath(bool show){

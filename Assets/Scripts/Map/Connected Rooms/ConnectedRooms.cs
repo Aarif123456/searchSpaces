@@ -300,16 +300,12 @@ namespace Thot.GameAI
         /// Add waypoints on both sides of every door.
         /// </summary>
         /// <remarks>
-        /// NOTE: This does not correctly handle corridor-corridor connections (no doors!).
-        /// TODO: Fix!
         /// </remarks>
         public void AddPointsOfVisibilityWaypoints(){
             foreach (Vector2 door in Doors){
                 var column = (int)door.x;
                 var row = (int)door.y;
-                if (Map[column, row] != (int)MapElements.Door){
-                    continue;
-                }
+                if (Map[column, row] != (int)MapElements.Door) continue;
 
                 if (column > 0 && Map[column - 1, row] == (int)MapElements.Space){
                     Map[column - 1, row] = (int)MapElements.Waypoint;
@@ -843,7 +839,7 @@ namespace Thot.GameAI
         /// True if the a room is built on the corridor. Otherwise, false.
         /// </returns>
         private bool BuildRoomOnCorridor(){
-            //// the offest of start is to move one point in the direction
+            //// the offset of start is to move one point in the direction
             //// the room is being built, to ensure it has a discrete entry point
 
             for (int attempt = 0; attempt < MaximumAttempts; attempt++){

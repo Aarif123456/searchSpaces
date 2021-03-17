@@ -79,7 +79,6 @@ public class Entity : MonoBehaviour
         return false;
     }
 	
-	// TODO: Replace Message system with Event system.
 	public virtual bool HandleEvent<T>(Event<T> eventArguments){
         return false;
     }
