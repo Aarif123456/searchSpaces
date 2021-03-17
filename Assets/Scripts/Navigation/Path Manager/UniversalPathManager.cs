@@ -54,7 +54,6 @@ namespace Thot.GameAI{
             requestPath= false;
             Searcher=null;
             Mover = weebleObject.GetComponent<MovingEntity>();
-
             weebleObject.AddComponent<TimeSlicedAStarSearch>();
             Searcher = weeble.GetComponent<TimeSlicedAStarSearch>();
             searchSpace = Weeble.GetSearchSpace(weebleObject);
@@ -83,7 +82,7 @@ namespace Thot.GameAI{
                     CurrentPath,
                     searchSpace.Graph);
             PathReadyEventPayload result = new PathReadyEventPayload(weeble, path);
-            EventManager.Instance.Fire<PathReadyEventPayload>(Events.PathReady, result); 
+            EventManager.Instance.Enqueue<PathReadyEventPayload>(Events.PathReady, result); 
         }
 
         public int GetClosestNodeToWeeble(){
@@ -102,7 +101,6 @@ namespace Thot.GameAI{
             int source = GetClosestNodeToWeeble();
             if(source == SearchSpace.NO_CLOSEST_NODE_FOUND) return; //screwed
             int target = searchSpace.GetClosestNodeToPosition(CurrentDestination);
-            ////TODO: should we instead move the target to closest valid node??
             if (target == SearchSpace.NO_CLOSEST_NODE_FOUND) return;
             Searcher.Reset(searchSpace.Graph, source, target);
         }
@@ -114,6 +112,7 @@ namespace Thot.GameAI{
     public sealed class UniversalPathManager : MonoBehaviour
     {
         private static UniversalPathManager _instance;
+        public bool useTimeAStar = false;
 
         /// Gets the accessor for the <see cref="UniversalPathManager"/> singleton instance.
         public static UniversalPathManager Instance
@@ -152,7 +151,7 @@ namespace Thot.GameAI{
                 if (searchSpace == null || !searchSpace.enabled) continue;
 
                 int source = weeble.GetClosestNodeToWeeble();
-                if(weeble.OngoingUpdatePath()){
+                if( useTimeAStar && weeble.OngoingUpdatePath()){
                     weeble.UpdatePath(source);
                 }
                 // This is for manual testing via the Inspector
@@ -180,7 +179,24 @@ namespace Thot.GameAI{
                 
                 PathRequestEventPayload request = eventArg.EventData;
                 if (request.gameObject != searchSpace.gameObject) continue; // request not for us
-                weeble.ResetSearch(request.destination);
+                if(useTimeAStar) weeble.ResetSearch(request.destination);
+                else{
+                    int target = searchSpace.GetClosestNodeToPosition(request.destination);
+                    if (target == SearchSpace.NO_CLOSEST_NODE_FOUND) continue;
+                    int source = weeble.GetClosestNodeToWeeble();
+                    if(source == SearchSpace.NO_CLOSEST_NODE_FOUND) continue;
+                    var currentSearch = new AStarSearch(searchSpace.Graph, source, target);
+                    var path = new Path(
+                            searchSpace.gameObject,
+                            weeble.RequestorPosition2D, 
+                            request.destination, 
+                            currentSearch.GetPathToTarget(),
+                            searchSpace.Graph);
+                    
+                    PathReadyEventPayload result =
+                        new PathReadyEventPayload(request.gameObject, path);
+                    EventManager.Instance.Enqueue<PathReadyEventPayload>(Events.PathReady, result); 
+                }
             }
         }
     }

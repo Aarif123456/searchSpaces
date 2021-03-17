@@ -22,12 +22,7 @@ TODO
 1. [Documentation] Document your work. Explain what parts you attempted, how your approach is supposed to work, which parts of the code you modified, removed or added. 
 
 2. [Bug Fixing] 
-    a) 
-        When: switching paths
-        What: two issues
-            1. When you are following a path and select a new goal in the Goal Selector, the path is found from the current location but the Weeble continues traversing the current edge before switching.
-            Solution: You need to provide a way to gracefully switch (cancel traversal of the current edge). 
-            2. If the path is being shown when you switch paths, the initial markers are not correctly cleaned up. This is related to the first part.
+    
     b) 
         When: travelling in path
         What: Path sometimes goes through a wall :( 
@@ -43,14 +38,28 @@ TODO
     d) Implement path smoothing.
 
 4. Find ways to make it awesome!
-    a) Implement Manhattan distance 
+   
     b) Make corner graph work with mazes 
 In progress:
-3c ii)
+a) 
+    When: switching paths
+    What: two issues
+        1. When you are following a path and select a new goal in the Goal Selector, the path is found from the current location but the Weeble continues traversing the current edge before switching.
+        Solution: You need to provide a way to gracefully switch (cancel traversal of the current edge). 
+        2. If the path is being shown when you switch paths, the initial markers are not correctly cleaned up. This is related to the first part.
 
 Completed: 
-3a) Implement and test the Corner Graph search space representations on the Connected Rooms search space.
-3c) i) Design, implement and test a new path manager (attach it to “Game”). This single path manger should receive path requests from all the Weebles. It should queue the requests and process them. It should then send a path request completed (or failed) event to the requestor.
- ii) Now redesign your PathManager to time-slice processing requests (like an operating system does with jobs). To do this, you will need to replace the A* implementation with a time-sliced version (this is easier than it sounds). Basically, each update, you want to do one cycle of A* for each requestor. One cycle means remove the next node, process it, add its children, and return.
-    - Except it won't switch goals - which make the implementation a little troublesome
+2 
+    a) Made some with figuring out the bug - got steering to automatically turn off - when stuck more than 10 seconds - number is adjustable 
+3
+    a) Implement and test the Corner Graph search space representations on the Connected Rooms search space.
+    c) 
+        i) Design, implement and test a new path manager (attach it to “Game”). This single path manger should receive path requests from all the Weebles. It should queue the requests and process them. It should then send a path request completed (or failed) event to the requestor.
+        ii) Now redesign your PathManager to time-slice processing requests (like an operating system does with jobs). To do this, you will need to replace the A* implementation with a time-sliced version (this is easier than it sounds). Basically, each update, you want to do one cycle of A* for each requestor. One cycle means remove the next node, process it, add its children, and return.
+            - Except it won't switch goals - which make the implementation a little troublesome
+            - Also, the it's picking weird corners vs when doing A* 
+            * Note: You can toggle time-slice mode by clicking the flag in the "Game" - gameObject
 
+4 
+     a) Implement Manhattan distance - as heuristic 
+     c) Loading works for corner graphs, Maze and Waypoint graphs 

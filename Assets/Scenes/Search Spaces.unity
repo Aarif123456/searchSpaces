@@ -232,6 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 623198484ab584548bd955ece65e0e08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useTimeAStar: 0
   weebles: []
   showPath: 1
 --- !u!1 &13
@@ -1349,7 +1350,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 2f9d33addfa24804e89a3a2cf3b02790, type: 3}
       propertyPath: generateMapOnAwake
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11400002, guid: 2f9d33addfa24804e89a3a2cf3b02790, type: 3}
       propertyPath: mapType
@@ -1563,6 +1564,14 @@ PrefabInstance:
       objectReference: {fileID: 26}
     - target: {fileID: 132644554376838026, guid: 56563313a08e95645866b593d8061e4b, type: 3}
       propertyPath: windowPositionOffset.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 132644554376838030, guid: 56563313a08e95645866b593d8061e4b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 132644554376838065, guid: 56563313a08e95645866b593d8061e4b, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 132644554376838076, guid: 56563313a08e95645866b593d8061e4b, type: 3}

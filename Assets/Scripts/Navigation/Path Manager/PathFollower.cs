@@ -128,6 +128,13 @@ public sealed class PathFollower : MonoBehaviour
 		}
 	}
 	
+    private void StopFollowing(){
+        if (PathToFollow != null){
+            PathToFollow.ShowPath(false);
+            IsFollowing = false;  
+        }
+    }
+
 	private void TraverseNextEdge(){
         if (PathToFollow == null){
             return;
@@ -147,7 +154,7 @@ public sealed class PathFollower : MonoBehaviour
                  BrakeOnFinalApproach,
                  StopOnFinalArrival);
         }
-        else {
+        else{
             edgeTraverser.Traverse(
                  edgeToFollow,
                  BrakeOnEachApproach,
@@ -158,24 +165,21 @@ public sealed class PathFollower : MonoBehaviour
     private void OnTraversalCompleted(Event<TraversalCompletedEventPayload> eventArg){
 		TraversalCompletedEventPayload payload = eventArg.EventData;
 		
-        if (payload.gameObject != gameObject) // event not for us
-        {
-            return;
-        }
-		
+        if (payload.gameObject != gameObject) return; // event not for us
+        if(PathToFollow == null) return;
 		if (payload.edge != null){
 			payload.edge.ShowEdge(false);
 		}
 
-        if (PathToFollow != null && PathToFollow.IsEmpty){
+        if (PathToFollow.IsEmpty){
             IsFollowing = false;
             EventManager.Instance.Enqueue<FollowCompletedEventPayload>(
 			    Events.FollowCompleted,
                 new FollowCompletedEventPayload(payload.gameObject, PathToFollow));
-            return;
 		}
-
-        TraverseNextEdge();
+        else{
+            TraverseNextEdge();
+        }
     }
 
     private void OnTraversalFailed(Event<TraversalFailedEventPayload> eventArg){
@@ -190,10 +194,12 @@ public sealed class PathFollower : MonoBehaviour
 			payload.edge.ShowEdge(false);
 		}
 
-        IsFollowing = false;
-        EventManager.Instance.Enqueue<FollowFailedEventPayload>(
-		    Events.FollowFailed,
-            new FollowFailedEventPayload(payload.gameObject, PathToFollow));
+        if(IsFollowing){
+            StopFollowing();
+            EventManager.Instance.Enqueue<FollowFailedEventPayload>(
+                Events.FollowFailed,
+                new FollowFailedEventPayload(payload.gameObject, PathToFollow)); 
+        }
     }
 
     private void OnPathReady(Event<PathReadyEventPayload> eventArg){	

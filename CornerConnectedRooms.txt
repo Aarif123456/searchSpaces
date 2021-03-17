@@ -1,21 +1,21 @@
 wwwwwwwwwwwwwwwwwwww
-w   pd  wwwwwwwwwwww
-w    wwwww    pd   w
-w  p dp  dp    wwwww
-wwwdwwdwww     d   w
-www w p  wwwwwwwwwww
-w w w    w       w w
-w w w    w      pdpw
-w w w p  w       w w
-wdwdwwdwwwwwwwwwwwdw
-w  p w w   wwww   pw
-w   pdpdp pd  dp   w
-w    w w   wwwwp p w
-w    www   wwwwdw ww
-wp  pd  pp dp w w ww
-wdwwdwwwwdwwdww wdww
-w ww wwww w p  p pww
-w ww wwww w       ww
-wwww wwwwww       ww
-wwwwwwwwwwwwwwwwwwww
+w      pd  w    wwww
+w       wwww   pd   
+wp p p  dp dp   wwww
+wdwdwdwwwdwwp  pd   
+w w w w  p wdwwdwwww
+w w w w    w ww wwww
+wwwwwww    w ww wwww
+wwwwwwwp   dp wwwwww
+www   wdwwwwdwwwwwww
+www  pdpww  p wwww w
+wwwp  w ww   pd   pw
+wwwdwwwwwwp   wwwwdw
+www w    wdwwdw   pw
+www w    w wwpdp   w
+wwwww   pdpww wp p w
+wwwww    w wwwwdwdww
+wwwww    wwwwww w ww
+wwwwwwwwwwwwwww w ww
+wwwwwwwwwwwwwww w ww
 

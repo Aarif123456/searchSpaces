@@ -32,14 +32,15 @@ public struct TraversalFailedEventPayload
 
 public sealed class EdgeTraverser : MonoBehaviour
 {
-	private Vector2 previousPosition;// = new Vector2(float.MaxValue, float.MaxValue);
+	private Vector2 previousPosition;
 	
 	private MovingEntity movingEntity;
 	private AiController aiController;
 	private Steering steering;
 	private Seek seek;
 	private Arrive arrive;
-	
+	private float stuckThreshold = 0.1f; 
+    private float startTime;
 	/// <summary>
     /// Gets the edge to traverse.
     /// </summary>
@@ -53,6 +54,7 @@ public sealed class EdgeTraverser : MonoBehaviour
 		aiController = GetComponent<AiController>();
 		seek = GetComponent<Seek>();
 		arrive = GetComponent<Arrive>();
+        startTime = Time.time;
 	}
 	
 	public void Update(){
@@ -141,14 +143,37 @@ public sealed class EdgeTraverser : MonoBehaviour
         }
     }
 
+    private Vector2 GetPosition(){
+        Vector2 pos = new Vector2(float.MaxValue, float.MaxValue);
+        if (movingEntity != null && movingEntity.enabled){
+            pos = movingEntity.Position2D;
+        }
+        else if (aiController != null && aiController.enabled){
+            pos = aiController.transform.position.To2D();
+        }
+        else {
+            pos = transform.position.To2D();
+        }
+        return pos;
+    }
     private bool IsStuck(){
-        //// TODO: add stuck test based on difference between current and
+        //// stuck test based on difference between current and
         //// previous position (perhaps taking expected velocity and elapsed time into account)
+        var curVelocity = ((previousPosition-GetPosition()).magnitude /Time.deltaTime);
+        if( curVelocity < stuckThreshold){
+            return true;
+        }
         return false; // for now, just return false
     }
 
+    private void ShutDown(){
+        if (seek != null) seek.enabled = seek.isOn = false;
+        if (arrive != null) arrive.enabled = arrive.isOn = false;
+        if (steering != null) steering.enabled = steering.isOn = false;
+    }
+
     private void CheckIfStuck(){
-        if (IsStuck()){
+        if (IsStuck() && (Time.time-startTime) > 10f){
 			GameObject traverserGameObject/* = gameObject */; // depends if the EdgeTraverser is attached to the traversing object
 			
 			if (movingEntity != null && movingEntity.enabled){
@@ -160,20 +185,14 @@ public sealed class EdgeTraverser : MonoBehaviour
 			else {
 				traverserGameObject = gameObject;
 			}
-		 
+
+		    ShutDown();
+            startTime = Time.time;
             EventManager.Instance.Enqueue<TraversalFailedEventPayload>(
                 Events.TraversalFailed,
                 new TraversalFailedEventPayload(traverserGameObject, EdgeToFollow));
         }
 		
-		if (movingEntity != null && movingEntity.enabled){
-			previousPosition = movingEntity.Position2D;
-		}
-		else if (aiController != null && aiController.enabled){
-			previousPosition = aiController.transform.position.To2D();
-		}
-		else {
-			previousPosition = transform.position.To2D();
-		}
+		previousPosition = GetPosition();
     }
 }

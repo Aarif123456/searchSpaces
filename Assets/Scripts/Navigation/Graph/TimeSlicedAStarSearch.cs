@@ -40,7 +40,6 @@ namespace Thot.GameAI
         public IndexedPriorityQueueLow pq;
         public List<int> finalPath;
         public CalculationType CalculationType { get; set; }
-
         /* Constructor create graph and initialize search*/
         public TimeSlicedAStarSearch(SparseGraph graph, int source, int target){
             Reset(graph, source, target);
@@ -54,6 +53,7 @@ namespace Thot.GameAI
             GCosts = new List<float>();
             FCosts = new List<float>();
             pq = new IndexedPriorityQueueLow(FCosts, Graph.NumNodes);
+            CalculationType = CalculationType.ManhattanDistance;
             Done();
         }
 
@@ -91,6 +91,11 @@ namespace Thot.GameAI
             return (graph.GetNode(node1).Position - graph.GetNode(node2).Position).magnitude;
         }
 
+        public static float ManhattanDistance(SparseGraph graph, int node1, int node2){
+            var pos1 = graph.GetNode(node1).Position;
+            var pos2 = graph.GetNode(node2).Position; 
+            return Mathf.Abs(pos1.x-pos2.x) + Mathf.Abs(pos1.y-pos2.y); 
+        }
         /* Gets the total cost to the target.*/
         public float GetCostToTarget(){
             return GCosts[Target];
@@ -133,9 +138,7 @@ namespace Thot.GameAI
         private HeuristicDelegate GetCalculateMethod(){
             switch(CalculationType){
                 case CalculationType.ManhattanDistance:
-                    Debug.LogWarning("ManhattanDistance not implemented");
-                    return EuclideanDistance;
-                    // return ManhattanDistance;
+                    return ManhattanDistance;
                 case CalculationType.EuclideanDistance:
                     return EuclideanDistance;
             }
